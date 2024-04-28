@@ -51,8 +51,9 @@ import androidx.compose.material.icons.filled.Spa
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import com.codelab.basiclayouts.R
-//import com.codelab.src.R
+
 
 @Composable
 private fun SootheNavigationRail(modifier: Modifier = Modifier) {
@@ -301,12 +302,12 @@ fun EditComponent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun AuthorEditStoryPage() {
+fun AuthorEditStoryScreen(navController:NavController) {
     var isNavigationVisible by rememberSaveable { mutableStateOf(false) } // 状态控制导航栏是否可见
 
     AppTheme {
         Scaffold(
-            bottomBar = { BottomNavigation() }
+            bottomBar = { BottomNavigation(navController) }
         ) { padding ->
             Column(
                 modifier = Modifier
@@ -359,11 +360,11 @@ fun AuthorEditStoryPage() {
 //    AddElementMenu()
 //}
 
-@Preview(widthDp = 360, heightDp = 640)
-@Composable
-fun AuthorEditStoryPagePreview() {
-    AuthorEditStoryPage()
-}
+//@Preview(widthDp = 360, heightDp = 640)
+//@Composable
+//fun AuthorEditStoryScreenPreview() {
+//    AuthorEditStoryScreen()
+//}
 
 
 

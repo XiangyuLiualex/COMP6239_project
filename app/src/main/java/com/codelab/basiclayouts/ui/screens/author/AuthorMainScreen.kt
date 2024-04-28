@@ -48,6 +48,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Spa
+import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,32 +58,42 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.codelab.basiclayouts.ui.theme.AppTheme
 
 @Composable
 fun NewStoryElement(
     @DrawableRes drawable: Int,
     @StringRes text: Int,
+    onClick:()->Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Image(
-            painter = painterResource(drawable),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(88.dp)
-                .clip(CircleShape)
-        )
-        Text(
-            text = stringResource(text),
-            modifier = Modifier.paddingFromBaseline(top = 24.dp, bottom = 8.dp),
-            style = MaterialTheme.typography.bodyMedium
-        )
+    Button(
+        onClick=onClick,
+        modifier=modifier,
+        shape= CircleShape
+    ){
+        Column(
+            modifier = modifier,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Image(
+                painter = painterResource(drawable),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(88.dp)
+                    .clip(CircleShape)
+            )
+            Text(
+                text = stringResource(text),
+                modifier = Modifier.paddingFromBaseline(top = 24.dp, bottom = 8.dp),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
     }
+
 }
 //
 // Step: Favorite collection card - Material Surface
@@ -201,7 +212,7 @@ fun HomeSection(
 }
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(modifier: Modifier = Modifier,navController:NavController) {
     Column(
         modifier
             .verticalScroll(rememberScrollState())
@@ -209,7 +220,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         Spacer(Modifier.height(16.dp))
 
         HomeSection(title = R.string.new_story) {
-            NewStoryElement(drawable = R.drawable.write_story, text = R.string.write_story)
+            NewStoryElement(drawable = R.drawable.write_story, text = R.string.write_story,
+                onClick = {navController.navigate("authorNewStoryScreen")})
         }
         HomeSection(title = R.string.draft_story) {
             DraftRow(modifier = Modifier.height(150.dp))
@@ -225,7 +237,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
 // Step: Bottom navigation - Material
 @Composable
-public fun BottomNavigation(modifier: Modifier = Modifier) {
+public fun BottomNavigation(navController: NavController, modifier: Modifier = Modifier) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surfaceVariant,
         modifier = modifier
@@ -241,7 +253,18 @@ public fun BottomNavigation(modifier: Modifier = Modifier) {
                 Text(stringResource(R.string.bottom_navigation_home))
             },
             selected = true,
-            onClick = {}
+            onClick = {
+                // 使用NavController导航到HomeScreen
+                navController.navigate("home")
+//                {
+//                    // 清理导航栈，确保返回时不会回到前一个页面
+//                    popUpTo("home") {
+//                        saveState = true
+//                    }
+//                    launchSingleTop = true
+//                    restoreState = true
+//                }
+            }
         )
         NavigationBarItem(
             icon = {
@@ -261,12 +284,12 @@ public fun BottomNavigation(modifier: Modifier = Modifier) {
 
 
 @Composable
-public fun AuthorMainpage() {
+fun AuthorMainScreen(navController: NavController) {
     AppTheme {
         Scaffold(
-            bottomBar = { BottomNavigation() }
+            bottomBar = { BottomNavigation(navController) }
         ) { padding ->
-            HomeScreen(Modifier.padding(padding))
+            HomeScreen(Modifier.padding(padding),navController)
         }
     }
 }
@@ -362,9 +385,9 @@ private data class DrawableStringPair(
 //}
 //
 
-@Preview(widthDp = 360, heightDp = 640)
-@Composable
-fun MySoothePortraitPreview() {
-    AuthorMainpage()
-}
+//@Preview(widthDp = 360, heightDp = 640)
+//@Composable
+//fun AuthorMainScreenPreview() {
+//    AuthorMainScreen(navController : NavController)
+//}
 

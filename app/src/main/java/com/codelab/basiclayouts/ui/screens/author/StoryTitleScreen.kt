@@ -24,10 +24,11 @@ import androidx.compose.ui.unit.dp
 import com.codelab.basiclayouts.ui.theme.AppTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavController
 
 
 @Composable
-fun InputComponent(modifier: Modifier = Modifier) {
+fun InputComponent(navController:NavController, modifier: Modifier = Modifier) {
     var title by rememberSaveable { mutableStateOf("") }
     var category by rememberSaveable { mutableStateOf("") }
     var description by rememberSaveable { mutableStateOf("") }
@@ -61,7 +62,7 @@ fun InputComponent(modifier: Modifier = Modifier) {
             Text("Upload Story Cover")
         }
         Spacer(Modifier.height(26.dp))
-        Button(onClick={}){
+        Button(onClick={navController.navigate("authorEditScreen")}){
             Text("Start Writting")
         }
         Spacer(Modifier.height(16.dp))
@@ -74,10 +75,10 @@ fun InputComponent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun AuthorNewStorypage() {
+fun AuthorNewStoryScreen(navController:NavController) {
     AppTheme {
         Scaffold(
-            bottomBar = { BottomNavigation() }
+            bottomBar = { BottomNavigation(navController) }
         ) { padding ->
             Column(
                 modifier = Modifier
@@ -86,7 +87,7 @@ fun AuthorNewStorypage() {
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                InputComponent(Modifier.fillMaxHeight())  // 使 MyTextField 填充整个宽度
+                InputComponent(navController,Modifier.fillMaxHeight())  // 使 MyTextField 填充整个宽度
             }
         }
     }
@@ -102,9 +103,9 @@ fun AuthorNewStorypage() {
 //        }
 //    }
 //}
-
-@Preview(widthDp = 360, heightDp = 640)
-@Composable
-fun AuthorNewStorypagePreview() {
-    AuthorNewStorypage()
-}
+//
+//@Preview(widthDp = 360, heightDp = 640)
+//@Composable
+//fun AuthorNewStoryScreenPreview() {
+//    AuthorNewStoryScreen()
+//}
