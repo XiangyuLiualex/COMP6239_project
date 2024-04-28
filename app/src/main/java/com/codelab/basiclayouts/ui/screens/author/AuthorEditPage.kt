@@ -1,4 +1,4 @@
-package com.codelab.basiclayouts.ui.page.author
+package com.codelab.basiclayouts.ui.screens.author
 
 
 import androidx.compose.foundation.layout.Arrangement
@@ -132,13 +132,6 @@ fun FormComponent(onCancel: () -> Unit, onConfirm: (String) -> Unit) {
             onValueChange = { chapterName = it },
             label = { Text("Connected Chapter Name") }
         )
-//        Row(verticalAlignment = Alignment.CenterVertically) {
-//            Checkbox(
-//                checked = isTheEnd,
-//                onCheckedChange = { isTheEnd = it }
-//            )
-//            Text("Is the end")
-//        }
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxWidth()
