@@ -74,24 +74,24 @@ fun InputComponent(navController:NavController, modifier: Modifier = Modifier) {
 
 }
 
-@Composable
-fun AuthorNewStoryScreen(navController:NavController) {
-    AppTheme {
-        Scaffold(
-            bottomBar = { BottomNavigation(navController) }
-        ) { padding ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),  // 应用由 Scaffold 提供的 padding，保证内容不被 BottomNavigation 遮挡
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                InputComponent(navController,Modifier.fillMaxHeight())  // 使 MyTextField 填充整个宽度
-            }
-        }
-    }
-}
+//@Composable
+//fun AuthorNewStoryScreen(navController:NavController) {
+//    AppTheme {
+//        Scaffold(
+//            bottomBar = { BottomNavigation(navController) }
+//        ) { padding ->
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .padding(padding),  // 应用由 Scaffold 提供的 padding，保证内容不被 BottomNavigation 遮挡
+//                verticalArrangement = Arrangement.SpaceEvenly,
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                InputComponent(navController,Modifier.fillMaxHeight())  // 使 MyTextField 填充整个宽度
+//            }
+//        }
+//    }
+//}
 
 
 //@Preview(showBackground = true, name = "TextField Preview")

@@ -237,7 +237,7 @@ fun HomeScreen(modifier: Modifier = Modifier,navController:NavController) {
 
 // Step: Bottom navigation - Material
 @Composable
-public fun BottomNavigation(navController: NavController, modifier: Modifier = Modifier) {
+public fun BottomNavigation(modifier: Modifier = Modifier) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surfaceVariant,
         modifier = modifier
@@ -255,7 +255,7 @@ public fun BottomNavigation(navController: NavController, modifier: Modifier = M
             selected = true,
             onClick = {
                 // 使用NavController导航到HomeScreen
-                navController.navigate("home")
+//                navController.navigate("home")
 //                {
 //                    // 清理导航栈，确保返回时不会回到前一个页面
 //                    popUpTo("home") {
@@ -287,7 +287,7 @@ public fun BottomNavigation(navController: NavController, modifier: Modifier = M
 fun AuthorMainScreen(navController: NavController) {
     AppTheme {
         Scaffold(
-            bottomBar = { BottomNavigation(navController) }
+            bottomBar = { BottomNavigation() }
         ) { padding ->
             HomeScreen(Modifier.padding(padding),navController)
         }

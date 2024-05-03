@@ -21,6 +21,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import com.codelab.basiclayouts.ui.navigation.AppNavGraph
+import com.codelab.basiclayouts.ui.screens.author.AuthorEditStoryScreen
 import com.codelab.basiclayouts.ui.screens.author.AuthorMainScreen
 
 
@@ -34,7 +35,7 @@ class MainActivity : ComponentActivity() {
         setContent {
 //            val windowSizeClass = calculateWindowSizeClass(this)
 //            AuthorMainScreen()
-            AppNavGraph()
+            AuthorEditStoryScreen()
         }
     }
 }
