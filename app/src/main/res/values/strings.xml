@@ -12,7 +12,7 @@
   the License.
   -->
 <resources>
-    <string name="app_name">MySoothe</string>
+    <string name="app_name">COMP6239</string>
     <string name="favorite_collections">Favorite Collections</string>
     <string name="align_your_body">Align your Body</string>
     <string name="write_story">Write New Story</string>
