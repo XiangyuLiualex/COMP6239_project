@@ -22,8 +22,25 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.googlefonts.Font
+import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.sp
 import com.codelab.basiclayouts.R
+
+/** shared type **/
+val provider = GoogleFont.Provider(
+    providerAuthority = "com.google.android.gms.fonts",
+    providerPackage = "com.google.android.gms",
+    certificates = R.array.com_google_android_gms_fonts_certs
+)
+
+val fontName = GoogleFont("Poppins")
+
+val fontFamily = FontFamily(
+    Font(googleFont = fontName, fontProvider = provider),
+    Font(resId = R.font.poppins_regular),
+)
+/** shared type **/
 
 private val fontFamilyKulim = FontFamily(
     listOf(
@@ -86,11 +103,18 @@ val typography = Typography(
         lineHeight = 20.sp,
         letterSpacing = (0.25).sp
     ),
+//    bodyLarge = TextStyle(
+//        fontFamily = fontFamilyLato,
+//        fontSize = 16.sp,
+//        lineHeight = 24.sp,
+//        letterSpacing = (0.5).sp
+//    ),
     bodyLarge = TextStyle(
-        fontFamily = fontFamilyLato,
+        fontFamily = fontFamily,
+        fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
-        letterSpacing = (0.5).sp
+        letterSpacing = 0.5.sp
     ),
     labelMedium = TextStyle(
         fontFamily = fontFamilyLato,
