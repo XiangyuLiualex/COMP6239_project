@@ -15,17 +15,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.codelab.basiclayouts.R
 import com.codelab.basiclayouts.ui.components.BottomSignupTextComponent
 import com.codelab.basiclayouts.ui.components.HeadingTextComponent
 import com.codelab.basiclayouts.ui.components.ImageComponent
-import com.codelab.basiclayouts.ui.components.SignupButton
+import com.codelab.basiclayouts.ui.components.ConfirmButton
 import com.codelab.basiclayouts.ui.components.MyTextField
 import com.codelab.basiclayouts.ui.components.PasswordConfirmComponent
 import com.codelab.basiclayouts.ui.components.SignupTermsAndPrivacyText
+import com.codelab.basiclayouts.ui.viewmodel.shared.ResetPasswordViewModel
 import com.codelab.basiclayouts.ui.viewmodel.shared.SignupViewModel
 
 @Composable
@@ -66,10 +65,12 @@ fun SignupScreen(navController: NavHostController) {
                 contentAlignment = Alignment.BottomStart
             ) {
                 Column {
-                    SignupButton(
+                    val resetPasswordViewModel = viewModel<ResetPasswordViewModel>()
+                    ConfirmButton(
                         labelVal = "Continue",
                         navController = navController,
-                        signupViewModel = signupViewModel
+                        signupViewModel = signupViewModel,
+                        resetPasswordViewModel = resetPasswordViewModel
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     BottomSignupTextComponent(navController)
@@ -82,12 +83,7 @@ fun SignupScreen(navController: NavHostController) {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewSignupScreen() {
+fun SignupScreenPreview() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "Signup") {
-        composable("Signup") {
-            SignupScreen(navController = navController)
-        }
-        // Define other destinations here
-    }
+    SignupScreen(navController = navController)
 }

@@ -26,19 +26,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import com.codelab.basiclayouts.R
 import com.codelab.basiclayouts.ui.components.BottomComponent
 import com.codelab.basiclayouts.ui.components.BottomLoginTextComponent
 import com.codelab.basiclayouts.ui.components.ForgotPasswordTextComponent
 import com.codelab.basiclayouts.ui.components.HeadingTextComponent
 import com.codelab.basiclayouts.ui.components.ImageComponent
+import com.codelab.basiclayouts.ui.components.MainPageButton
 import com.codelab.basiclayouts.ui.components.MyTextField
 import com.codelab.basiclayouts.ui.components.PasswordInputComponent
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
+    var selectedIdentity by remember { mutableStateOf(Identity.READER) }
     Surface(
         modifier = Modifier.fillMaxSize().padding(20.dp),
         color = Color.White
@@ -59,13 +59,14 @@ fun LoginScreen(navController: NavHostController) {
                 ) {
                     ForgotPasswordTextComponent(navController)
                 }
-                IdentityOptions()
+                IdentityOptions(selectedIdentity = selectedIdentity, onIdentitySelected = { selectedIdentity = it })
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.TopStart
                 ) {
                     Column {
-                        BottomComponent(navController)
+                        MainPageButton(labelVal = "Continue", identity = selectedIdentity, navController = navController)
+                        BottomComponent()
                         Spacer(modifier = Modifier.height(5.dp))
                         BottomLoginTextComponent(
                             initialText = "        Haven't we seen you around here before? ",
@@ -83,18 +84,17 @@ enum class Identity {
     AUTHOR
 }
 @Composable
-fun IdentityOptions() {
-    var selectedIdentity by remember { mutableStateOf(Identity.READER) }
+fun IdentityOptions(selectedIdentity: Identity, onIdentitySelected: (Identity) -> Unit) {
     Column {
         RadioOption(
             text = "Reader",
             selected = selectedIdentity == Identity.READER,
-            onSelect = { selectedIdentity = Identity.READER }
+            onSelect = { onIdentitySelected(Identity.READER) }
         )
         RadioOption(
             text = "Author",
             selected = selectedIdentity == Identity.AUTHOR,
-            onSelect = { selectedIdentity = Identity.AUTHOR }
+            onSelect = { onIdentitySelected(Identity.AUTHOR) }
         )
     }
 }
@@ -113,13 +113,7 @@ fun RadioOption(text: String, selected: Boolean, onSelect: () -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewLoginScreen() {
-    // 预览登录界面
+fun LoginScreenPreview() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "login") {
-        composable("login") {
-            LoginScreen(navController = navController)
-        }
-        // Define other destinations here
-    }
+    LoginScreen(navController = navController)
 }
