@@ -41,11 +41,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.codelab.basiclayouts.R
+import com.codelab.basiclayouts.ui.screens.shared.Identity
 import com.codelab.basiclayouts.ui.theme.BgSocial
 import com.codelab.basiclayouts.ui.theme.BorderColor
 import com.codelab.basiclayouts.ui.theme.BrandColor
 import com.codelab.basiclayouts.ui.theme.Primary
 import com.codelab.basiclayouts.ui.theme.Tertirary
+import com.codelab.basiclayouts.ui.viewmodel.shared.ResetPasswordViewModel
 import com.codelab.basiclayouts.ui.viewmodel.shared.SignupViewModel
 
 @Composable
@@ -251,17 +253,24 @@ fun MyButton(labelVal: String, navController: NavHostController) {
 }
 
 @Composable
-fun SignupButton(
+fun ConfirmButton(
         labelVal: String,
         navController: NavHostController,
-        signupViewModel: SignupViewModel
+        signupViewModel: SignupViewModel,
+        resetPasswordViewModel: ResetPasswordViewModel
 ) {
     Button(
         onClick = {
             if (labelVal == "Continue") {
                 if (signupViewModel.password == signupViewModel.confirmPassword) {
                     navController.navigate("LoginScreen")
-                } else {
+                }else {
+                    //"Confirm password is wrong"
+                }
+            }else if (labelVal == "Submit") {
+                if (resetPasswordViewModel.password == resetPasswordViewModel.confirmPassword) {
+                    navController.navigate("LoginScreen")
+                }else {
                     //"Confirm password is wrong"
                 }
             }
@@ -281,9 +290,31 @@ fun SignupButton(
 }
 
 @Composable
-fun BottomComponent(navController: NavHostController) {
+fun MainPageButton(labelVal: String, identity: Identity, navController: NavHostController) {
+    Button(
+        onClick = {
+            when (identity) {
+                Identity.READER -> navController.navigate("reader_home_screen")
+                Identity.AUTHOR -> navController.navigate("author_home_Screen")
+            }
+        },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = BrandColor
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = labelVal,
+            color = Color.White,
+            fontSize = 18.sp,
+            modifier = Modifier.clickable { }
+        )
+    }
+}
+
+@Composable
+fun BottomComponent() {
     Column {
-        MyButton(labelVal = "Continue", navController = navController)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
@@ -330,10 +361,10 @@ fun BottomComponent(navController: NavHostController) {
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
-                }
             }
         }
     }
+}
 
 @Composable
 fun BottomLoginTextComponent(
