@@ -1,8 +1,8 @@
 package com.codelab.basiclayouts.ui.viewmodel.author
 
 import androidx.lifecycle.ViewModel
-import com.codelab.basiclayouts.ui.model.author.AuthorEditUiState
-import com.codelab.basiclayouts.ui.model.author.Option
+import com.codelab.basiclayouts.ui.uistate.author.AuthorEditUiState
+import com.codelab.basiclayouts.ui.uistate.author.Option
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

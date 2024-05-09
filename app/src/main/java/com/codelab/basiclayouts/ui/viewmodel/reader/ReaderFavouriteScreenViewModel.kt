@@ -3,7 +3,7 @@ package com.codelab.basiclayouts.ui.viewmodel.reader
 import androidx.lifecycle.ViewModel
 import com.codelab.basiclayouts.data.RetrofitInstance
 import com.codelab.basiclayouts.model.reader.FavoriteAuthor
-import com.codelab.basiclayouts.model.reader.ReaderFavouriteScreenUiState
+import com.codelab.basiclayouts.ui.uistate.reader.ReaderFavouriteScreenUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

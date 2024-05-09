@@ -1,4 +1,4 @@
-package com.codelab.basiclayouts.ui.model.author
+package com.codelab.basiclayouts.ui.uistate.author
 
 data class AuthorEditUiState(
     val chapterName: String = "",
