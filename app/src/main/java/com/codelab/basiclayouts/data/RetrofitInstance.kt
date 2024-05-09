@@ -1,5 +1,6 @@
 package com.codelab.basiclayouts.data
 
+import com.codelab.basiclayouts.data.service.TFavoriteAuthorService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -10,8 +11,8 @@ object RetrofitInstance {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-//定义若干调取HTTP的接口
-//    val userService: UserService by lazy {
-//        retrofit.create(UserService::class.java)
-//    }
+    //读者喜欢的作者管理API接口
+    val tFavoriteAuthorService: TFavoriteAuthorService by lazy {
+        retrofit.create(TFavoriteAuthorService::class.java)
+    }
 }

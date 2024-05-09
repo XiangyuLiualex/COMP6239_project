@@ -3,7 +3,6 @@ package com.codelab.basiclayouts.ui.screens.reader
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,13 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
-import com.codelab.basiclayouts.R
-import com.codelab.basiclayouts.model.Author
+import com.codelab.basiclayouts.model.reader.FavoriteAuthor
 import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderFavouriteScreenViewModel
 
 @Composable
@@ -35,7 +31,7 @@ fun ReaderFavouriteScreen(viewModel: ReaderFavouriteScreenViewModel = androidx.l
     ) { padding ->
         LazyColumn(contentPadding = padding) {
             items(items = uiState.authors) { author ->
-                AuthorCard(author)
+                AuthorCard(author,viewModel)
             }
         }
     }
@@ -43,7 +39,7 @@ fun ReaderFavouriteScreen(viewModel: ReaderFavouriteScreenViewModel = androidx.l
 
 
 @Composable
-fun AuthorCard(author: Author) {
+fun AuthorCard(author: FavoriteAuthor,viewModel: ReaderFavouriteScreenViewModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -56,7 +52,7 @@ fun AuthorCard(author: Author) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = rememberImagePainter(author.avatarUrl),
+                painter = rememberImagePainter(author.photoUrl),
                 contentDescription = "Author Avatar",
                 modifier = Modifier.size(60.dp),
                 contentScale = ContentScale.Crop
@@ -65,11 +61,11 @@ fun AuthorCard(author: Author) {
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(author.name, fontWeight = FontWeight.Bold)
-                Text(author.representativeWorks, style = MaterialTheme.typography.body2)
+                Text(author.username, fontWeight = FontWeight.Bold)
+                Text(author.selfDescription, style = MaterialTheme.typography.body2)
             }
             IconButton(
-                onClick = { /* handle un-favorite action here */ }
+                onClick = { viewModel.tFavoriteAuthorDel(1,author.authorId) }
             ) {
                 Icon(
                     imageVector = Icons.Filled.Favorite,
