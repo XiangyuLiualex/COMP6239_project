@@ -21,16 +21,20 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.codelab.basiclayouts.R
 import com.codelab.basiclayouts.model.Author
+import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderFavouriteScreenViewModel
 
 @Composable
-fun AuthorListScreen(authors: List<Author>) {
+fun ReaderFavouriteScreen(viewModel: ReaderFavouriteScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    // 观察 ViewModel 中的 StateFlow 并获取当前状态
+    val uiState by viewModel.uiState.collectAsState()
+
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Author List") })
         }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
-            items(items = authors) { author ->
+            items(items = uiState.authors) { author ->
                 AuthorCard(author)
             }
         }
@@ -77,13 +81,5 @@ fun AuthorCard(author: Author) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewAuthorList() {
-    val sampleAuthors = listOf(
-        Author("1", "张三", "https://example.com/zhang3.png", "《江城》等"),
-        Author("2", "李四", "https://example.com/li4.png", "《无名之辈》等")
-    )
-    AuthorListScreen(sampleAuthors)
-}
+
 
