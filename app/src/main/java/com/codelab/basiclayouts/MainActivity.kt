@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.codelab.basiclayouts.app.StoryApp
+import com.codelab.basiclayouts.ui.screens.reader.ReaderFavouriteScreen
 import com.codelab.basiclayouts.ui.theme.DarkTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +23,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    StoryApp()
+//                    StoryApp()
+                    ReaderFavouriteScreen()
                 }
             }
         }
