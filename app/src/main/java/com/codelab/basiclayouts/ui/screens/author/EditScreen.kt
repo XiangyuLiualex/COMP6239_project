@@ -22,8 +22,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
-import com.codelab.basiclayouts.ui.theme.AppTheme
+
+
 
 
 
@@ -42,36 +42,67 @@ fun ChapterTitleSection(chapterTitle: String) {
 }
 
 @Composable
-fun ContentSection(contentList: List<ContentAU>) {
-    AppTheme {
-        Box(modifier = Modifier
-            .padding(8.dp)
-            .verticalScroll(rememberScrollState())) {
-            Column {
-                contentList.forEach { content ->
-                    Text(text = content.contentData, style = MaterialTheme.typography.bodyLarge)
-                    Spacer(modifier = Modifier.height(8.dp))
+fun ContentSection(contentList: List<ContentAU>, viewModel: AuthorEditViewModel) {
+    Surface(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
+            .fillMaxHeight(0.25f), // 占屏幕高度的1/2
+        shape = MaterialTheme.shapes.medium, // 圆角
+        color = MaterialTheme.colorScheme.surfaceVariant // 背景颜色与主题背景不同
+    ) {
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp)
+        ) {
+            contentList.forEach { content ->
+                var text by remember { mutableStateOf(content.contentData) }
+                TextField(
+                    value = text,
+                    onValueChange = {
+                        text = it
+                        viewModel.updateContent(content.contentId, text)
+                    },
+                    label = { Text("Edit Content") }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+    }
+}
+
+
+
+@Composable
+fun OptionsSection(optionList: List<OptionAU>, viewModel: AuthorEditViewModel) {
+    Surface(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
+            .fillMaxHeight(0.25f), // 占屏幕高度的1/4
+        shape = MaterialTheme.shapes.medium, // 圆角
+        color = MaterialTheme.colorScheme.surfaceVariant // 背景颜色与主题背景不同
+    ) {
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp)
+        ) {
+            optionList.forEach { option ->
+                Button(
+                    onClick = {
+                        // 添加点击逻辑，例如导航或触发事件
+                    },
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                ) {
+                    Text(option.optionName, style = MaterialTheme.typography.bodyLarge)
                 }
             }
         }
     }
 }
 
-@Composable
-fun OptionsSection(optionList: List<OptionAU>) {
-    AppTheme {
-        Box(modifier = Modifier
-            .padding(8.dp)
-            .verticalScroll(rememberScrollState())) {
-            Column {
-                optionList.forEach { option ->
-                    Text(text = option.optionName, style = MaterialTheme.typography.bodyMedium)
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            }
-        }
-    }
-}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,18 +110,13 @@ fun OptionsSection(optionList: List<OptionAU>) {
 fun AuthorEditScreen(viewModel: AuthorEditViewModel) {
     AppTheme {
         val state by viewModel.authorEditUiState.collectAsState()
-        var chapterTitle by remember { mutableStateOf<String>(state.thisChapter.chapterTitle) }
+        var chapterTitle by remember { mutableStateOf(state.thisChapter.chapterTitle) }
 
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-//                Text(
-//                    text = "Edit Chapter Title",
-//                    style = MaterialTheme.typography.titleMedium,
-//                    modifier = Modifier.padding(bottom = 8.dp)
-//                )
                 TextField(
                     value = chapterTitle,
                     onValueChange = { chapterTitle = it },
@@ -103,11 +129,10 @@ fun AuthorEditScreen(viewModel: AuthorEditViewModel) {
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                ContentSection(contentList = state.thisChapter.contentList)
+                ContentSection(contentList = state.thisChapter.contentList, viewModel)
                 Spacer(modifier = Modifier.height(16.dp))
-                OptionsSection(optionList = state.thisChapter.optionList)
+                OptionsSection(optionList = state.thisChapter.optionList, viewModel)
                 Spacer(modifier = Modifier.height(16.dp))
-
                 Button(
                     onClick = { viewModel.printAuthorEditUiState() },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -119,6 +144,8 @@ fun AuthorEditScreen(viewModel: AuthorEditViewModel) {
         }
     }
 }
+
+
 
 
 @Composable

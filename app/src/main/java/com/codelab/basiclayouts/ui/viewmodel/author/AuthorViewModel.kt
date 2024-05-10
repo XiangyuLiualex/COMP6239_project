@@ -36,8 +36,15 @@ class AuthorEditViewModel : ViewModel() {
         _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = updatedChapter)
     }
 
-    fun printAuthorEditUiState() {
+    fun updateContent(contentId: Int, newContentData: String) {
+        val updatedContents = _authorEditUiState.value.thisChapter.contentList.map { content ->
+            if (content.contentId == contentId) content.copy(contentData = newContentData) else content
+        }
+        val updatedChapter = _authorEditUiState.value.thisChapter.copy(contentList = updatedContents)
+        _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = updatedChapter)
+    }
 
+    fun printAuthorEditUiState() {
         println(_authorEditUiState.value)
     }
 }
