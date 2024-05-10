@@ -173,6 +173,29 @@ fun ContentSection(contentList: List<ContentAU>, viewModel: AuthorEditViewModel)
 //}
 
 @Composable
+fun OptionItem(option: OptionAU, onRemoveOption: (Int) -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = 8.dp)
+    ) {
+        Button(
+            onClick = { /* Add your logic here */ },
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(option.optionName, style = MaterialTheme.typography.bodyLarge)
+        }
+        IconButton(
+            onClick = { onRemoveOption(option.optionId) }
+        ) {
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = "Remove Option"
+            )
+        }
+    }
+}
+
+@Composable
 fun OptionsSection(optionList: List<OptionAU>, viewModel: AuthorEditViewModel) {
     Surface(
         modifier = Modifier
@@ -188,18 +211,17 @@ fun OptionsSection(optionList: List<OptionAU>, viewModel: AuthorEditViewModel) {
                 .padding(16.dp)
         ) {
             optionList.forEach { option ->
-                Button(
-                    onClick = {
-                        // 添加点击逻辑，例如导航或触发事件
-                    },
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
-                ) {
-                    Text(option.optionName, style = MaterialTheme.typography.bodyLarge)
+                OptionItem(option) { optionId ->
+                    viewModel.removeOption(optionId)
                 }
             }
         }
     }
 }
+
+
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChapterTitleSection(chapterTitle: String, onChapterTitleChange: (String) -> Unit) {

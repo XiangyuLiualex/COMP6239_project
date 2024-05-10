@@ -83,6 +83,12 @@ class AuthorEditViewModel : ViewModel() {
         _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = updatedChapter)
     }
 
+    fun removeOption(optionId: Int) {
+        val updatedOptions = _authorEditUiState.value.thisChapter.optionList.filter { it.optionId != optionId }
+        val updatedChapter = _authorEditUiState.value.thisChapter.copy(optionList = updatedOptions)
+        _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = updatedChapter)
+    }
+
     fun printAuthorEditUiState() {
         println(_authorEditUiState.value)
     }
