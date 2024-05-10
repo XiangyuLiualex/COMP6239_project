@@ -26,6 +26,16 @@ class AuthorEditViewModel : ViewModel() {
                 isEnd = 0
             )
         )
+//        AuthorEditUiState2(
+//            thisChapter = ChapterAU(
+//                chapterId = 1,
+//                chapterTitle = "",
+//                storyId = 101,
+//                contentList = listOf(),
+//                optionList = listOf(),
+//                isEnd = 0
+//            )
+//        )
     )
 
     // Expose an immutable StateFlow
@@ -40,6 +50,25 @@ class AuthorEditViewModel : ViewModel() {
         val updatedContents = _authorEditUiState.value.thisChapter.contentList.map { content ->
             if (content.contentId == contentId) content.copy(contentData = newContentData) else content
         }
+        val updatedChapter = _authorEditUiState.value.thisChapter.copy(contentList = updatedContents)
+        _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = updatedChapter)
+    }
+
+    fun addNewContent() {
+        val currentContents = _authorEditUiState.value.thisChapter.contentList
+        val newContentId = currentContents.maxByOrNull { it.contentId }?.contentId?.plus(1) ?: 1
+        val newContent = ContentAU(
+            contentId = newContentId,
+            chapterId = _authorEditUiState.value.thisChapter.chapterId,
+            contentType = 0,
+            contentData = ""
+        )
+        val updatedContents = currentContents.toMutableList().apply { add(newContent) }
+        val updatedChapter = _authorEditUiState.value.thisChapter.copy(contentList = updatedContents)
+        _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = updatedChapter)
+    }
+    fun removeContent(contentId: Int) {
+        val updatedContents = _authorEditUiState.value.thisChapter.contentList.filter { it.contentId != contentId }
         val updatedChapter = _authorEditUiState.value.thisChapter.copy(contentList = updatedContents)
         _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = updatedChapter)
     }
