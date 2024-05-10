@@ -7,6 +7,7 @@ import com.codelab.basiclayouts.ui.uistate.author.AuthorEditUiState2
 import com.codelab.basiclayouts.ui.uistate.author.ChapterAU
 import com.codelab.basiclayouts.ui.uistate.author.ContentAU
 import com.codelab.basiclayouts.ui.uistate.author.OptionAU
+import kotlin.random.Random
 
 class AuthorEditViewModel : ViewModel() {
     private val _authorEditUiState = MutableStateFlow(
@@ -56,7 +57,7 @@ class AuthorEditViewModel : ViewModel() {
 
     fun addNewContent() {
         val currentContents = _authorEditUiState.value.thisChapter.contentList
-        val newContentId = currentContents.maxByOrNull { it.contentId }?.contentId?.plus(1) ?: 1
+        val newContentId = generateRandomContentId(currentContents)
         val newContent = ContentAU(
             contentId = newContentId,
             chapterId = _authorEditUiState.value.thisChapter.chapterId,
@@ -66,6 +67,15 @@ class AuthorEditViewModel : ViewModel() {
         val updatedContents = currentContents.toMutableList().apply { add(newContent) }
         val updatedChapter = _authorEditUiState.value.thisChapter.copy(contentList = updatedContents)
         _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = updatedChapter)
+    }
+
+    private fun generateRandomContentId(currentContents: List<ContentAU>): Int {
+        var newContentId = Random.nextInt()
+        // 确保生成的 contentId 在当前内容列表中唯一
+        while (currentContents.any { it.contentId == newContentId }) {
+            newContentId = Random.nextInt()
+        }
+        return newContentId
     }
     fun removeContent(contentId: Int) {
         val updatedContents = _authorEditUiState.value.thisChapter.contentList.filter { it.contentId != contentId }

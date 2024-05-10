@@ -35,8 +35,12 @@ fun ChapterTitleSection(chapterTitle: String) {
     }
 }
 
+
 @Composable
-fun ContentSection(contentList: List<ContentAU>, viewModel: AuthorEditViewModel) {
+fun ContentSection(viewModel: AuthorEditViewModel) {
+    val authorEditUiState by viewModel.authorEditUiState.collectAsState()
+    val contentList = authorEditUiState.thisChapter.contentList
+
     Surface(
         modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -95,6 +99,77 @@ fun ContentSection(contentList: List<ContentAU>, viewModel: AuthorEditViewModel)
 }
 
 
+//@Composable
+//fun ContentItem(content: ContentAU, viewModel: AuthorEditViewModel) {
+//    var text by remember { mutableStateOf(content.contentData) }
+//    val keyboardController = LocalSoftwareKeyboardController.current
+//    Row(verticalAlignment = Alignment.CenterVertically) {
+//        TextField(
+//            value = text,
+//            onValueChange = {
+//                text = it
+//                viewModel.updateContent(content.contentId, it)
+//            },
+//            label = { Text("Edit Content") },
+//            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+//            keyboardActions = KeyboardActions(
+//                onDone = {
+//                    keyboardController?.hide()
+//                }
+//            )
+//        )
+//        Spacer(modifier = Modifier.width(8.dp))
+//        IconButton(
+//            onClick = {
+//                viewModel.removeContent(content.contentId)
+//            }
+//        ) {
+//            Icon(
+//                imageVector = Icons.Default.Close,
+//                contentDescription = "Remove Content"
+//            )
+//        }
+//    }
+//}
+//
+//@Composable
+//fun ContentSection(contentList: List<ContentAU>, viewModel: AuthorEditViewModel) {
+//    Surface(
+//        modifier = Modifier
+//            .padding(horizontal = 16.dp)
+//            .fillMaxWidth()
+//            .fillMaxHeight(0.5f),
+//        shape = MaterialTheme.shapes.medium,
+//        color = MaterialTheme.colorScheme.surfaceVariant
+//    ) {
+//        Column(
+//            modifier = Modifier
+//                .verticalScroll(rememberScrollState())
+//                .padding(16.dp)
+//        ) {
+//            contentList.forEach { content ->
+//                ContentItem(content, viewModel)
+//                Spacer(modifier = Modifier.height(8.dp))
+//            }
+//            Button(
+//                onClick = {
+//                    viewModel.addNewContent()
+//                },
+//                modifier = Modifier.align(Alignment.CenterHorizontally)
+//            ) {
+//                Text("Add Content")
+//            }
+//        }
+//    }
+//}
+
+
+
+//@Composable
+//fun KeyedContentSection(contentList: List<ContentAU>, viewModel: AuthorEditViewModel) {
+//    ContentSection(contentList = contentList, viewModel = viewModel)
+//}
+
 @Composable
 fun OptionsSection(optionList: List<OptionAU>, viewModel: AuthorEditViewModel) {
     Surface(
@@ -128,7 +203,7 @@ fun OptionsSection(optionList: List<OptionAU>, viewModel: AuthorEditViewModel) {
 @Composable
 fun AuthorEditScreen(viewModel: AuthorEditViewModel) {
     AppTheme {
-        val state by viewModel.authorEditUiState.collectAsState()
+        val state by  viewModel.authorEditUiState.collectAsState()
         var chapterTitle by remember { mutableStateOf(state.thisChapter.chapterTitle) }
         val keyboardController = LocalSoftwareKeyboardController.current
         Surface(
@@ -138,22 +213,19 @@ fun AuthorEditScreen(viewModel: AuthorEditViewModel) {
             Column(modifier = Modifier.padding(16.dp)) {
                 TextField(
                     value = chapterTitle,
-                    onValueChange = { chapterTitle = it
-                        viewModel.updateChapterTitle(chapterTitle)
-                                    },
+                    onValueChange = { chapterTitle = it },
                     label = { Text("Chapter Title") },
                     colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = {
-//                        viewModel.updateChapterTitle(chapterTitle)
                         keyboardController?.hide()
                     }),
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                ContentSection(contentList = state.thisChapter.contentList, viewModel)
+                ContentSection( viewModel = viewModel)
                 Spacer(modifier = Modifier.height(16.dp))
-                OptionsSection(optionList = state.thisChapter.optionList, viewModel)
+                OptionsSection(optionList = state.thisChapter.optionList, viewModel = viewModel)
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = { viewModel.printAuthorEditUiState() },
@@ -166,6 +238,7 @@ fun AuthorEditScreen(viewModel: AuthorEditViewModel) {
         }
     }
 }
+
 
 @Composable
 fun AuthorEditMainScreen(viewModel: AuthorEditViewModel = viewModel()) {
