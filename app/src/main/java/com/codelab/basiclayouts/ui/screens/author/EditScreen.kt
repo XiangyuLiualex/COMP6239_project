@@ -37,17 +37,14 @@ fun ChapterTitleSection(chapterTitle: String) {
 
 
 @Composable
-fun ContentSection(viewModel: AuthorEditViewModel) {
-    val authorEditUiState by viewModel.authorEditUiState.collectAsState()
-    val contentList = authorEditUiState.thisChapter.contentList
-
+fun ContentSection(contentList: List<ContentAU>, viewModel: AuthorEditViewModel) {
     Surface(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
-            .fillMaxHeight(0.5f), // 占屏幕高度的1/2
-        shape = MaterialTheme.shapes.medium, // 圆角
-        color = MaterialTheme.colorScheme.surfaceVariant // 背景颜色与主题背景不同
+            .fillMaxHeight(0.5f),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceVariant
     ) {
         Column(
             modifier = Modifier
@@ -55,7 +52,7 @@ fun ContentSection(viewModel: AuthorEditViewModel) {
                 .padding(16.dp)
         ) {
             contentList.forEach { content ->
-                var text by remember { mutableStateOf(content.contentData) }
+                var text by remember(content.contentData) { mutableStateOf(content.contentData) }
                 val keyboardController = LocalSoftwareKeyboardController.current
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     TextField(
@@ -70,7 +67,11 @@ fun ContentSection(viewModel: AuthorEditViewModel) {
                             onDone = {
                                 keyboardController?.hide()
                             }
-                        )
+                        ),
+                        // 设置 singleLine 为 false，允许多行输入
+                        singleLine = false,
+                        // 使用 Modifier.weight(1f) 使文本框占据剩余的可用空间
+                        modifier = Modifier.weight(1f)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     IconButton(
@@ -97,6 +98,7 @@ fun ContentSection(viewModel: AuthorEditViewModel) {
         }
     }
 }
+
 
 
 //@Composable
@@ -198,32 +200,49 @@ fun OptionsSection(optionList: List<OptionAU>, viewModel: AuthorEditViewModel) {
         }
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ChapterTitleSection(chapterTitle: String, onChapterTitleChange: (String) -> Unit) {
+    AppTheme {
+        val keyboardController = LocalSoftwareKeyboardController.current
+        Box(contentAlignment = Alignment.Center, modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)) {
+            TextField(
+                value = chapterTitle,
+                onValueChange = { onChapterTitleChange(it) },
+                label = { Text("Chapter Title") },
+                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = {
+                    // Hide the keyboard when "Done" action is triggered
+                    keyboardController?.hide()
+                }),
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
 @Composable
 fun AuthorEditScreen(viewModel: AuthorEditViewModel) {
     AppTheme {
-        val state by  viewModel.authorEditUiState.collectAsState()
+        val state by viewModel.authorEditUiState.collectAsState()
         var chapterTitle by remember { mutableStateOf(state.thisChapter.chapterTitle) }
-        val keyboardController = LocalSoftwareKeyboardController.current
+
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                TextField(
-                    value = chapterTitle,
-                    onValueChange = { chapterTitle = it },
-                    label = { Text("Chapter Title") },
-                    colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(onDone = {
-                        keyboardController?.hide()
-                    }),
-                    modifier = Modifier.fillMaxWidth()
-                )
+                // Use the extracted ChapterTitleSection composable
+                ChapterTitleSection(chapterTitle) { newChapterTitle ->
+                    chapterTitle = newChapterTitle
+                    viewModel.updateChapterTitle(chapterTitle)
+                }
+
                 Spacer(modifier = Modifier.height(16.dp))
-                ContentSection( viewModel = viewModel)
+                ContentSection(contentList = state.thisChapter.contentList, viewModel = viewModel)
                 Spacer(modifier = Modifier.height(16.dp))
                 OptionsSection(optionList = state.thisChapter.optionList, viewModel = viewModel)
                 Spacer(modifier = Modifier.height(16.dp))
