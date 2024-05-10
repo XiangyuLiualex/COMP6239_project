@@ -138,12 +138,14 @@ fun AuthorEditScreen(viewModel: AuthorEditViewModel) {
             Column(modifier = Modifier.padding(16.dp)) {
                 TextField(
                     value = chapterTitle,
-                    onValueChange = { chapterTitle = it },
+                    onValueChange = { chapterTitle = it
+                        viewModel.updateChapterTitle(chapterTitle)
+                                    },
                     label = { Text("Chapter Title") },
                     colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = {
-                        viewModel.updateChapterTitle(chapterTitle)
+//                        viewModel.updateChapterTitle(chapterTitle)
                         keyboardController?.hide()
                     }),
                     modifier = Modifier.fillMaxWidth()
