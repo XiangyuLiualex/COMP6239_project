@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.codelab.basiclayouts.app.StoryApp
 import com.codelab.basiclayouts.ui.screen.AuthorEditMainScreen
+import com.codelab.basiclayouts.ui.screen.StoryEditScreen
+import com.codelab.basiclayouts.ui.screens.author.ParentScreen
 import com.codelab.basiclayouts.ui.screens.reader.ReaderFavouriteScreen
 import com.codelab.basiclayouts.ui.theme.DarkTheme
 
@@ -26,8 +28,11 @@ class MainActivity : ComponentActivity() {
                 ) {
 //                    StoryApp()
 //                    ReaderFavouriteScreen()
-                    AuthorEditMainScreen()
+//                    AuthorEditMainScreen()
+//                    StoryEditScreen()
+                    ParentScreen()
                 }
+
             }
         }
     }

@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.window.Dialog
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.icons.filled.ArrowBack
 
 
 @Composable
@@ -294,7 +295,24 @@ fun AuthorEditScreen(viewModel: AuthorEditViewModel) {
             color = MaterialTheme.colorScheme.background
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                // Use the extracted ChapterTitleSection composable
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(onClick = { viewModel.setActiveScreen("StoryEditScreen") }) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Edit Chapter",
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 ChapterTitleSection(chapterTitle) { newChapterTitle ->
                     chapterTitle = newChapterTitle
                     viewModel.updateChapterTitle(chapterTitle)
@@ -306,7 +324,10 @@ fun AuthorEditScreen(viewModel: AuthorEditViewModel) {
                 OptionsSection(optionList = state.thisChapter.optionList, viewModel = viewModel)
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
-                    onClick = { viewModel.printAuthorEditUiState() },
+                    onClick = {
+                        viewModel.updateChapterInList()
+                        viewModel.printAuthorEditUiState() // 可以去除或保留，根据是否需要打印状态
+                    },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     shape = MaterialTheme.shapes.medium
                 ) {
@@ -318,15 +339,16 @@ fun AuthorEditScreen(viewModel: AuthorEditViewModel) {
 }
 
 
+
 @Composable
-fun AuthorEditMainScreen(viewModel: AuthorEditViewModel = viewModel()) {
+fun AuthorEditMainScreen(viewModel: AuthorEditViewModel) {
     DarkTheme {
         AuthorEditScreen(viewModel)
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun AuthorEditMainScreenPreview(){
-    AuthorEditMainScreen()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun AuthorEditMainScreenPreview(){
+//    AuthorEditMainScreen()
+//}
