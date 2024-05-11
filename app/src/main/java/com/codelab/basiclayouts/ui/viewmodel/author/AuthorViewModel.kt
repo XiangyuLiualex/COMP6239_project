@@ -175,7 +175,6 @@ class AuthorEditViewModel : ViewModel() {
     // 选择并编辑特定故事
     fun selectStory(story: StoryAU) {
         _authorEditUiState.value = _authorEditUiState.value.copy(thisStory = story)
-        setActiveScreen("StoryEditScreen")
     }
     fun updateChapterIsEnd(isEnd: Int) {
         // 获取当前章节的副本，并更新其 isEnd 属性
@@ -186,21 +185,23 @@ class AuthorEditViewModel : ViewModel() {
             thisChapter = updatedChapter
         )
     }
-    fun updatePublicationStatus(isPublished: Boolean) {
-        val updatedIsUsed = if (isPublished) 1 else 2
-        val currentStory = _authorEditUiState.value.thisStory
-        val updatedStory = currentStory.copy(isUsed = updatedIsUsed)
 
-        // Update the story in the story list
-        val updatedStoryList = _authorEditUiState.value.storyList.map { story ->
-            if (story.storyId == currentStory.storyId) updatedStory else story
-        }
 
-        // Update the state
+    fun publishStory() {
+        // 将当前故事的 isUsed 设置为 1（发布状态）
         _authorEditUiState.value = _authorEditUiState.value.copy(
-            thisStory = updatedStory,
-            storyList = updatedStoryList
+            thisStory = _authorEditUiState.value.thisStory.copy(isUsed = 1)
         )
+        updateStoryInList()
     }
+
+    fun unpublishStory() {
+        // 将当前故事的 isUsed 设置为 2（草稿状态）
+        _authorEditUiState.value = _authorEditUiState.value.copy(
+            thisStory = _authorEditUiState.value.thisStory.copy(isUsed = 2)
+        )
+        updateStoryInList()
+    }
+
 
 }

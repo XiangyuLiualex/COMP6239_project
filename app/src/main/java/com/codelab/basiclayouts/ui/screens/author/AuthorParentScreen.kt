@@ -14,6 +14,7 @@ fun ParentScreen(viewModel: AuthorEditViewModel = viewModel()) {
 
     when (activeScreen) {
         "AuthorMainScreen" ->AuthorMainScreen(viewModel)
+        "StoryStatisticsScreen" -> StoryStatisticsScreen(viewModel)
         "NewStoryScreen" -> NewStoryScreen(viewModel)
         "StoryEditScreen" -> StoryEditScreen(viewModel)
         "AuthorEditMainScreen" -> AuthorEditMainScreen(viewModel)

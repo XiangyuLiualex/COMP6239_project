@@ -51,7 +51,9 @@ fun AuthorMainScreen(viewModel: AuthorEditViewModel) {
                     Column {
                         draftStories.forEach { story ->
                             Button(
-                                onClick = { viewModel.selectStory(story) },
+                                onClick = { viewModel.selectStory(story)
+                                    viewModel.setActiveScreen("StoryEditScreen")
+                                          },
                                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
                             ) {
                                 Text(text = story.storyName)
@@ -74,7 +76,8 @@ fun AuthorMainScreen(viewModel: AuthorEditViewModel) {
                     Column {
                         publishedStories.forEach { story ->
                             Button(
-                                onClick = { /* 处理选择已发布书籍的逻辑 */ },
+                                onClick = { viewModel.selectStory(story)
+                                    viewModel.setActiveScreen("StoryStatisticsScreen") },
                                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
                             ) {
                                 Text(text = story.storyName)

@@ -30,7 +30,7 @@ fun StoryStatisticsScreen(viewModel: AuthorEditViewModel = viewModel()) {
                 CenterAlignedTopAppBar(
                     title = { Text("Story Statistics", style = MaterialTheme.typography.headlineMedium) },
                     navigationIcon = {
-                        IconButton(onClick = { /* 实现返回逻辑 */ }) {
+                        IconButton(onClick = { viewModel.setActiveScreen("AuthorMainScreen") }) {
                             Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                         }
                     }
