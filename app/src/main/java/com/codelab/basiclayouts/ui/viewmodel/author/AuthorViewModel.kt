@@ -7,36 +7,24 @@ import com.codelab.basiclayouts.ui.uistate.author.AuthorEditUiState2
 import com.codelab.basiclayouts.ui.uistate.author.ChapterAU
 import com.codelab.basiclayouts.ui.uistate.author.ContentAU
 import com.codelab.basiclayouts.ui.uistate.author.OptionAU
+import com.codelab.basiclayouts.ui.uistate.author.StoryAU
 import kotlin.random.Random
 
 class AuthorEditViewModel : ViewModel() {
+    private val content1 = ContentAU(contentId = 1, chapterId = 101, contentType = 1, contentData = "Welcome to the story.")
+    private val content2 = ContentAU(contentId = 2, chapterId = 101, contentType = 2, contentData = "It was a dark and stormy night.")
+    private val option1 = OptionAU(optionId = 1, optionName = "Go to the castle", chapterId = 101, nextChapterId = 102)
+    private val option2 = OptionAU(optionId = 2, optionName = "Return home", chapterId = 101, nextChapterId = 103)
+    private val chapter1 = ChapterAU(chapterId = 101, chapterTitle = "Chapter One", storyId = 201, contentList = listOf(content1, content2), optionList = listOf(option1, option2), isEnd = 0)
+    private val chapter2 = ChapterAU(chapterId = 102, chapterTitle = "Chapter Two", storyId = 201, contentList = listOf(content1), optionList = listOf(), isEnd = 1)
+    private val chapter3 = ChapterAU(chapterId = 103, chapterTitle = "Chapter Three", storyId = 201, contentList = listOf(content2), optionList = listOf(option2), isEnd = 1)
+    private val story1 = StoryAU(storyId = 201, storyName = "An Adventure", storyDescription = "A thrilling quest through uncharted territories.", storyCategory = "Adventure", chapterList = listOf(chapter1, chapter2,chapter3))
+
     private val _authorEditUiState = MutableStateFlow(
         AuthorEditUiState2(
-            thisChapter = ChapterAU(
-                chapterId = 1,
-                chapterTitle = "Chapter 1: The Adventure Begins",
-                storyId = 101,
-                contentList = listOf(
-                    ContentAU(1, 1, 0, "Once upon a time..."),
-                    ContentAU(2, 1, 1, "Our hero encounters a mysterious stranger.")
-                ),
-                optionList = listOf(
-                    OptionAU(1, "Choose to follow the stranger", 1, 2),
-                    OptionAU(2, "Ignore the stranger and continue", 1, 3)
-                ),
-                isEnd = 0
-            )
+            thisChapter = chapter1, // Set the initial chapter to chapter1
+            thisStory = story1      // Set the initial story to story1
         )
-//        AuthorEditUiState2(
-//            thisChapter = ChapterAU(
-//                chapterId = 1,
-//                chapterTitle = "",
-//                storyId = 101,
-//                contentList = listOf(),
-//                optionList = listOf(),
-//                isEnd = 0
-//            )
-//        )
     )
 
     // Expose an immutable StateFlow
@@ -88,6 +76,27 @@ class AuthorEditViewModel : ViewModel() {
         val updatedChapter = _authorEditUiState.value.thisChapter.copy(optionList = updatedOptions)
         _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = updatedChapter)
     }
+
+    fun addNewOption(optionName: String, nextChapterId: Int) {
+        val newOption = OptionAU(
+            optionId = generateRandomOptionId(),
+            optionName = optionName,
+            chapterId = _authorEditUiState.value.thisChapter.chapterId,
+            nextChapterId = nextChapterId
+        )
+        val updatedOptions = _authorEditUiState.value.thisChapter.optionList.toMutableList().apply { add(newOption) }
+        val updatedChapter = _authorEditUiState.value.thisChapter.copy(optionList = updatedOptions)
+        _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = updatedChapter)
+    }
+
+    private fun generateRandomOptionId(): Int {
+        var newOptionId = Random.nextInt()
+        while (_authorEditUiState.value.thisChapter.optionList.any { it.optionId == newOptionId }) {
+            newOptionId = Random.nextInt()
+        }
+        return newOptionId
+    }
+
 
     fun printAuthorEditUiState() {
         println(_authorEditUiState.value)
