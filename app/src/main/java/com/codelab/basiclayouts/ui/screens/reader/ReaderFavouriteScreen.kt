@@ -65,7 +65,7 @@ fun AuthorCard(author: FavoriteAuthor,viewModel: ReaderFavouriteScreenViewModel)
                 Text(author.selfDescription, style = MaterialTheme.typography.body2)
             }
             IconButton(
-                onClick = { viewModel.tFavoriteAuthorDel(1,author.authorId) }
+                onClick = { viewModel.tFavoriteAuthorDel(1,author.userId) }//替换为全局读者ID
             ) {
                 Icon(
                     imageVector = Icons.Filled.Favorite,

@@ -1,0 +1,3 @@
+<resources>
+    <string name="api_base_url">http://10.14.153.29:8443/</string>
+</resources>

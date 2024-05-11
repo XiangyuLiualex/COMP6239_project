@@ -12,10 +12,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.codelab.basiclayouts.app.StoryApp
 import com.codelab.basiclayouts.ui.screens.reader.ReaderFavouriteScreen
 import com.codelab.basiclayouts.ui.theme.DarkTheme
+import com.codelab.basiclayouts.data.RetrofitInstance
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 初始化 RetrofitInstance
+        RetrofitInstance.initService(this)
         setContent {
             DarkTheme {
                 // A surface container using the 'background' color from the theme
