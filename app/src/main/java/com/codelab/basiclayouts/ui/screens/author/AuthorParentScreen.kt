@@ -13,6 +13,8 @@ fun ParentScreen(viewModel: AuthorEditViewModel = viewModel()) {
     val activeScreen by viewModel.activeScreen.collectAsState()
 
     when (activeScreen) {
+        "AuthorMainScreen" ->AuthorMainScreen(viewModel)
+        "NewStoryScreen" -> NewStoryScreen(viewModel)
         "StoryEditScreen" -> StoryEditScreen(viewModel)
         "AuthorEditMainScreen" -> AuthorEditMainScreen(viewModel)
     }

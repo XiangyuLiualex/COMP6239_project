@@ -7,6 +7,7 @@ import com.codelab.basiclayouts.ui.uistate.author.*
 import kotlin.random.Random
 
 class AuthorEditViewModel : ViewModel() {
+    // 初始化一些示例数据
     private val content1 = ContentAU(contentId = 1, chapterId = 101, contentType = 1, contentData = "Welcome to the story.")
     private val content2 = ContentAU(contentId = 2, chapterId = 101, contentType = 2, contentData = "It was a dark and stormy night.")
     private val option1 = OptionAU(optionId = 1, optionName = "Go to the castle", chapterId = 101, nextChapterId = 102)
@@ -14,26 +15,33 @@ class AuthorEditViewModel : ViewModel() {
     private val chapter1 = ChapterAU(chapterId = 101, chapterTitle = "Chapter One", storyId = 201, contentList = listOf(content1, content2), optionList = listOf(option1, option2), isEnd = 0)
     private val chapter2 = ChapterAU(chapterId = 102, chapterTitle = "Chapter Two", storyId = 201, contentList = listOf(content1), optionList = listOf(), isEnd = 0)
     private val chapter3 = ChapterAU(chapterId = 103, chapterTitle = "Chapter Three", storyId = 201, contentList = listOf(content2), optionList = listOf(option2), isEnd = 0)
-    private val story1 = StoryAU(storyId = 201, storyName = "An Adventure", storyDescription = "A thrilling quest through uncharted territories.", storyCategory = "Adventure", chapterList = listOf(chapter1, chapter2, chapter3))
+    private val story1 = StoryAU(storyId = 201, storyName = "An Adventure", storyDescription = "A thrilling quest through uncharted territories.", storyCategory = 2, chapterList = listOf(chapter1, chapter2, chapter3), isUsed = 2)
+    private val story2 = StoryAU(storyId = 202, storyName = "Empty Story", storyDescription = "This is an empty story", storyCategory = 2, chapterList = listOf(), isUsed = 2)
+    private val story3 = StoryAU(storyId = 203, storyName = "Good Story", storyDescription = "This is a good story", storyCategory = 3, chapterList = listOf(), isUsed = 1)
+    private val category1 = CategoryAU(categoryId = 1, categoryName = "Happy")
+    private val category2 = CategoryAU(categoryId = 2, categoryName = "Scare")
 
     private val _authorEditUiState = MutableStateFlow(
         AuthorEditUiState2(
             thisChapter = chapter1,
-            thisStory = story1
+            thisStory = story1,
+            storyList = listOf(story1, story2, story3),
+            categoryList = listOf(category1, category2)
         )
     )
 
     // Expose an immutable StateFlow
     val authorEditUiState = _authorEditUiState.asStateFlow()
-    // 添加状态来跟踪当前活跃的屏幕
-    private val _activeScreen = MutableStateFlow("StoryEditScreen") // 默认为 StoryEditScreen
+
+    // 管理当前显示的屏幕
+    private val _activeScreen = MutableStateFlow("AuthorMainScreen")
     val activeScreen = _activeScreen.asStateFlow()
 
     fun setActiveScreen(screenName: String) {
         _activeScreen.value = screenName
     }
 
-    // 新增章节
+    // 添加章节
     fun addChapter(newChapter: ChapterAU) {
         val currentChapters = _authorEditUiState.value.thisStory.chapterList.toMutableList()
         currentChapters.add(newChapter)
@@ -42,13 +50,25 @@ class AuthorEditViewModel : ViewModel() {
         _authorEditUiState.value = _authorEditUiState.value.copy(thisStory = updatedStory)
     }
 
-    // 更新章节标题
+    // 新增故事
+    fun addStory(newStory: StoryAU) {
+        val currentStories = _authorEditUiState.value.storyList.toMutableList()
+        currentStories.add(newStory)
+
+        _authorEditUiState.value = _authorEditUiState.value.copy(storyList = currentStories)
+    }
+
+    // 设置当前故事
+    fun setThisStory(story: StoryAU) {
+        _authorEditUiState.value = _authorEditUiState.value.copy(thisStory = story)
+    }
+
+    // 更新当前章节的内容和标题
     fun updateChapterTitle(newTitle: String) {
         val updatedChapter = _authorEditUiState.value.thisChapter.copy(chapterTitle = newTitle)
         _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = updatedChapter)
     }
 
-    // 更新内容
     fun updateContent(contentId: Int, newContentData: String) {
         val updatedContents = _authorEditUiState.value.thisChapter.contentList.map { content ->
             if (content.contentId == contentId) content.copy(contentData = newContentData) else content
@@ -57,7 +77,6 @@ class AuthorEditViewModel : ViewModel() {
         _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = updatedChapter)
     }
 
-    // 添加新的内容
     fun addNewContent() {
         val currentContents = _authorEditUiState.value.thisChapter.contentList
         val newContentId = generateRandomContentId(currentContents)
@@ -72,7 +91,7 @@ class AuthorEditViewModel : ViewModel() {
         _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = updatedChapter)
     }
 
-    // 删除指定内容
+    // 删除内容
     fun removeContent(contentId: Int) {
         val updatedContents = _authorEditUiState.value.thisChapter.contentList.filter { it.contentId != contentId }
         val updatedChapter = _authorEditUiState.value.thisChapter.copy(contentList = updatedContents)
@@ -108,7 +127,7 @@ class AuthorEditViewModel : ViewModel() {
         return newOptionId
     }
 
-    // 打印当前的 UI 状态
+    // 打印当前 UI 状态
     fun printAuthorEditUiState() {
         println(_authorEditUiState.value)
     }
@@ -121,10 +140,13 @@ class AuthorEditViewModel : ViewModel() {
         }
         return newContentId
     }
+
+    // 设置当前章节
     fun setCurrentChapter(chapter: ChapterAU) {
         _authorEditUiState.value = _authorEditUiState.value.copy(thisChapter = chapter)
     }
 
+    // 更新章节列表中的章节
     fun updateChapterInList() {
         val updatedChapters = _authorEditUiState.value.thisStory.chapterList.map { chapter ->
             if (chapter.chapterId == _authorEditUiState.value.thisChapter.chapterId) {
@@ -136,4 +158,49 @@ class AuthorEditViewModel : ViewModel() {
         val updatedStory = _authorEditUiState.value.thisStory.copy(chapterList = updatedChapters)
         _authorEditUiState.value = _authorEditUiState.value.copy(thisStory = updatedStory)
     }
+
+    fun updateStoryInList() {
+        val updatedStorys = _authorEditUiState.value.storyList.map { story ->
+            if (story.storyId == _authorEditUiState.value.thisStory.storyId) {
+                _authorEditUiState.value.thisStory
+            } else {
+                story
+            }
+        }
+        _authorEditUiState.value = _authorEditUiState.value.copy(storyList = updatedStorys)
+    }
+
+
+
+    // 选择并编辑特定故事
+    fun selectStory(story: StoryAU) {
+        _authorEditUiState.value = _authorEditUiState.value.copy(thisStory = story)
+        setActiveScreen("StoryEditScreen")
+    }
+    fun updateChapterIsEnd(isEnd: Int) {
+        // 获取当前章节的副本，并更新其 isEnd 属性
+        val updatedChapter = authorEditUiState.value.thisChapter.copy(isEnd = isEnd)
+
+        // 更新状态，将修改后的章节设置为当前章节
+        _authorEditUiState.value = authorEditUiState.value.copy(
+            thisChapter = updatedChapter
+        )
+    }
+    fun updatePublicationStatus(isPublished: Boolean) {
+        val updatedIsUsed = if (isPublished) 1 else 2
+        val currentStory = _authorEditUiState.value.thisStory
+        val updatedStory = currentStory.copy(isUsed = updatedIsUsed)
+
+        // Update the story in the story list
+        val updatedStoryList = _authorEditUiState.value.storyList.map { story ->
+            if (story.storyId == currentStory.storyId) updatedStory else story
+        }
+
+        // Update the state
+        _authorEditUiState.value = _authorEditUiState.value.copy(
+            thisStory = updatedStory,
+            storyList = updatedStoryList
+        )
+    }
+
 }

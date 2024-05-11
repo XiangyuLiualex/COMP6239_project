@@ -3,6 +3,8 @@ package com.codelab.basiclayouts.ui.screen
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,79 +20,97 @@ import kotlin.random.Random
 
 @Composable
 fun StoryEditScreen(viewModel: AuthorEditViewModel) {
-    AppTheme {
-        val uiState = viewModel.authorEditUiState.collectAsState().value
-        val showDialog = remember { mutableStateOf(false) }
+    val uiState = viewModel.authorEditUiState.collectAsState().value
+    var isPublished by remember { mutableStateOf(uiState.thisStory.isUsed == 1) }
 
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+            // Add back button and title
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                StoryHeader(uiState.thisStory.storyName)
+                IconButton(
+                    onClick = { viewModel.setActiveScreen("AuthorMainScreen") }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Go back"
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Edit Story",
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+            }
 
-                ChapterListBox(
-                    viewModel = viewModel,
-                    chapterList = viewModel.authorEditUiState.collectAsState().value.thisStory.chapterList,
-                    modifier = Modifier.weight(0.7f),
-                    onSelectChapter = { chapter ->
-                        viewModel.setActiveScreen("AuthorEditMainScreen")
-                        viewModel.setCurrentChapter(chapter)
+            Spacer(modifier = Modifier.height(8.dp))
+
+            StoryHeader(uiState.thisStory.storyName)
+
+            ChapterListBox(
+                viewModel = viewModel,
+                chapterList = uiState.thisStory.chapterList,
+                modifier = Modifier.weight(0.7f),
+                onSelectChapter = { chapter ->
+                    viewModel.setCurrentChapter(chapter)
+                    viewModel.setActiveScreen("AuthorEditMainScreen")
+                }
+            )
+
+            // Add chapter button
+            Button(
+                onClick = { /* showDialog logic */ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Text("Add New Chapter")
+            }
+
+            // Save button
+            Button(
+                onClick = {
+                    viewModel.updateStoryInList()
+                    viewModel.printAuthorEditUiState()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Text("Save")
+            }
+
+            // Publish Checkbox
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Checkbox(
+                    checked = isPublished,
+                    onCheckedChange = { checked ->
+                        isPublished = checked
+                        viewModel.updatePublicationStatus(isPublished)
                     }
                 )
-
-                Button(
-                    onClick = { showDialog.value = true },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                ) {
-                    Text("Add New Chapter")
-                }
-
-                Button(
-                    onClick = {viewModel.printAuthorEditUiState()},
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                ) {
-                    Text("Save")
-                }
-
-                Button(
-                    onClick = { /* TODO: Handle publish logic */ },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                ) {
-                    Text("Publish")
-                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Publish")
             }
-        }
-
-        if (showDialog.value) {
-            AddNewChapterDialog(
-                onDismiss = { showDialog.value = false },
-                onConfirm = { chapterTitle ->
-                    val newChapter = ChapterAU(
-                        chapterId = Random.nextInt(),
-                        chapterTitle = chapterTitle,
-                        storyId = uiState.thisStory.storyId,
-                        contentList = listOf(),
-                        optionList = listOf(),
-                        isEnd = 0
-                    )
-                    viewModel.addChapter(newChapter)
-                    showDialog.value = false
-                },
-                chapterList = uiState.thisStory.chapterList
-            )
         }
     }
 }
+
+
 
 
 @Composable
@@ -179,8 +199,9 @@ fun AddNewChapterDialog(onDismiss: () -> Unit, onConfirm: (String) -> Unit, chap
     }
 }
 
-//@Composable
-//@Preview(showBackground = true)
-//fun StoryEditScreenPreview() {
-//    StoryEditScreen()
-//}
+@Composable
+@Preview(showBackground = true)
+fun StoryEditScreenPreview() {
+    val viewModel = viewModel<AuthorEditViewModel>()
+    StoryEditScreen(viewModel)
+}

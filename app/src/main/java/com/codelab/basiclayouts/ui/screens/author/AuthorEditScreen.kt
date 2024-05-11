@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import com.codelab.basiclayouts.ui.theme.AppTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codelab.basiclayouts.ui.theme.DarkTheme
-import com.codelab.basiclayouts.ui.uistate.author.ChapterAU
 import com.codelab.basiclayouts.ui.uistate.author.ContentAU
 import com.codelab.basiclayouts.ui.uistate.author.OptionAU
 import com.codelab.basiclayouts.ui.viewmodel.author.AuthorEditViewModel
@@ -29,16 +28,8 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.icons.filled.ArrowBack
 
 
-@Composable
-fun ChapterTitleSection(chapterTitle: String) {
-    AppTheme {
-        Box(contentAlignment = Alignment.Center, modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)) {
-            Text(text = chapterTitle, style = MaterialTheme.typography.displayMedium)
-        }
-    }
-}
+
+
 
 
 @Composable
@@ -254,12 +245,6 @@ fun OptionsSection(optionList: List<OptionAU>, viewModel: AuthorEditViewModel) {
     }
 }
 
-
-
-
-
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChapterTitleSection(chapterTitle: String, onChapterTitleChange: (String) -> Unit) {
@@ -289,6 +274,7 @@ fun AuthorEditScreen(viewModel: AuthorEditViewModel) {
     AppTheme {
         val state by viewModel.authorEditUiState.collectAsState()
         var chapterTitle by remember { mutableStateOf(state.thisChapter.chapterTitle) }
+        var isEnd by remember { mutableStateOf(state.thisChapter.isEnd == 1) }
 
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -321,12 +307,36 @@ fun AuthorEditScreen(viewModel: AuthorEditViewModel) {
                 Spacer(modifier = Modifier.height(16.dp))
                 ContentSection(contentList = state.thisChapter.contentList, viewModel = viewModel)
                 Spacer(modifier = Modifier.height(16.dp))
-                OptionsSection(optionList = state.thisChapter.optionList, viewModel = viewModel)
+
+                // Checkbox Section
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Is the end")
+                    Checkbox(
+                        checked = isEnd,
+                        onCheckedChange = { checked ->
+                            isEnd = checked
+                            viewModel.updateChapterIsEnd(if (checked) 1 else 0)
+                        }
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(16.dp))
+
+                // Only show the Options Section if it's not the end
+                if (!isEnd) {
+                    OptionsSection(optionList = state.thisChapter.optionList, viewModel = viewModel)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Button(
                     onClick = {
                         viewModel.updateChapterInList()
-                        viewModel.printAuthorEditUiState() // 可以去除或保留，根据是否需要打印状态
+                        viewModel.printAuthorEditUiState()
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     shape = MaterialTheme.shapes.medium
@@ -347,8 +357,9 @@ fun AuthorEditMainScreen(viewModel: AuthorEditViewModel) {
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun AuthorEditMainScreenPreview(){
-//    AuthorEditMainScreen()
-//}
+@Preview(showBackground = true)
+@Composable
+fun AuthorEditMainScreenPreview(){
+    val viewModel = viewModel<AuthorEditViewModel>()
+    AuthorEditMainScreen(viewModel)
+}
