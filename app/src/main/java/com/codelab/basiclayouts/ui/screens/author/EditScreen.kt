@@ -210,7 +210,7 @@ fun OptionsSection(optionList: List<OptionAU>, viewModel: AuthorEditViewModel) {
                             onClick = { showDropdown.value = true },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(if (selectedChapterTitle.value != null) "Change Chapter: ${selectedChapterTitle.value}" else "Choose Next Chapter")
+                            Text(if (selectedChapterTitle.value != null) "Chosen next Chapter: ${selectedChapterTitle.value}" else "Choose Next Chapter")
                         }
                         if (showDropdown.value) {
                             DropdownMenu(
