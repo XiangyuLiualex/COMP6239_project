@@ -2,8 +2,9 @@ package com.codelab.basiclayouts.ui.uistate.author
 
 data class AuthorEditUiState2(
     val thisChapter:ChapterAU,
-    val thisStory:StoryAU
-
+    val thisStory:StoryAU,
+    val storyList:List<StoryAU>,
+    val categoryList:List<CategoryAU>
 )
 
 data class OptionAU(
@@ -33,8 +34,14 @@ data class StoryAU(
     val storyId:Int,
     val storyName:String,
     val storyDescription: String,
-    val storyCategory: String,
-    val chapterList: List<ChapterAU>
+    val storyCategory: Int,
+    val chapterList: List<ChapterAU>,
+    val isUsed:Int
+)
+
+data class CategoryAU(
+    val categoryId:Int,
+    val categoryName:String
 )
 
 

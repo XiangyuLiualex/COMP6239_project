@@ -30,8 +30,8 @@ fun Navigation() {
         composable(route = "SignupScreen") {
             SignupScreen(navController)
         }
-        composable(route = "author_home_Screen") {
-            AuthorMainScreen(navController)
-        }
+//        composable(route = "author_home_Screen") {
+//            AuthorMainScreen(navController)
+//        }
     }
 }
