@@ -30,10 +30,10 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 //                    StoryApp()
-//                    ReaderFavouriteScreen()
+                    ReaderFavouriteScreen()
 //                    AuthorEditMainScreen()
 //                    StoryEditScreen()
-                    ParentScreen()
+//                    ParentScreen()
                 }
 
             }

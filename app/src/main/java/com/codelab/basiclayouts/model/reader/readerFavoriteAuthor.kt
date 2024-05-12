@@ -1,6 +1,6 @@
 package com.codelab.basiclayouts.model.reader
 
-data class FavoriteAuthor(
+data class readerFavoriteAuthor(
     val userId: Int,
     val username: String,
     val realName: String,

@@ -16,7 +16,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
-import com.codelab.basiclayouts.model.reader.FavoriteAuthor
+import com.codelab.basiclayouts.model.reader.readerFavoriteAuthor
 import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderFavouriteScreenViewModel
 
 @Composable
@@ -39,7 +39,7 @@ fun ReaderFavouriteScreen(viewModel: ReaderFavouriteScreenViewModel = androidx.l
 
 
 @Composable
-fun AuthorCard(author: FavoriteAuthor,viewModel: ReaderFavouriteScreenViewModel) {
+fun AuthorCard(author: readerFavoriteAuthor, viewModel: ReaderFavouriteScreenViewModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
