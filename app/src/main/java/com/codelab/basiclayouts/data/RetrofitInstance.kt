@@ -7,6 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 import com.codelab.basiclayouts.R
+import com.codelab.basiclayouts.data.service.TAuthorChapterContentService
 import com.codelab.basiclayouts.data.service.TChapterContentService
 import com.codelab.basiclayouts.data.service.TLibraryService
 
@@ -16,6 +17,7 @@ object RetrofitInstance {
     lateinit var tChapterContentService: TChapterContentService
     lateinit var tFavoriteAuthorService: TFavoriteAuthorService
     lateinit var tLibraryService: TLibraryService
+    lateinit var tAuthorChapterContentService: TAuthorChapterContentService
 
     // 动态获取 Base URL
     private fun getBaseUrl(context: Context): String {
@@ -36,5 +38,6 @@ object RetrofitInstance {
         tChapterContentService = retrofit.create(TChapterContentService::class.java)
         tFavoriteAuthorService = retrofit.create(TFavoriteAuthorService::class.java)
         tLibraryService = retrofit.create(TLibraryService::class.java)
+        tAuthorChapterContentService = retrofit.create(TAuthorChapterContentService::class.java)
     }
 }

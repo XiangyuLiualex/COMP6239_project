@@ -1,0 +1,24 @@
+package com.codelab.basiclayouts.data.service
+
+import com.codelab.basiclayouts.data.ResultData
+import com.codelab.basiclayouts.model.reader.readerTStorys
+import com.codelab.basiclayouts.ui.uistate.author.ChapterAU
+import com.codelab.basiclayouts.ui.uistate.author.StoryAU
+import retrofit2.http.Body
+import retrofit2.http.POST
+
+interface TAuthorChapterContentService {
+    @POST("/TAuthorChapterContentCtrl/tRootAuthorStoryByStoryId")
+    suspend fun tRootAuthorStoryByStoryId(@Body values: Map<String, Any>): ResultData<StoryAU>
+
+    @POST("/TAuthorChapterContentCtrl/tAuthorStoryByStoryId")
+    suspend fun tAuthorStoryByStoryId(@Body values: Map<String, Any>): ResultData<StoryAU>
+
+    @POST("/TAuthorChapterContentCtrl/tAuthorChapterByChapterId")
+    suspend fun tAuthorChapterByChapterId(@Body values: Map<String, Any>): ResultData<ChapterAU>
+
+    @POST("/TAuthorChapterContentCtrl/tAuthorChapterListByStoryId")
+    suspend fun tAuthorChapterListByStoryId(@Body values: Map<String, Any>): ResultData<ChapterAU>
+
+
+}
