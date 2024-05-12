@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -15,16 +16,22 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import com.codelab.basiclayouts.R
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
+
+
+
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.codelab.basiclayouts.model.reader.readerStoryContent
+import com.codelab.basiclayouts.ui.viewmodel.reader.StoryContentScreenViewModel
 
 @Composable
-fun StoryContentScreen(storyTitle: String, chapterTitle: String, contentItems: List<ContentItem>, options: List<String>) {
+fun StoryContentScreen() {
+    val viewModel: StoryContentScreenViewModel = viewModel()
+    val state = viewModel.uiState.collectAsState()
+
     Column(modifier = Modifier.padding(16.dp)) {
-        StoryHeader(storyTitle, chapterTitle)
-        StoryContent(contentItems)
-        ChapterOptions(options)
+        StoryHeader(state.value.readerTStorys.storyName, state.value.readerTChapter.chapterTitle)
+        StoryContent(state.value.readerStoryContentList.map { convertToContentItem(it) })
+        ChapterOptions(state.value.readerTOptionList.map { it.optionName })
     }
 }
 
@@ -56,26 +63,18 @@ fun ChapterOptions(options: List<String>) {
     }
 }
 
+fun convertToContentItem(readerStoryContent: readerStoryContent): ContentItem {
+    return when (readerStoryContent.contentType) {
+        0 -> ContentItem.Text(readerStoryContent.contentData)
+        1 -> ContentItem.Image(R.drawable.ab2_quick_yoga) // 根据情况替换readerStoryContent.contentData
+        2 -> ContentItem.Video(readerStoryContent.contentData)
+        else -> throw IllegalArgumentException("Unsupported content type")
+    }
+}
+
 // Define content types
 sealed class ContentItem {
     data class Text(val text: String) : ContentItem()
     data class Image(val resourceId: Int) : ContentItem()
     data class Video(val videoUrl: String) : ContentItem()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewStoryPage() {
-    MaterialTheme {
-        StoryContentScreen(
-            storyTitle = "The Adventure Begins",
-            chapterTitle = "Chapter 1: The Awakening",
-            contentItems = listOf(
-                ContentItem.Text("It was a dark and stormy night...\nIt was a dark and stormy night...\nIt was a dark and stormy night...\n"),
-                ContentItem.Image(R.drawable.ab2_quick_yoga),
-                ContentItem.Video("path/to/video")
-            ),
-            options = listOf("Go to the castle", "Return home")
-        )
-    }
 }

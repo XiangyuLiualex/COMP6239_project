@@ -4,12 +4,22 @@ import com.codelab.basiclayouts.data.ResultData
 import com.codelab.basiclayouts.model.reader.readerTChapter
 import com.codelab.basiclayouts.model.reader.readerTContent
 import com.codelab.basiclayouts.model.reader.readerTOption
+import com.codelab.basiclayouts.model.reader.readerTStorys
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.Response
 
 interface TChapterContentService {
-//根据故事ID显示本故事的所有章节
+    //根据故事ID显示本故事的基本信息
+    @POST("/TChapterContentCtrl/tStoryByStoryId")
+    suspend fun tStoryByStoryId(@Body values: Map<String, Any>): ResultData<readerTStorys>
+
+    //根据章节ID显示本章节的基本信息
+    @POST("/TChapterContentCtrl/tChapterByChapterId")
+    suspend fun tChapterByChapterId(@Body values: Map<String, Any>): ResultData<readerTStorys>
+
+
+    //根据故事ID显示本故事的所有章节
     @POST("/TChapterContentCtrl/tChapterListByStoryId")
     suspend fun tChapterListByStoryId(@Body values: Map<String, Any>): ResultData<List<readerTChapter>>
 

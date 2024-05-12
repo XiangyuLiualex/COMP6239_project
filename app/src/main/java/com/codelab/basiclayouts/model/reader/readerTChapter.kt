@@ -16,19 +16,19 @@ import com.google.gson.annotations.SerializedName
  */
 data class readerTChapter(
 
-    @SerializedName("chapterId") val chapterId: Int,
+    @SerializedName("chapterId") val chapterId: Int = -1,
 
-    @SerializedName("chapterTitle") val chapterTitle: String,
+    @SerializedName("chapterTitle") val chapterTitle: String = "",
 
-    @SerializedName("chapterNumber") val chapterNumber: Int,
+    @SerializedName("chapterNumber") val chapterNumber: Int = -1,
 
-    @SerializedName("storyId") val storyId: Int,
+    @SerializedName("storyId") val storyId: Int = -1,
 
-    @SerializedName("notes") val notes: String?,
+    @SerializedName("notes") val notes: String? = "",
 
-    @SerializedName("music") val music: String?,
+    @SerializedName("music") val music: String? = "",
 
-    @SerializedName("isEnd") val isEnd: Int,
+    @SerializedName("isEnd") val isEnd: Int = -1,
 
-    @SerializedName("isUsed") val isUsed: Int
+    @SerializedName("isUsed") val isUsed: Int = -1
 )
