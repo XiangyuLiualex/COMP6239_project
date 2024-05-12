@@ -72,7 +72,7 @@ fun convertToContentItem(readerStoryContent: readerStoryContent): ContentItem {
     }
 }
 
-// Define content types
+//定义内容类型 Define content types
 sealed class ContentItem {
     data class Text(val text: String) : ContentItem()
     data class Image(val resourceId: Int) : ContentItem()
