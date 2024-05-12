@@ -40,11 +40,11 @@ fun ReaderLibraryScreen(viewModel: ReaderLibraryScreenViewModel = androidx.lifec
 }
 
 @Composable
-fun StoryCard(story: readerTStorysForUiState, viewModel: ReaderLibraryScreenViewModel) {
+fun StoryCard(story: readerTStorys, viewModel: ReaderLibraryScreenViewModel) {
     val isFavorited = remember { mutableStateOf(false) }
     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.Top) {
         Image(
-            painter = painterResource(id = R.drawable.ab2_quick_yoga),
+            painter = painterResource(id = R.drawable.ab2_quick_yoga),//换成用户头像
             contentDescription = "Story Cover",
             modifier = Modifier.size(100.dp).clip(CircleShape),
             contentScale = ContentScale.Crop
@@ -58,10 +58,10 @@ fun StoryCard(story: readerTStorysForUiState, viewModel: ReaderLibraryScreenView
                 }) {
                     Icon(Icons.Filled.Favorite, contentDescription = "Favorite", tint = if (isFavorited.value) androidx.compose.ui.graphics.Color.Red else androidx.compose.ui.graphics.Color.Gray)
                 }
-                Text("${story.storyName} by ${story.author}", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text("${story.storyName}", fontWeight = FontWeight.Bold, fontSize = 16.sp)
             }
             Text(story.storyDescription, fontSize = 14.sp)
-            Text("${story.currentProgress}", fontSize = 12.sp, color = androidx.compose.ui.graphics.Color.Gray)
+//            Text("${story.currentProgress}", fontSize = 12.sp, color = androidx.compose.ui.graphics.Color.Gray)
         }
     }
 }

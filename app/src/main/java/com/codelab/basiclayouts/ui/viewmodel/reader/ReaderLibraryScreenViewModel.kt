@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ReaderLibraryScreenViewModel  : ViewModel() {
-    private val _uiState = MutableStateFlow<List<readerTStorysForUiState>>(emptyList())
-    val uiState: StateFlow<List<readerTStorysForUiState>> = _uiState
+    private val _uiState = MutableStateFlow<List<readerTStorys>>(emptyList())
+    val uiState: StateFlow<List<readerTStorys>> = _uiState
 
     init {
         loadStories()
@@ -29,24 +29,24 @@ class ReaderLibraryScreenViewModel  : ViewModel() {
                 val storysResult = RetrofitInstance.tLibraryService.tLibraryList(params)
                 val storys = storysResult.data as List<readerTStorys>//存储剧本的基本信息还要从其他表查找信息
 
-                val readerStorysForUiStateResult = RetrofitInstance.tLibraryService.tLibraryListReaderStoryForUiState(params)
-                val readerStorysForUiState = readerStorysForUiStateResult.data as List<readerTStorysForUiState>
+//                val readerStorysForUiStateResult = RetrofitInstance.tLibraryService.tLibraryListReaderStoryForUiState(params)
+//                val readerStorysForUiState = readerStorysForUiStateResult.data as List<readerTStorysForUiState>
 
                 // 合并数据
-                val showData = readerStorysForUiState.mapNotNull { uiStateItem ->
-                    storys.find { it.storyId == uiStateItem.storyId }?.let { matchingStory ->
-                        uiStateItem.copy(
-                            storyId = matchingStory.storyId,
-                            storyName = matchingStory.storyName,
-                            storyDescription = matchingStory.storyDescription,
-                            storyTrends = matchingStory.storyTrends,
-                            storyCoverUrl = matchingStory.storyCoverUrl
-                        )
-                    }
-                }
+//                val showData = readerStorysForUiState.mapNotNull { uiStateItem ->
+//                    storys.find { it.storyId == uiStateItem.storyId }?.let { matchingStory ->
+//                        uiStateItem.copy(
+//                            storyId = matchingStory.storyId,
+//                            storyName = matchingStory.storyName,
+//                            storyDescription = matchingStory.storyDescription,
+//                            storyTrends = matchingStory.storyTrends,
+//                            storyCoverUrl = matchingStory.storyCoverUrl
+//                        )
+//                    }
+//                }
 
                 // 更新状态
-                _uiState.value = showData
+                _uiState.value = storys
 
             } catch (e: Exception) {
                 e.printStackTrace()
