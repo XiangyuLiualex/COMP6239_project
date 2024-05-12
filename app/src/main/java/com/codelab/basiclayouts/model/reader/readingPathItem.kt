@@ -14,7 +14,7 @@ data class readingPathItem(
     @SerializedName("chapterId") val chapterId: Int = -1,
 
     /** 章节ID */
-    @SerializedName("chapterName") val chapterName: Int = -1,
+    @SerializedName("chapterName") val chapterName: String = "",
 
     /** 阅读次数 */
     @SerializedName("readingTimes") val readingTimes: Date? =null,
