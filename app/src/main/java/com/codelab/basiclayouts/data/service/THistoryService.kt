@@ -16,10 +16,10 @@ interface THistoryService {
     suspend fun updateReaderHistory(@Body values: readerStoryHistory): ResultData<readerStoryHistory>
 
     @POST("/THistoryCtrl/findHistoryByReaderId")
-    suspend fun findHistoryByReaderId(@Body values: Map<String, Any>): ResultData<List<readerStoryHistory>>
+    suspend fun findHistoryByReaderId(@Body values: Map<String, Int>): ResultData<List<readerStoryHistory>>
 
     @POST("/THistoryCtrl/findHistoryByStoryId")
-    suspend fun findHistoryByStoryId(@Body values: Map<String, Any>): ResultData<List<readerStoryHistory>>
+    suspend fun findHistoryByStoryId(@Body values: Map<String, Int>): ResultData<List<readerStoryHistory>>
 
     @POST("/THistoryCtrl/createReadingPath")
     suspend fun createReadingPath(@Body values: readingPath): ResultData<readingPath>
@@ -28,10 +28,10 @@ interface THistoryService {
     suspend fun updateReadingPath(@Body values: readingPath): ResultData<readingPath>
 
     @POST("/THistoryCtrl/getReadingPathById")
-    suspend fun getReadingPathById(@Body values: Map<String, Any>): ResultData<readingPath>
+    suspend fun getReadingPathById(@Body values: Map<String, Int>): ResultData<readingPath>
 
     @POST("/THistoryCtrl/getPathsByStoryId")
-    suspend fun getPathsByStoryId(@Body values: Map<String, Any>): ResultData<List<readingPath>>
+    suspend fun getPathsByStoryId(@Body values: Map<String, Int>): ResultData<List<readingPath>>
 
     @POST("/THistoryCtrl/insertPathItem")
     suspend fun insertPathItem(@Body values: readingPathItem): ResultData<readingPathItem>
@@ -40,8 +40,8 @@ interface THistoryService {
     suspend fun updatePathItem(@Body values: readingPathItem): ResultData<readingPathItem>
 
     @POST("/THistoryCtrl/getPathItemsByChapterId")
-    suspend fun getPathItemsByChapterId(@Body values: Map<String, Any>): ResultData<List<readingPathItem>>
+    suspend fun getPathItemsByChapterId(@Body values: Map<String, Int>): ResultData<List<readingPathItem>>
 
     @POST("/THistoryCtrl/getPathItemById")
-    suspend fun getPathItemById(@Body values: Map<String, Any>): ResultData<readingPathItem>
+    suspend fun getPathItemById(@Body values: Map<String, Int>): ResultData<readingPathItem>
 }

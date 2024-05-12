@@ -9,16 +9,16 @@ import retrofit2.http.POST
 
 interface TAuthorChapterContentService {
     @POST("/TAuthorChapterContentCtrl/tRootAuthorStoryByStoryId")
-    suspend fun tRootAuthorStoryByStoryId(@Body values: Map<String, Any>): ResultData<StoryAU>
+    suspend fun tRootAuthorStoryByStoryId(@Body values: Map<String, Int>): ResultData<StoryAU>
 
     @POST("/TAuthorChapterContentCtrl/tAuthorStoryByStoryId")
-    suspend fun tAuthorStoryByStoryId(@Body values: Map<String, Any>): ResultData<StoryAU>
+    suspend fun tAuthorStoryByStoryId(@Body values: Map<String, Int>): ResultData<StoryAU>
 
     @POST("/TAuthorChapterContentCtrl/tAuthorChapterByChapterId")
-    suspend fun tAuthorChapterByChapterId(@Body values: Map<String, Any>): ResultData<ChapterAU>
+    suspend fun tAuthorChapterByChapterId(@Body values: Map<String, Int>): ResultData<ChapterAU>
 
     @POST("/TAuthorChapterContentCtrl/tAuthorChapterListByStoryId")
-    suspend fun tAuthorChapterListByStoryId(@Body values: Map<String, Any>): ResultData<ChapterAU>
+    suspend fun tAuthorChapterListByStoryId(@Body values: Map<String, Int>): ResultData<ChapterAU>
 
 
 }

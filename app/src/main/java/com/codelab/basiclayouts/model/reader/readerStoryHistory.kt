@@ -7,17 +7,17 @@ import com.google.gson.annotations.SerializedName
  */
 data class readerStoryHistory(
     /** 读者ID */
-    @SerializedName("readerId") val readerId: Int,
+    @SerializedName("readerId") val readerId: Int = -1,
 
     /** 故事ID */
-    @SerializedName("storyId") val storyId: Int,
+    @SerializedName("storyId") val storyId: Int = -1,
 
     /** 是否正在使用 */
-    @SerializedName("isUsed") val isUsed: Int,
+    @SerializedName("isUsed") val isUsed: Int = -1,
 
     /** 笔记 */
-    @SerializedName("notes") val notes: String?,
+    @SerializedName("notes") val notes: String? = null,
 
     /** 当前进度 */
-    @SerializedName("currentProgress") val currentProgress: Int
+    @SerializedName("currentProgress") val currentProgress: Int = -1
 )

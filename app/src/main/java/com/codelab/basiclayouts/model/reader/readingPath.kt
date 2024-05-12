@@ -8,20 +8,23 @@ import java.util.Date
  */
 data class readingPath(
     /** 阅读路径ID */
-    @SerializedName("readingPathId") val readingPathId: Int,
+    @SerializedName("readingPathId") val readingPathId: Int = -1,
 
     /** 开始时间 */
-    @SerializedName("startTime") val startTime: Date,
+    @SerializedName("startTime") val startTime: Date? = null,
 
     /** 更新时间 */
-    @SerializedName("updateTime") val updateTime: Date,
+    @SerializedName("updateTime") val updateTime: Date? = null,
 
     /** 故事ID */
-    @SerializedName("storyId") val storyId: Int,
+    @SerializedName("storyId") val storyId: Int = -1,
 
     /** 起始阅读路径项ID */
-    @SerializedName("startReadingPathItemId") val startReadingPathItemId: Int,
+    @SerializedName("startReadingPathItemId") val startReadingPathItemId: Int = -1,
 
     /** 读者ID */
-    @SerializedName("readerId") val readerId: Int
+    @SerializedName("readerId") val readerId: Int = -1,
+
+    /** 阅读路径项列表 */
+    @SerializedName("readingPathItemList") val readingPathItemList : List<readingPathItem> = listOf()
 )
