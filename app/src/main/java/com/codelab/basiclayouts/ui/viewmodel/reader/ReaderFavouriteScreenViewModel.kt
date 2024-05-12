@@ -64,4 +64,31 @@ class ReaderFavouriteScreenViewModel  : ViewModel() {
         }
     }
 
+
+    //根据收藏的作者模糊查询
+    fun searchAuthors(query: String) {
+        // 搜索逻辑，这里可以是过滤本地列表或发起新的网络请求
+        viewModelScope.launch {
+            try {
+                if (query.isNotEmpty()){
+                    // 创建一个 Map，包含作者名
+                    val params = mapOf("AuthorName" to query,"readerId" to "1")
+                    val authorsResult = RetrofitInstance.tFavoriteAuthorService.tFavoriteAuthorListByAuthorName(params)
+                    if (authorsResult.code == 2000) {
+                        // 更新状态
+                        _uiState.value = ReaderFavouriteScreenUiState(authors = authorsResult.data as List<readerFavoriteAuthor>)
+                    } else {
+                        println("查询失败: ${authorsResult.msg}")
+                    }
+                } else {
+                    tFavoriteAuthorList(1)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // 在此处可以设置错误状态或采取其他行动
+                println("查询操作异常: ${e.message}")
+            }
+        }
+    }
+
 }
