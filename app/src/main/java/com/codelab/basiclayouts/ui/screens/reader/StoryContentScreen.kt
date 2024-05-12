@@ -21,11 +21,11 @@ import com.codelab.basiclayouts.R
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codelab.basiclayouts.model.reader.readerStoryContent
+import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderLibraryScreenViewModel
 import com.codelab.basiclayouts.ui.viewmodel.reader.StoryContentScreenViewModel
 
 @Composable
-fun StoryContentScreen() {
-    val viewModel: StoryContentScreenViewModel = viewModel()
+fun StoryContentScreen(viewModel: StoryContentScreenViewModel = viewModel()) {
     val state = viewModel.uiState.collectAsState()
 
     Column(modifier = Modifier.padding(16.dp)) {

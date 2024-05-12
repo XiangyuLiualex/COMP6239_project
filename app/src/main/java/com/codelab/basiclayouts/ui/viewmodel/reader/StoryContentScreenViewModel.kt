@@ -14,6 +14,7 @@ import com.codelab.basiclayouts.ui.uistate.reader.ReaderFavouriteScreenUiState
 import com.codelab.basiclayouts.ui.uistate.reader.StoryContentScreenUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class StoryContentScreenViewModel : ViewModel() {
@@ -22,8 +23,8 @@ class StoryContentScreenViewModel : ViewModel() {
         readerTChapter = readerTChapter(),
         )
     )
+    val uiState: StateFlow<StoryContentScreenUiState> = _uiState.asStateFlow()
 
-    val uiState: StateFlow<StoryContentScreenUiState> = _uiState
 
     init {
         loadContent(1,1)
@@ -40,7 +41,7 @@ class StoryContentScreenViewModel : ViewModel() {
                 val readerStoryContentListResult = RetrofitInstance.tChapterContentService.tContentListByChapterId(params)
                 val readerTOptionList = RetrofitInstance.tChapterContentService.tOptionListByChapterId(params)
                 // 更新状态
-                _uiState.value = StoryContentScreenUiState(
+                _uiState.value = _uiState.value.copy(
                     readerTStorys = tStoryDetailResult.data as readerTStorys,
                     readerTChapter = tChapterDetailResult.data as readerTChapter,
                     readerStoryContentList = readerStoryContentListResult.data as List<readerStoryContent>,
