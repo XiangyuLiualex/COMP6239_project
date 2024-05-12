@@ -5,41 +5,36 @@ import com.codelab.basiclayouts.data.service.TFavoriteAuthorService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-// RetrofitInstance.kt
-//object RetrofitInstance {
-//    private val retrofit = Retrofit.Builder()
-//        .baseUrl("http://10.14.153.29:8443/") // 我的本地springboothttp://10.14.153.180:8443/
-//        .addConverterFactory(GsonConverterFactory.create())
-//        .build()
-//
-//    //读者喜欢的作者管理API接口
-//    val tFavoriteAuthorService: TFavoriteAuthorService by lazy {
-//        retrofit.create(TFavoriteAuthorService::class.java)
-//    }
-//}
-
 
 import com.codelab.basiclayouts.R
+import com.codelab.basiclayouts.data.service.TChapterContentService
+import com.codelab.basiclayouts.data.service.TLibraryService
+
 object RetrofitInstance {
+    private lateinit var retrofit: Retrofit
+
+    lateinit var tChapterContentService: TChapterContentService
+    lateinit var tFavoriteAuthorService: TFavoriteAuthorService
+    lateinit var tLibraryService: TLibraryService
+
     // 动态获取 Base URL
     private fun getBaseUrl(context: Context): String {
         return context.resources.getString(R.string.api_base_url)
     }
 
-    // Retrofit 实例初始化需要一个 Context 参数
-    fun initialize(context: Context): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(getBaseUrl(context)) // 使用动态获取的 Base URL
+    // 初始化 Retrofit 实例
+    fun initialize(context: Context) {
+        retrofit = Retrofit.Builder()
+            .baseUrl(getBaseUrl(context))  // 使用动态获取的 Base URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+        initServices()
     }
 
-    // 延迟初始化 TFavoriteAuthorService
-    lateinit var tFavoriteAuthorService: TFavoriteAuthorService
-
-    // 提供一个方法用于初始化服务
-    fun initService(context: Context) {
-        val retrofit = initialize(context)
+    // 初始化所有服务
+    private fun initServices() {
+        tChapterContentService = retrofit.create(TChapterContentService::class.java)
         tFavoriteAuthorService = retrofit.create(TFavoriteAuthorService::class.java)
+        tLibraryService = retrofit.create(TLibraryService::class.java)
     }
 }

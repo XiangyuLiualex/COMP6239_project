@@ -16,12 +16,13 @@ import com.codelab.basiclayouts.ui.screens.author.ParentScreen
 import com.codelab.basiclayouts.ui.screens.reader.ReaderFavouriteScreen
 import com.codelab.basiclayouts.ui.theme.DarkTheme
 import com.codelab.basiclayouts.data.RetrofitInstance
+import com.codelab.basiclayouts.ui.screens.reader.ReaderLibraryScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 初始化 RetrofitInstance
-        RetrofitInstance.initService(this)
+        RetrofitInstance.initialize(this)
         setContent {
             DarkTheme {
                 // A surface container using the 'background' color from the theme
@@ -30,10 +31,12 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 //                    StoryApp()
-                    ReaderFavouriteScreen()
+//                    ReaderFavouriteScreen()
 //                    AuthorEditMainScreen()
 //                    StoryEditScreen()
 //                    ParentScreen()
+                    ReaderLibraryScreen()
+
                 }
 
             }

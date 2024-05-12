@@ -30,7 +30,6 @@ class ReaderFavouriteScreenViewModel  : ViewModel() {
                 val authorsResult = RetrofitInstance.tFavoriteAuthorService.tFavoriteAuthorList(params)
                 // 更新状态
                 _uiState.value = ReaderFavouriteScreenUiState(authors = authorsResult.data as List<readerFavoriteAuthor>)
-                val ss = 1;
             } catch (e: Exception) {
                 e.printStackTrace()
                 // 在此处可以设置错误状态或采取其他行动
