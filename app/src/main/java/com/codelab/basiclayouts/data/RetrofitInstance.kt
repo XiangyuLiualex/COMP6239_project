@@ -11,6 +11,7 @@ import com.codelab.basiclayouts.data.service.TAuthorChapterContentService
 import com.codelab.basiclayouts.data.service.TChapterContentService
 import com.codelab.basiclayouts.data.service.THistoryService
 import com.codelab.basiclayouts.data.service.TLibraryService
+import com.codelab.basiclayouts.data.service.TUserService
 
 object RetrofitInstance {
     private lateinit var retrofit: Retrofit
@@ -20,6 +21,7 @@ object RetrofitInstance {
     lateinit var tLibraryService: TLibraryService
     lateinit var tAuthorChapterContentService: TAuthorChapterContentService
     lateinit var tHistoryService: THistoryService
+    lateinit var tUserService : TUserService
 
     // 动态获取 Base URL
     private fun getBaseUrl(context: Context): String {
@@ -42,6 +44,6 @@ object RetrofitInstance {
         tLibraryService = retrofit.create(TLibraryService::class.java)
         tAuthorChapterContentService = retrofit.create(TAuthorChapterContentService::class.java)
         tHistoryService = retrofit.create(THistoryService::class.java)
-
+        tUserService = retrofit.create(TUserService::class.java)
     }
 }

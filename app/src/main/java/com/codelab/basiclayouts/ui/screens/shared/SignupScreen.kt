@@ -28,6 +28,7 @@ import com.codelab.basiclayouts.ui.components.MyTextField
 import com.codelab.basiclayouts.ui.components.PasswordConfirmComponent
 import com.codelab.basiclayouts.ui.components.SignupTermsAndPrivacyText
 import com.codelab.basiclayouts.ui.viewmodel.shared.SignupViewModel
+import kotlin.reflect.KFunction1
 
 @Composable
 fun SignupScreen(
@@ -43,7 +44,7 @@ fun SignupScreen(
         onChangePassword = viewModel::onChangePassword,
         onChangeComfirmPassword = viewModel::onChangeComfirmPassword,
         onChangeEmail = viewModel::onChangeEmail,
-        onSaveUserInfo = viewModel::onSaveUserInfo
+        onSaveUserInfo = viewModel::onSaveUserInfo // 使用lambda传递当前state
     )
 }
 
@@ -56,7 +57,7 @@ private fun SignupContent(
     onChangePassword: (String) -> Unit,
     onChangeComfirmPassword: (String) -> Unit,
     onChangeEmail: (String) -> Unit,
-    onSaveUserInfo: () -> Unit,
+    onSaveUserInfo:  () -> Unit,
 ) {
     Surface(
         modifier = Modifier
@@ -101,7 +102,7 @@ private fun SignupContent(
             ) {
                 Column {
                     ConfirmButton(
-                        labelVal = "save",
+                        labelVal = "Continue",
                         navController = navController,
                         signupViewModel = signupViewModel,
                         onClick = onSaveUserInfo

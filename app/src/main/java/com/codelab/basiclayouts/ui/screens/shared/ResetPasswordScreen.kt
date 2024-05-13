@@ -37,7 +37,7 @@ fun ResetPasswordScreen(
         state = state,
         onChangePassword = viewModel::onChangePassword,
         onChangeComfirmPassword = viewModel::onChangeComfirmPassword,
-        onSaveUserInfo = viewModel::onSaveUserInfo
+        onSaveUserInfo = { viewModel.onSaveUserInfo() } // 使用lambda传递当前state
     )
 }
 @Composable

@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.codelab.basiclayouts.R
+import com.codelab.basiclayouts.model.Profile
 import com.codelab.basiclayouts.ui.screens.shared.Identity
 import com.codelab.basiclayouts.ui.theme.BgSocial
 import com.codelab.basiclayouts.ui.theme.BorderColor
@@ -342,20 +343,15 @@ fun ConfirmButton(
 ) {
     Button(
         onClick = {
-            if (labelVal == "Save") {
+            Log.d("ConfirmButton", "Button clicked")
+            if (labelVal == "Save" || labelVal == "Submit") {
                 if (signupViewModel.state.value.password == signupViewModel.state.value.confirmPassword) {
+                    onClick() // 调用传入的函数
                     navController.navigate("LoginScreen")
-                }else {
-                    //"Confirm password is wrong"
-                }
-            }else if (labelVal == "Submit") {
-                if (signupViewModel.state.value.password == signupViewModel.state.value.confirmPassword) {
-                    navController.navigate("LoginScreen")
-                }else {
-                    //"Confirm password is wrong"
+                } else {
+                    // 显示错误信息："Confirm password is wrong"
                 }
             }
-            onClick()
         },
         colors = ButtonDefaults.buttonColors(
             containerColor = BrandColor
