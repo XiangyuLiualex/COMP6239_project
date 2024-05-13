@@ -3,10 +3,12 @@ package com.codelab.basiclayouts.ui.components
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,8 +20,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,7 +51,6 @@ import com.codelab.basiclayouts.ui.theme.BorderColor
 import com.codelab.basiclayouts.ui.theme.BrandColor
 import com.codelab.basiclayouts.ui.theme.Primary
 import com.codelab.basiclayouts.ui.theme.Tertirary
-import com.codelab.basiclayouts.ui.viewmodel.shared.ResetPasswordViewModel
 import com.codelab.basiclayouts.ui.viewmodel.shared.SignupViewModel
 
 @Composable
@@ -93,7 +96,99 @@ fun ForgotPasswordHeadingTextComponent(action: String) {
 }
 
 @Composable
-fun MyTextField(labelVal: String, icon: Int) {
+fun MyTextField(
+    labelVal: String,
+    icon: Int,
+    onTextChange: (String) -> Unit
+) {
+    var textVal by remember {
+        mutableStateOf("")
+    }
+    val typeOfKeyboard: KeyboardType = when (labelVal) {
+        "Username" -> KeyboardType.Text
+        "Password" -> KeyboardType.Password
+        "Confirm Password" -> KeyboardType.Password
+        "email ID" -> KeyboardType.Email
+        else -> KeyboardType.Text
+    }
+
+    OutlinedTextField(
+        value = textVal,
+        onValueChange = {
+            textVal = it
+            onTextChange(it)
+        },
+        modifier = Modifier.fillMaxWidth(),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = BrandColor,
+            unfocusedBorderColor = BorderColor,
+            focusedTextColor = Color.Black,
+            focusedLeadingIconColor = BrandColor,
+            unfocusedLeadingIconColor = Tertirary
+        ),
+        shape = MaterialTheme.shapes.small,
+        placeholder = {
+            Text(text = labelVal, color = Tertirary)
+        },
+        leadingIcon = {
+            Icon(
+                painter = painterResource(id = icon),
+                contentDescription = "at_symbol"
+            )
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = typeOfKeyboard,
+            imeAction = ImeAction.Done
+        ),
+        singleLine = true
+    )
+}
+
+enum class Sex {
+    MALE,
+    FEMALE
+}
+@Composable
+fun SexOptions(
+    selectedSex: MutableState<Sex>,
+    onSexSelected: (Sex) -> Unit
+) {
+    Column (
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.SpaceAround,
+        modifier = Modifier.fillMaxWidth()
+    ){
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(
+                selected = selectedSex.value == Sex.MALE,
+                onClick = { onSexSelected(Sex.MALE) },
+            )
+            Text(
+                text = "Male",
+                color = Tertirary,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(end = 16.dp)
+            )
+            RadioButton(
+                selected = selectedSex.value == Sex.FEMALE,
+                onClick = { onSexSelected(Sex.FEMALE) }
+            )
+            Text(
+                text = "Female",
+                color = Tertirary,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(end = 16.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun SexOptionsTextField(
+    labelVal: String,
+    icon: Int,
+) {
     var textVal by remember {
         mutableStateOf("")
     }
@@ -137,7 +232,10 @@ fun MyTextField(labelVal: String, icon: Int) {
 }
 
 @Composable
-fun PasswordInputComponent(labelVal: String) {
+fun PasswordInputComponent(
+    labelVal: String,
+    onChangePassword: (String) -> Unit
+) {
     var password by remember {
         mutableStateOf("")
     }
@@ -148,6 +246,7 @@ fun PasswordInputComponent(labelVal: String) {
         value = password,
         onValueChange = {
             password = it
+            onChangePassword(it)
         },
         modifier = Modifier.fillMaxWidth(),
         colors = OutlinedTextFieldDefaults.colors(
@@ -257,23 +356,24 @@ fun ConfirmButton(
         labelVal: String,
         navController: NavHostController,
         signupViewModel: SignupViewModel,
-        resetPasswordViewModel: ResetPasswordViewModel
+        onClick: () -> Unit,
 ) {
     Button(
         onClick = {
-            if (labelVal == "Continue") {
-                if (signupViewModel.password == signupViewModel.confirmPassword) {
+            if (labelVal == "Save") {
+                if (signupViewModel.state.value.password == signupViewModel.state.value.confirmPassword) {
                     navController.navigate("LoginScreen")
                 }else {
                     //"Confirm password is wrong"
                 }
             }else if (labelVal == "Submit") {
-                if (resetPasswordViewModel.password == resetPasswordViewModel.confirmPassword) {
+                if (signupViewModel.state.value.password == signupViewModel.state.value.confirmPassword) {
                     navController.navigate("LoginScreen")
                 }else {
                     //"Confirm password is wrong"
                 }
             }
+            onClick()
         },
         colors = ButtonDefaults.buttonColors(
             containerColor = BrandColor
@@ -290,9 +390,14 @@ fun ConfirmButton(
 }
 
 @Composable
-fun MainPageButton(labelVal: String, identity: Identity, navController: NavHostController) {
+fun MainPageButton(labelVal: String,
+                   identity: Identity,
+                   navController: NavHostController,
+                   onclick:()->Unit
+) {
     Button(
         onClick = {
+            onclick()
             when (identity) {
                 Identity.READER -> navController.navigate("reader_home_screen")
                 Identity.AUTHOR -> navController.navigate("author_home_Screen")
@@ -458,7 +563,6 @@ fun BottomSignupTextComponent(navController: NavHostController) {
     })
 
 }
-
 
 @Composable
 fun TextInfoComponent(textVal: String) {

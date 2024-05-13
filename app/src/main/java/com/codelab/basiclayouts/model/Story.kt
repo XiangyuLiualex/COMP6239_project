@@ -6,5 +6,6 @@ data class Story(
     val imageUrl: String,
     val description: String,
     val progress: String,
-    val currentChapter: String
+    val currentChapter: String,
+    val category: String
 )

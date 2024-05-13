@@ -8,7 +8,8 @@ import com.codelab.basiclayouts.ui.screens.shared.LoginScreen
 import com.codelab.basiclayouts.ui.screens.shared.ForgotPasswordScreen
 import com.codelab.basiclayouts.ui.screens.shared.ResetPasswordScreen
 import com.codelab.basiclayouts.ui.screens.shared.SignupScreen
-import com.codelab.basiclayouts.ui.screens.author.AuthorMainScreen
+import com.codelab.basiclayouts.ui.screens.shared.GuestScreen
+import com.codelab.basiclayouts.ui.screens.shared.MainScreen
 
 @Composable
 fun Navigation() {
@@ -16,7 +17,7 @@ fun Navigation() {
 
     NavHost(
         navController = navController,
-        startDestination = "LoginScreen"
+        startDestination = "MainScreen"
     ) {
         composable(route = "LoginScreen") {
             LoginScreen(navController)
@@ -29,6 +30,12 @@ fun Navigation() {
         }
         composable(route = "SignupScreen") {
             SignupScreen(navController)
+        }
+        composable(route = "MainScreen") {
+            MainScreen(navController)
+        }
+        composable(route = "GuestScreen") {
+            GuestScreen(navController)
         }
 //        composable(route = "author_home_Screen") {
 //            AuthorMainScreen(navController)

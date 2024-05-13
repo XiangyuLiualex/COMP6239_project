@@ -17,13 +17,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codelab.basiclayouts.R
-import com.codelab.basiclayouts.model.reader.readerTStorys
 import com.codelab.basiclayouts.model.reader.readerTStorysForUiState
-import com.codelab.basiclayouts.ui.uistate.reader.ReaderLibraryScreenUiState
 import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderLibraryScreenViewModel
 
 
