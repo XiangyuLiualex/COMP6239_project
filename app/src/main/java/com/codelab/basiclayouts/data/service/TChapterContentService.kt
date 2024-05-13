@@ -16,7 +16,7 @@ interface TChapterContentService {
 
     //根据章节ID显示本章节的基本信息
     @POST("/TChapterContentCtrl/tChapterByChapterId")
-    suspend fun tChapterByChapterId(@Body values: Map<String, Int>): ResultData<readerTStorys>
+    suspend fun tChapterByChapterId(@Body values: Map<String, Int>): ResultData<readerTChapter>
 
 
     //根据故事ID显示本故事的所有章节

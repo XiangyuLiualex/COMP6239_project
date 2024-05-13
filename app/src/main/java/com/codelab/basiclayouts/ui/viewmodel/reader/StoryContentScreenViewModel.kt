@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.codelab.basiclayouts.R
 import com.codelab.basiclayouts.data.RetrofitInstance
 import com.codelab.basiclayouts.model.reader.readerFavoriteAuthor
-import com.codelab.basiclayouts.model.reader.readerStoryContent
 import com.codelab.basiclayouts.model.reader.readerTChapter
+import com.codelab.basiclayouts.model.reader.readerTContent
 import com.codelab.basiclayouts.model.reader.readerTOption
 import com.codelab.basiclayouts.model.reader.readerTStorys
 import com.codelab.basiclayouts.ui.screens.reader.ContentItem
@@ -44,7 +44,7 @@ class StoryContentScreenViewModel : ViewModel() {
                 _uiState.value = _uiState.value.copy(
                     readerTStorys = tStoryDetailResult.data as readerTStorys,
                     readerTChapter = tChapterDetailResult.data as readerTChapter,
-                    readerStoryContentList = readerStoryContentListResult.data as List<readerStoryContent>,
+                    readerTContentList = readerStoryContentListResult.data as List<readerTContent>,
                     readerTOptionList = readerTOptionList.data as List<readerTOption>
                 )
             } catch (e: Exception) {

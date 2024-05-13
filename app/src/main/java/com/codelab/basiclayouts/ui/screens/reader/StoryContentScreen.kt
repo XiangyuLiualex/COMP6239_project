@@ -20,18 +20,20 @@ import com.codelab.basiclayouts.R
 
 
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.codelab.basiclayouts.model.reader.readerStoryContent
+import com.codelab.basiclayouts.model.reader.readerTContent
 import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderLibraryScreenViewModel
 import com.codelab.basiclayouts.ui.viewmodel.reader.StoryContentScreenViewModel
 
 @Composable
-fun StoryContentScreen(viewModel: StoryContentScreenViewModel = viewModel()) {
-    val state = viewModel.uiState.collectAsState()
+fun StoryContentScreen(viewModel: StoryContentScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    val state = viewModel.uiState.collectAsState().value
 
     Column(modifier = Modifier.padding(16.dp)) {
-        StoryHeader(state.value.readerTStorys.storyName, state.value.readerTChapter.chapterTitle)
-        StoryContent(state.value.readerStoryContentList.map { convertToContentItem(it) })
-        ChapterOptions(state.value.readerTOptionList.map { it.optionName })
+        StoryHeader(state.readerTStorys.storyName, state.readerTChapter.chapterTitle)
+        StoryContent(state.readerTContentList.map {
+            convertToContentItem(it)
+        })
+        ChapterOptions(state.readerTOptionList.map { it.optionName })
     }
 }
 
@@ -63,11 +65,11 @@ fun ChapterOptions(options: List<String>) {
     }
 }
 
-fun convertToContentItem(readerStoryContent: readerStoryContent): ContentItem {
-    return when (readerStoryContent.contentType) {
-        0 -> ContentItem.Text(readerStoryContent.contentData)
+fun convertToContentItem(readerTContent:  readerTContent): ContentItem {
+    return when (readerTContent.contentType) {
+        0 -> ContentItem.Text(readerTContent.contentData)
         1 -> ContentItem.Image(R.drawable.ab2_quick_yoga) // 根据情况替换readerStoryContent.contentData
-        2 -> ContentItem.Video(readerStoryContent.contentData)
+        2 -> ContentItem.Video(readerTContent.contentData)
         else -> throw IllegalArgumentException("Unsupported content type")
     }
 }

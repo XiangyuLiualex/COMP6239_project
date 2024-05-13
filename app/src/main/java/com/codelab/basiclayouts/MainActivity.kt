@@ -17,6 +17,7 @@ import com.codelab.basiclayouts.ui.screens.reader.ReaderFavouriteScreen
 import com.codelab.basiclayouts.ui.theme.DarkTheme
 import com.codelab.basiclayouts.data.RetrofitInstance
 import com.codelab.basiclayouts.ui.screens.reader.ReaderLibraryScreen
+import com.codelab.basiclayouts.ui.screens.reader.ReaderStoryHistoryScreen
 import com.codelab.basiclayouts.ui.screens.reader.StoryContentScreen
 
 class MainActivity : ComponentActivity() {
@@ -35,9 +36,11 @@ class MainActivity : ComponentActivity() {
 //                    ReaderFavouriteScreen()
 //                    AuthorEditMainScreen()
 //                    StoryEditScreen()
-                    ParentScreen()
+//                    ParentScreen()
+                    StoryContentScreen()
 //                    ReaderLibraryScreen()
 //                    StoryContentScreen()
+//                    ReaderStoryHistoryScreen()
 
                 }
 
