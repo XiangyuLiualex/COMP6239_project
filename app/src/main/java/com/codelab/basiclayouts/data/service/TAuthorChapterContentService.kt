@@ -8,6 +8,8 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface TAuthorChapterContentService {
+    @POST("/TAuthorChapterContentCtrl/tAuthorStorysByAuthorId")
+    suspend fun tAuthorStorysByAuthorId(@Body values: Map<String, Int>): ResultData<List<StoryAU>>
     @POST("/TAuthorChapterContentCtrl/tRootAuthorStoryByStoryId")
     suspend fun tRootAuthorStoryByStoryId(@Body values: Map<String, Int>): ResultData<StoryAU>
 

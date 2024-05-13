@@ -113,11 +113,12 @@ fun NewStoryScreen(viewModel: AuthorEditViewModel) {
                     onClick = {
                         if (storyName.isNotEmpty() && selectedCategory != null) {
                             val newStory = StoryAU(
-                                storyId = Random.nextInt(),
+                                storyId = -Random.nextInt(1, Int.MAX_VALUE),
                                 storyName = storyName,
                                 storyDescription = storyDescription,
                                 storyCategory = selectedCategory!!.categoryId,
                                 chapterList = listOf(),
+                                authorId = uiState.authorId,
                                 isUsed = 2
                             )
                             viewModel.addStory(newStory)

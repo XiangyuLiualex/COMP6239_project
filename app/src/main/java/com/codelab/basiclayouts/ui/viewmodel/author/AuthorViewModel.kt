@@ -1,9 +1,14 @@
 package com.codelab.basiclayouts.ui.viewmodel.author
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.codelab.basiclayouts.data.RetrofitInstance
+import com.codelab.basiclayouts.model.reader.readerFavoriteAuthor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import com.codelab.basiclayouts.ui.uistate.author.*
+import com.codelab.basiclayouts.ui.uistate.reader.ReaderFavouriteScreenUiState
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class AuthorEditViewModel : ViewModel() {
@@ -21,20 +26,65 @@ class AuthorEditViewModel : ViewModel() {
     private val category1 = CategoryAU(categoryId = 1, categoryName = "Happy")
     private val category2 = CategoryAU(categoryId = 2, categoryName = "Scare")
 
+
     private val _authorEditUiState = MutableStateFlow(
         AuthorEditUiState2(
-            thisChapter = chapter1,
-            thisStory = story1,
-            storyList = listOf(story1, story2, story3),
-            categoryList = listOf(category1, category2)
+            thisChapter = ChapterAU(),
+            thisStory=StoryAU(),
+            storyList = listOf(),
+            categoryList = listOf(category1, category2),
+            authorId = 4
         )
     )
+
+
+    fun getStory(storyId:Int) {
+        viewModelScope.launch {
+            try {
+                // 创建一个 Map，包含读者ID
+                val params = mapOf("storyId" to storyId)
+                // 调用挂起函数
+                val StoryResult = RetrofitInstance.tAuthorChapterContentService.tRootAuthorStoryByStoryId(params)
+                // 更新状态
+                _authorEditUiState.value = _authorEditUiState.value.copy(thisStory = StoryResult.data as StoryAU)
+
+//                _uiState.value = ReaderFavouriteScreenUiState(authors = authorsResult.data as List<readerFavoriteAuthor>)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // 在此处可以设置错误状态或采取其他行动
+            }
+        }
+    }
+
+    fun getStoryList(authorId:Int) {
+        viewModelScope.launch {
+            try {
+                // 创建一个 Map，包含读者ID
+                val params = mapOf("authorId" to authorId)
+                // 调用挂起函数
+                val StoryListResult = RetrofitInstance.tAuthorChapterContentService.tAuthorStorysByAuthorId(params)
+                // 更新状态
+                _authorEditUiState.value = _authorEditUiState.value.copy(storyList = StoryListResult.data as List<StoryAU>)
+
+//                _uiState.value = ReaderFavouriteScreenUiState(authors = authorsResult.data as List<readerFavoriteAuthor>)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // 在此处可以设置错误状态或采取其他行动
+            }
+        }
+    }
+
+    init{
+        getStoryList(4)
+    }
 
     // Expose an immutable StateFlow
     val authorEditUiState = _authorEditUiState.asStateFlow()
 
     // 管理当前显示的屏幕
+
     private val _activeScreen = MutableStateFlow("AuthorMainScreen")
+//    private val _activeScreen = MutableStateFlow("AuthorMainScreen")
     val activeScreen = _activeScreen.asStateFlow()
 
     fun setActiveScreen(screenName: String) {

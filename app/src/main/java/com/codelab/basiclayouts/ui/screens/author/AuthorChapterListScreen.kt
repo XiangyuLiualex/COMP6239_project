@@ -117,7 +117,7 @@ fun StoryEditScreen(viewModel: AuthorEditViewModel) {
                 onDismiss = { showDialog.value = false },
                 onConfirm = { chapterTitle ->
                     val newChapter = ChapterAU(
-                        chapterId = Random.nextInt(),
+                        chapterId = -Random.nextInt(1, Int.MAX_VALUE),
                         chapterTitle = chapterTitle,
                         storyId = uiState.thisStory.storyId,
                         contentList = listOf(),
