@@ -35,9 +35,9 @@ class MainActivity : ComponentActivity() {
 //                    ReaderFavouriteScreen()
 //                    AuthorEditMainScreen()
 //                    StoryEditScreen()
-//                    ParentScreen()
+                    ParentScreen()
 //                    ReaderLibraryScreen()
-                    StoryContentScreen()
+//                    StoryContentScreen()
 
                 }
 
