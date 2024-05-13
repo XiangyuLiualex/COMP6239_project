@@ -21,6 +21,7 @@ import com.codelab.basiclayouts.R
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codelab.basiclayouts.model.reader.readerTContent
+import com.codelab.basiclayouts.model.reader.readerTOption
 import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderLibraryScreenViewModel
 import com.codelab.basiclayouts.ui.viewmodel.reader.StoryContentScreenViewModel
 
@@ -33,7 +34,7 @@ fun StoryContentScreen(viewModel: StoryContentScreenViewModel = androidx.lifecyc
         StoryContent(state.readerTContentList.map {
             convertToContentItem(it)
         })
-        ChapterOptions(state.readerTOptionList.map { it.optionName })
+        ChapterOptions(state.readerTOptionList.map { it },viewModel)
     }
 }
 
@@ -57,10 +58,10 @@ fun StoryContent(contentItems: List<ContentItem>) {
 }
 
 @Composable
-fun ChapterOptions(options: List<String>) {
+fun ChapterOptions(options: List<readerTOption>, viewModel:StoryContentScreenViewModel) {
     options.forEach { option ->
-        Button(onClick = { /* Handle click */ }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
-            Text(text = option)
+        Button(onClick = { viewModel.loadNextChapterByOption(1,option.nextChapterId) }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
+            Text(text = option.optionName)
         }
     }
 }

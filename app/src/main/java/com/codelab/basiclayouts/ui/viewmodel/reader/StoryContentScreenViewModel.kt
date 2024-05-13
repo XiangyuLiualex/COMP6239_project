@@ -52,7 +52,34 @@ class StoryContentScreenViewModel : ViewModel() {
                 // 在此处可以设置错误状态或采取其他行动
             }
         }
+    }
 
-
+        fun loadNextChapterByOption(storyId : Int,chapterId : Int) {
+            viewModelScope.launch {
+                try {
+                    // 创建一个 Map
+                    val params = mapOf("storyId" to storyId, "chapterId" to chapterId)
+                    // 章节详细信息
+                    val tStoryDetailResult =
+                        RetrofitInstance.tChapterContentService.tStoryByStoryId(params)
+                    val tChapterDetailResult =
+                        RetrofitInstance.tChapterContentService.tChapterByChapterId(params)
+                    val readerStoryContentListResult =
+                        RetrofitInstance.tChapterContentService.tContentListByChapterId(params)
+                    val readerTOptionList =
+                        RetrofitInstance.tChapterContentService.tOptionListByChapterId(params)
+                    // 更新状态
+                    _uiState.value = _uiState.value.copy(
+                        chapterId = chapterId,//与load相比多加一个更新章节ID
+                        readerTStorys = tStoryDetailResult.data as readerTStorys,
+                        readerTChapter = tChapterDetailResult.data as readerTChapter,
+                        readerTContentList = readerStoryContentListResult.data as List<readerTContent>,
+                        readerTOptionList = readerTOptionList.data as List<readerTOption>
+                    )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    // 在此处可以设置错误状态或采取其他行动
+                }
+            }
     }
 }

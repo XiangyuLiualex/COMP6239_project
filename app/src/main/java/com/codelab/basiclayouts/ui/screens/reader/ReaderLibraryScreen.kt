@@ -29,11 +29,11 @@ import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderLibraryScreenViewModel
 
 @Composable
 fun ReaderLibraryScreen(viewModel: ReaderLibraryScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
-    val stories by viewModel.uiState.collectAsState()
+    val state = viewModel.uiState.collectAsState().value
 
     Column(modifier = Modifier.padding(16.dp)) {
         LibraryHeader()
-        stories.forEach { story ->
+        state.readerTStorys.forEach { story ->
             StoryCard(story, viewModel)
         }
     }
@@ -54,14 +54,13 @@ fun StoryCard(story: readerTStorys, viewModel: ReaderLibraryScreenViewModel) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = {
                     isFavorited.value = !isFavorited.value
-                    viewModel.toggleFavorite(story.storyId)
+                    viewModel.toggleFavorite(story.storyId,viewModel.uiState.value.readerId)
                 }) {
                     Icon(Icons.Filled.Favorite, contentDescription = "Favorite", tint = if (isFavorited.value) androidx.compose.ui.graphics.Color.Red else androidx.compose.ui.graphics.Color.Gray)
                 }
                 Text("${story.storyName}", fontWeight = FontWeight.Bold, fontSize = 16.sp)
             }
             Text(story.storyDescription, fontSize = 14.sp)
-//            Text("${story.currentProgress}", fontSize = 12.sp, color = androidx.compose.ui.graphics.Color.Gray)
         }
     }
 }

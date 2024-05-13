@@ -7,24 +7,27 @@ import com.codelab.basiclayouts.model.reader.readerFavoriteAuthor
 import com.codelab.basiclayouts.model.reader.readerTStorys
 import com.codelab.basiclayouts.model.reader.readerTStorysForUiState
 import com.codelab.basiclayouts.ui.uistate.reader.ReaderFavouriteScreenUiState
+import com.codelab.basiclayouts.ui.uistate.reader.ReaderLibraryScreenUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ReaderLibraryScreenViewModel  : ViewModel() {
-    private val _uiState = MutableStateFlow<List<readerTStorys>>(emptyList())
-    val uiState: StateFlow<List<readerTStorys>> = _uiState
+//    private val _uiState = MutableStateFlow<List<readerTStorys>>(emptyList())
+    private val _uiState = MutableStateFlow(ReaderLibraryScreenUiState())
+    val uiState: StateFlow<ReaderLibraryScreenUiState> = _uiState.asStateFlow()
 
     init {
-        loadStories()
+        loadStories(_uiState.value.readerId)
     }
 
 
-    //暂时还不行,有点麻烦
-    private fun loadStories() {
+
+    private fun loadStories(readerId : Int) {
         viewModelScope.launch {
             try {
-                val params = mapOf("readerId" to 1)
+                val params = mapOf("readerId" to readerId)
                 // 调用挂起函数
                 val storysResult = RetrofitInstance.tLibraryService.tLibraryList(params)
                 val storys = storysResult.data as List<readerTStorys>//存储剧本的基本信息还要从其他表查找信息
@@ -46,7 +49,9 @@ class ReaderLibraryScreenViewModel  : ViewModel() {
 //                }
 
                 // 更新状态
-                _uiState.value = storys
+                _uiState.value = _uiState.value.copy(
+                    readerTStorys = storys
+                )
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -55,7 +60,24 @@ class ReaderLibraryScreenViewModel  : ViewModel() {
         }
     }
 
-    fun toggleFavorite(storyId: Int) {
+    fun toggleFavorite(storyId: Int,readerId: Int) {
         // 实现收藏和取消收藏逻辑
+        viewModelScope.launch {
+            try {
+                val params = mapOf("readerId" to readerId)
+                // 调用挂起函数
+                val storysResult = RetrofitInstance.tLibraryService.tLibraryList(params)
+                val storys = storysResult.data as List<readerTStorys>//存储剧本的基本信息还要从其他表查找信息
+
+                // 更新状态
+                _uiState.value = _uiState.value.copy(
+                    readerTStorys = storys
+                )
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
     }
 }

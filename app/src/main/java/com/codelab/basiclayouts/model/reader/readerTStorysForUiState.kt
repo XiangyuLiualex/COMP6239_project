@@ -19,7 +19,7 @@ data class readerTStorysForUiState(
     @SerializedName("storyTrends") val storyTrends: Int = -1,
 
     /** 剧本封面URL，用于展示剧本封面图片 */
-    @SerializedName("storyCoverUrl") val storyCoverUrl: String = "",
+    @SerializedName("storyCoverUrl") val storyCoverUrl: String? = "",
 
     /** 剧本作者ID */
     @SerializedName("authorId") val authorId: Int = -1,
@@ -36,5 +36,11 @@ data class readerTStorysForUiState(
     @SerializedName("currentProgressText") val currentProgressText: String? = "",
 
     /** 剧本当前被阅读到哪个章节 */
-//    @SerializedName("currentChapterName") val currentChapterName: String
+    @SerializedName("currentChapterId") val currentChapterId: String,
+
+    /** 剧本当前被阅读到哪个章节 */
+    @SerializedName("currentChapterName") val currentChapterName: String,
+
+    /** 剧本当前最新的章节历史记录头节点列表 */
+    @SerializedName("currentChapterName") val readingPathList  : List<readingPath> = listOf(),//头节点
 )
