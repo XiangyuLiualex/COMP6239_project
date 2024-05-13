@@ -19,7 +19,7 @@ interface TLibraryService {
     suspend fun tLibraryList(@Body values: Map<String, Int>): ResultData<List<readerTStorys>>
 
     /**
-     * 根据读者ID展示图书馆
+     * 根据读者ID展示图书馆,重要
      */
     @POST("/TLibraryCtrl/tLibraryListReaderStoryForUiState")
     suspend fun tLibraryListReaderStoryForUiState(@Body values: Map<String, Int>): ResultData<List<readerTStorysForUiState>>

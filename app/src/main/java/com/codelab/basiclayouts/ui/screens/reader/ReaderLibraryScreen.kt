@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codelab.basiclayouts.R
-import com.codelab.basiclayouts.model.reader.readerTStorys
+import com.codelab.basiclayouts.model.reader.readerTStorys//不用这个了，用下面那个readerTStorysForUiState
 import com.codelab.basiclayouts.model.reader.readerTStorysForUiState
 import com.codelab.basiclayouts.ui.uistate.reader.ReaderLibraryScreenUiState
 import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderLibraryScreenViewModel
@@ -40,7 +40,7 @@ fun ReaderLibraryScreen(viewModel: ReaderLibraryScreenViewModel = androidx.lifec
 }
 
 @Composable
-fun StoryCard(story: readerTStorys, viewModel: ReaderLibraryScreenViewModel) {
+fun StoryCard(story: readerTStorysForUiState, viewModel: ReaderLibraryScreenViewModel) {
     val isFavorited = remember { mutableStateOf(false) }
     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.Top) {
         Image(
@@ -58,9 +58,18 @@ fun StoryCard(story: readerTStorys, viewModel: ReaderLibraryScreenViewModel) {
                 }) {
                     Icon(Icons.Filled.Favorite, contentDescription = "Favorite", tint = if (isFavorited.value) androidx.compose.ui.graphics.Color.Red else androidx.compose.ui.graphics.Color.Gray)
                 }
-                Text("${story.storyName}", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text("${story.storyName}  ", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text("Trends:${story.storyTrends}", fontWeight = FontWeight.Thin, fontSize = 13.sp)
+
             }
-            Text(story.storyDescription, fontSize = 14.sp)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("${story.author}", fontSize = 14.sp)
+                Text(":${story.storyDescription}", fontSize = 14.sp)
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("${story.currentProgressText}:", fontSize = 14.sp)
+                Text(":${story.currentChapterName}", fontSize = 14.sp)
+            }
         }
     }
 }

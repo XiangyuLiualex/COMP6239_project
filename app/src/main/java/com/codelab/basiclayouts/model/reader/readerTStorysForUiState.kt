@@ -27,7 +27,7 @@ data class readerTStorysForUiState(
     //以下是要从其他表中取得的信息
 
     /** 剧本作者 */
-    @SerializedName("authorName") val author: String?="",
+    @SerializedName("author") val author: String?="",
 
     /** 剧本阅读进度，0未看，1正在看，2已看完 */
     @SerializedName("currentProgress") val currentProgress: Int = -1,
@@ -36,11 +36,11 @@ data class readerTStorysForUiState(
     @SerializedName("currentProgressText") val currentProgressText: String? = "",
 
     /** 剧本当前被阅读到哪个章节 */
-    @SerializedName("currentChapterId") val currentChapterId: String,
+    @SerializedName("currentChapterId") val currentChapterId: Int,
 
     /** 剧本当前被阅读到哪个章节 */
     @SerializedName("currentChapterName") val currentChapterName: String,
 
     /** 剧本当前最新的章节历史记录头节点列表 */
-    @SerializedName("currentChapterName") val readingPathList  : List<readingPath> = listOf(),//头节点
+    @SerializedName("readingPathList") val readingPathList  : List<readingPath> = listOf(),//头节点
 )
