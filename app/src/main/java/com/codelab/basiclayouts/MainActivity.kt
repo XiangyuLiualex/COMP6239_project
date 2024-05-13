@@ -1,6 +1,7 @@
 package com.codelab.basiclayouts
 
 import android.os.Bundle
+import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,14 +18,14 @@ import com.codelab.basiclayouts.ui.screens.reader.ReaderFavouriteScreen
 import com.codelab.basiclayouts.ui.theme.DarkTheme
 import com.codelab.basiclayouts.data.RetrofitInstance
 import com.codelab.basiclayouts.ui.screens.reader.ReaderLibraryScreen
-import com.codelab.basiclayouts.ui.screens.reader.ReaderStoryHistoryScreen
-import com.codelab.basiclayouts.ui.screens.reader.StoryContentScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 初始化 RetrofitInstance
-        RetrofitInstance.initialize(this)
+
+        window.requestFeature(Window.FEATURE_NO_TITLE)
         setContent {
             DarkTheme {
                 // A surface container using the 'background' color from the theme
@@ -32,18 +33,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    StoryApp()
+                      StoryApp()
 //                    ReaderFavouriteScreen()
-//                    AuthorEditMainScreen()
+//                    AuthorMainScreen()
 //                    StoryEditScreen()
 //                    ParentScreen()
-//                    StoryContentScreen()
-//                    ReaderLibraryScreen()
-//                    StoryContentScreen()
-//                    StoryContentScreen()
-                    ReaderLibraryScreen()
-//                    ReaderStoryHistoryScreen()
-//                    ReaderFavouriteScreen()
+                      //ReaderLibraryScreen()
 
                 }
 

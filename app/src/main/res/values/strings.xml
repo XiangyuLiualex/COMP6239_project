@@ -35,4 +35,7 @@
     <string name="new_story">New Story</string>
     <string name="draft_story">Draft Story</string>
     <string name="done_story">Done Story</string>
+    <string name="account">Account</string>
+    <string name="account_subtitle">Edit or manage your account</string>
+    <string name="change_profile_picture">Change profile picture</string>
 </resources>

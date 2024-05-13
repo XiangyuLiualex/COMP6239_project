@@ -81,4 +81,10 @@ val BrandColor = Color(0xFF71c309)
 val BorderColor = Color(0xFFEBF1EC)
 val Tertirary = Color(0xFF618061)
 val BgSocial = Color(0xFFebf1ed)
+
+val Orange = Color(0xFFFF9012)
+val Green = Color(0xFF22BB9B)
+val PrimaryTextColor = Color(0xFF181818)
+val SecondaryTextColor = Color(0x4C181818)
+val CardBackgroundColor = Color(0xFFE6E6E6)
 /** shared color **/

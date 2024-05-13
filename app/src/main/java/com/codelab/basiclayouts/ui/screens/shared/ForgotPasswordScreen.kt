@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.codelab.basiclayouts.R
@@ -19,9 +20,24 @@ import com.codelab.basiclayouts.ui.components.ImageComponent
 import com.codelab.basiclayouts.ui.components.MyButton
 import com.codelab.basiclayouts.ui.components.MyTextField
 import com.codelab.basiclayouts.ui.components.TextInfoComponent
+import com.codelab.basiclayouts.ui.viewmodel.shared.SignupViewModel
 
 @Composable
-fun ForgotPasswordScreen(navController: NavHostController) {
+fun ForgotPasswordScreen(
+    navController: NavHostController,
+    viewModel: SignupViewModel = hiltViewModel(),
+    ) {
+    ForgotPasswordContent(
+        navController = navController,
+        onChangeEmail = viewModel::onChangeEmail
+    )
+}
+
+@Composable
+private fun ForgotPasswordContent(
+    navController: NavHostController,
+    onChangeEmail: (String) -> Unit,
+) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -36,7 +52,11 @@ fun ForgotPasswordScreen(navController: NavHostController) {
                 textVal = "Don't worry, strange things happen. Please enter the email address associated with your account."
             )
             Spacer(modifier = Modifier.height(20.dp))
-            MyTextField(labelVal = "email ID", icon = R.drawable.share_at_symbol)
+            MyTextField(
+                labelVal = "email ID",
+                icon = R.drawable.share_at_symbol,
+                onTextChange = onChangeEmail
+            )
             MyButton(labelVal = "Submit", navController)
         }
     }

@@ -1,5 +1,6 @@
 package com.codelab.basiclayouts.ui.screens.shared
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,10 +16,8 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.codelab.basiclayouts.R
+import com.codelab.basiclayouts.model.LoginUser
+import com.codelab.basiclayouts.model.SelectedIdentity.selectedIdentity
 import com.codelab.basiclayouts.ui.components.BottomComponent
 import com.codelab.basiclayouts.ui.components.BottomLoginTextComponent
 import com.codelab.basiclayouts.ui.components.ForgotPasswordTextComponent
@@ -37,10 +38,27 @@ import com.codelab.basiclayouts.ui.components.MyTextField
 import com.codelab.basiclayouts.ui.components.PasswordInputComponent
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
-    var selectedIdentity by remember { mutableStateOf(Identity.READER) }
+fun LoginScreen(
+    navController: NavHostController,
+    ) {
+    LoginContent(
+        navController = navController,
+        onChangePassword = { LoginUser.password = it },
+        onChangeEmail = { LoginUser.email = it },
+    )
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Composable
+private fun LoginContent(
+    navController: NavHostController,
+    onChangePassword: (String) -> Unit,
+    onChangeEmail: (String) -> Unit,
+) {
     Surface(
-        modifier = Modifier.fillMaxSize().padding(20.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
         color = Color.White
     ) {
         Column {
@@ -49,9 +67,13 @@ fun LoginScreen(navController: NavHostController) {
             HeadingTextComponent(heading = "Login")
             Spacer(modifier = Modifier.height(20.dp))
             Column {
-                MyTextField(labelVal = "email ID", R.drawable.share_at_symbol)
+                MyTextField(
+                    labelVal = "email ID",
+                    R.drawable.share_at_symbol,
+                    onTextChange = onChangeEmail
+                )
                 Spacer(modifier = Modifier.height(15.dp))
-                PasswordInputComponent(labelVal = "Password")
+                PasswordInputComponent(labelVal = "Password", onChangePassword)
                 Spacer(modifier = Modifier.height(15.dp))
                 Row(
                     horizontalArrangement = Arrangement.End,
@@ -59,13 +81,20 @@ fun LoginScreen(navController: NavHostController) {
                 ) {
                     ForgotPasswordTextComponent(navController)
                 }
-                IdentityOptions(selectedIdentity = selectedIdentity, onIdentitySelected = { selectedIdentity = it })
+                IdentityOptions(
+                    selectedIdentity = mutableStateOf(selectedIdentity),
+                )
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.TopStart
                 ) {
                     Column {
-                        MainPageButton(labelVal = "Continue", identity = selectedIdentity, navController = navController)
+                        MainPageButton(
+                            labelVal = "Continue",
+                            identity = selectedIdentity,
+                            navController = navController,
+                            onclick = { }
+                        )
                         BottomComponent()
                         Spacer(modifier = Modifier.height(5.dp))
                         BottomLoginTextComponent(
@@ -84,17 +113,19 @@ enum class Identity {
     AUTHOR
 }
 @Composable
-fun IdentityOptions(selectedIdentity: Identity, onIdentitySelected: (Identity) -> Unit) {
+fun IdentityOptions(
+    selectedIdentity: MutableState<Identity>
+) {
     Column {
         RadioOption(
             text = "Reader",
-            selected = selectedIdentity == Identity.READER,
-            onSelect = { onIdentitySelected(Identity.READER) }
+            selected = selectedIdentity.value == Identity.READER,
+            onSelect = { selectedIdentity.value = Identity.READER }
         )
         RadioOption(
             text = "Author",
-            selected = selectedIdentity == Identity.AUTHOR,
-            onSelect = { onIdentitySelected(Identity.AUTHOR) }
+            selected = selectedIdentity.value == Identity.AUTHOR,
+            onSelect = { selectedIdentity.value = Identity.AUTHOR }
         )
     }
 }
