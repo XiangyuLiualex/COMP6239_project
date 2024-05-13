@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import com.codelab.basiclayouts.R
 import com.codelab.basiclayouts.model.reader.readerFavoriteAuthor
 import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderFavouriteScreenViewModel
 
@@ -100,7 +101,7 @@ fun AuthorCard(author: readerFavoriteAuthor, viewModel: ReaderFavouriteScreenVie
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = rememberImagePainter(author.photoUrl),
+                painter = rememberImagePainter(R.drawable.ab1_inversions),//author.photoUrl
                 contentDescription = "Author Avatar",
                 modifier = Modifier.size(60.dp),
                 contentScale = ContentScale.Crop
