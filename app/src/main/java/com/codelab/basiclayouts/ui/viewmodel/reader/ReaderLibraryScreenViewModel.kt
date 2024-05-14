@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ReaderLibraryScreenViewModel  : ViewModel() {
+class ReaderLibraryScreenViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ReaderLibraryScreenUiState())
     val uiState: StateFlow<ReaderLibraryScreenUiState> = _uiState.asStateFlow()
 
@@ -21,46 +21,37 @@ class ReaderLibraryScreenViewModel  : ViewModel() {
         loadStories(_uiState.value.readerId)
     }
 
-
-
-    private fun loadStories(readerId : Int) {
+    private fun loadStories(readerId: Int) {
         viewModelScope.launch {
             try {
                 val params = mapOf("readerId" to readerId)
-                // 调用挂起函数
                 val storysResult = RetrofitInstance.tLibraryService.tLibraryListReaderStoryForUiState(params)
-                val storys = storysResult.data as List<readerTStorysForUiState>//存储剧本的基本信息还要从其他表查找信息
+                val storys = storysResult.data as List<readerTStorysForUiState>
 
-                // 更新状态
                 _uiState.value = _uiState.value.copy(
                     readerTStorys = storys
                 )
-
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
         }
     }
 
-    fun toggleFavorite(storyId: Int,readerId: Int) {
-        // 实现收藏和取消收藏逻辑
+    fun toggleFavorite(storyId: Int, readerId: Int) {
         viewModelScope.launch {
             try {
-                val params = mapOf("readerId" to readerId)
-                // 调用挂起函数
-                val storysResult = RetrofitInstance.tLibraryService.tLibraryListReaderStoryForUiState(params)
-                val storys = storysResult.data as List<readerTStorysForUiState>//存储剧本的基本信息还要从其他表查找信息
-
-                // 更新状态
-                _uiState.value = _uiState.value.copy(
-                    readerTStorys = storys
-                )
-
+                val params = mapOf("readerId" to readerId, "storyId" to storyId)
+                val delResult = RetrofitInstance.tLibraryService.tLibraryDel(params)
+                if (delResult.code == 2000) {
+                    // 从 UI 状态中移除取消收藏的故事
+                    _uiState.value = _uiState.value.copy(
+                        readerTStorys = _uiState.value.readerTStorys.filterNot { it.storyId == storyId }
+                    )
+                }
+                loadStories(_uiState.value.readerId)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
         }
     }
 }

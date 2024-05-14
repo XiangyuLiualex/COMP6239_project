@@ -26,7 +26,8 @@ import com.codelab.basiclayouts.model.reader.readerTStorysForUiState
 import com.codelab.basiclayouts.ui.uistate.reader.ReaderLibraryScreenUiState
 import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderLibraryScreenViewModel
 
-
+//还差点击图书卡片跳转到读书页面的功能，需要跳转，
+// 需要跳转时传readerTStorysForUiState的currentChapterId和readingPathList的哪个头节点
 @Composable
 fun ReaderLibraryScreen(viewModel: ReaderLibraryScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val state = viewModel.uiState.collectAsState().value
@@ -41,7 +42,6 @@ fun ReaderLibraryScreen(viewModel: ReaderLibraryScreenViewModel = androidx.lifec
 
 @Composable
 fun StoryCard(story: readerTStorysForUiState, viewModel: ReaderLibraryScreenViewModel) {
-    val isFavorited = remember { mutableStateOf(false) }
     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.Top) {
         Image(
             painter = painterResource(id = R.drawable.ab2_quick_yoga),//换成用户头像
@@ -53,14 +53,12 @@ fun StoryCard(story: readerTStorysForUiState, viewModel: ReaderLibraryScreenView
         Column(modifier = Modifier.weight(1f).padding(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = {
-                    isFavorited.value = !isFavorited.value
-                    viewModel.toggleFavorite(story.storyId,viewModel.uiState.value.readerId)
+                    viewModel.toggleFavorite(story.storyId, viewModel.uiState.value.readerId)
                 }) {
-                    Icon(Icons.Filled.Favorite, contentDescription = "Favorite", tint = if (isFavorited.value) androidx.compose.ui.graphics.Color.Red else androidx.compose.ui.graphics.Color.Gray)
+                    Icon(Icons.Filled.Favorite, contentDescription = "Unfavorite", tint = androidx.compose.ui.graphics.Color.Red)
                 }
                 Text("${story.storyName}  ", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 Text("Trends:${story.storyTrends}", fontWeight = FontWeight.Thin, fontSize = 13.sp)
-
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("${story.author}", fontSize = 14.sp)
@@ -73,6 +71,7 @@ fun StoryCard(story: readerTStorysForUiState, viewModel: ReaderLibraryScreenView
         }
     }
 }
+
 
 
 
