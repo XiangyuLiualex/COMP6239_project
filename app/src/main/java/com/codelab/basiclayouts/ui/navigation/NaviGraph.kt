@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.codelab.basiclayouts.ui.screens.author.AuthorMainScreen
+import com.codelab.basiclayouts.ui.screens.author.AuthorScreen
 import com.codelab.basiclayouts.ui.screens.shared.LoginScreen
 import com.codelab.basiclayouts.ui.screens.shared.ForgotPasswordScreen
 import com.codelab.basiclayouts.ui.screens.shared.ResetPasswordScreen
@@ -43,7 +44,7 @@ fun Navigation() {
             ProfileScreen(navController)
         }
         composable(route = "author_home_Screen") {
-            //AuthorMainScreen(navController)
+            AuthorScreen(navController)
         }
     }
 }
