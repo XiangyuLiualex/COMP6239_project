@@ -2,6 +2,7 @@ package com.codelab.basiclayouts.ui.viewmodel.reader
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.codelab.basiclayouts.R
 import com.codelab.basiclayouts.data.RetrofitInstance
 import com.codelab.basiclayouts.model.reader.readerFavoriteAuthor
 import com.codelab.basiclayouts.model.reader.readerTStorys
@@ -18,10 +19,13 @@ class ReaderLibraryScreenViewModel : ViewModel() {
     val uiState: StateFlow<ReaderLibraryScreenUiState> = _uiState.asStateFlow()
 
     init {
+        _uiState.value.copy(
+            readerId = R.integer.READERID
+        )
         loadStories(_uiState.value.readerId)
     }
 
-    private fun loadStories(readerId: Int) {
+    fun loadStories(readerId: Int) {
         viewModelScope.launch {
             try {
                 val params = mapOf("readerId" to readerId)

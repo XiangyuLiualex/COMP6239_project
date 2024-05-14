@@ -14,7 +14,7 @@ interface TLibraryService {
      * 根据读者ID展示图书馆,重要
      */
     @POST("/TLibraryCtrl/selectReaderStoryDetail")
-    suspend fun selectReaderStoryDetail(): ResultData<List<readerTStorysForUiState>>
+    suspend fun selectReaderStoryDetail(@Body values: Map<String, Int>): ResultData<List<readerTStorysForUiState>>
 
 
     /**

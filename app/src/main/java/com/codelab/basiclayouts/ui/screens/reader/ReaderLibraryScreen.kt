@@ -47,6 +47,13 @@ fun ReaderLibraryScreen(    navController: NavHostController,
         state.readerTStorys.forEach { story ->
             StoryCard(story, viewModel, navController)
         }
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = { viewModel.loadStories(R.integer.READERID) },
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        ) {
+            Text("Refresh")
+        }
     }
 }
 

@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import androidx.lifecycle.viewModelScope
+import com.codelab.basiclayouts.R
 import kotlinx.coroutines.launch
 
 class ReaderFavouriteScreenViewModel  : ViewModel() {
@@ -17,7 +18,10 @@ class ReaderFavouriteScreenViewModel  : ViewModel() {
 
     // 初始化时可以设置一些测试数据，或者通过 HTTP 请求获取数据
     init {
-        tFavoriteAuthorList(1)//替换为全局读者ID
+        _uiState.value.copy(
+            readerId = R.integer.READERID,
+        )
+        tFavoriteAuthorList(R.integer.READERID)//替换为全局读者ID
     }
 
     // 通过协程从远程获取数据，读者本人的ID
@@ -71,7 +75,8 @@ class ReaderFavouriteScreenViewModel  : ViewModel() {
             try {
                 if (query.isNotEmpty()){
                     // 创建一个 Map，包含作者名
-                    val params = mapOf("AuthorName" to query,"readerId" to "1")
+                    val tempId = R.integer.READERID.toString()
+                    val params = mapOf("AuthorName" to query,"readerId" to tempId)
                     val authorsResult = RetrofitInstance.tFavoriteAuthorService.tFavoriteAuthorListByAuthorName(params)
                     if (authorsResult.code == 2000) {
                         // 更新状态
@@ -80,7 +85,7 @@ class ReaderFavouriteScreenViewModel  : ViewModel() {
                         println("查询失败: ${authorsResult.msg}")
                     }
                 } else {
-                    tFavoriteAuthorList(1)
+                    tFavoriteAuthorList(R.integer.READERID)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

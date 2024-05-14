@@ -61,7 +61,8 @@ fun StoryHomeCard(story: readerTStorysForUiState, navController: NavHostControll
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable {
-                navController.navigate("storyContent/${story.storyId}/0/0/0")
+                val tempid = R.integer.READERID
+                navController.navigate("storyContent/$tempid/${story.storyId}/0/0")
             },
         verticalAlignment = Alignment.Top
     ) {

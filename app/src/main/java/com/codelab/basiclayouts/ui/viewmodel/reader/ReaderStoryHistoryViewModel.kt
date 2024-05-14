@@ -2,6 +2,7 @@ package com.codelab.basiclayouts.ui.viewmodel.reader
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.codelab.basiclayouts.R
 import com.codelab.basiclayouts.data.RetrofitInstance
 import com.codelab.basiclayouts.model.reader.readingPath
 import com.codelab.basiclayouts.ui.uistate.reader.ReaderStoryHistoryUiState
@@ -15,7 +16,7 @@ class ReaderStoryHistoryViewModel  : ViewModel(){
     val historyState: StateFlow<ReaderStoryHistoryUiState> = _historyState.asStateFlow()
 
     init {
-        loadHistory(1,1)//替换为全局读者ID
+        loadHistory(R.integer.READERID,1)//替换为全局读者ID
     }
 
     fun loadHistory(readerId: Int, storyId: Int) {

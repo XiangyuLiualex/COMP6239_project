@@ -2,6 +2,7 @@ package com.codelab.basiclayouts.ui.viewmodel.reader
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.codelab.basiclayouts.R
 import com.codelab.basiclayouts.data.RetrofitInstance
 import com.codelab.basiclayouts.model.reader.readerTStorysForUiState
 import com.codelab.basiclayouts.ui.uistate.reader.StoryHomeScreenUiState
@@ -20,11 +21,13 @@ class StoryHomeScreenViewModel : ViewModel() {
 
     public fun loadStories() {
         viewModelScope.launch {
-            try {
-                val storiesResult = RetrofitInstance.tLibraryService.selectReaderStoryDetail()
+            try {var params = mutableMapOf ("storyId" to 1,"chapterId" to 1)//随便写的一个参数什么不重要
+
+                val storiesResult = RetrofitInstance.tLibraryService.selectReaderStoryDetail(params)
                 val stories = storiesResult.data as List<readerTStorysForUiState>
 
                 _uiState.value = _uiState.value.copy(
+                    readerId = R.integer.READERID,
                     readerTStorys = stories
                 )
             } catch (e: Exception) {
