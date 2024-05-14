@@ -1,17 +1,15 @@
 package com.codelab.basiclayouts.ui.screens.reader
 
+import android.widget.VideoView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,47 +19,49 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.codelab.basiclayouts.R
+import com.codelab.basiclayouts.model.reader.readerTContent
+import com.codelab.basiclayouts.model.reader.readerTOption
 import com.codelab.basiclayouts.model.reader.readerTStorysForUiState
-import com.codelab.basiclayouts.ui.screens.shared.GuestFavorate
-import com.codelab.basiclayouts.ui.screens.shared.GuestLibrary
 import com.codelab.basiclayouts.ui.screens.shared.GuestMain
 import com.codelab.basiclayouts.ui.screens.shared.GuestProfile
 import com.codelab.basiclayouts.ui.theme.Primary
-import com.codelab.basiclayouts.ui.uistate.reader.ReaderLibraryScreenUiState
-import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderLibraryScreenViewModel
+import com.codelab.basiclayouts.ui.viewmodel.reader.StoryContentScreenViewModel
+import com.codelab.basiclayouts.ui.viewmodel.reader.StoryHomeScreenViewModel
 
 @Composable
-fun ReaderLibraryScreen(    navController: NavHostController,
-    viewModel: ReaderLibraryScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
-
+fun StoryHomeScreen(
+    navController: NavHostController,
+    viewModel: StoryHomeScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val state = viewModel.uiState.collectAsState().value
 
+    // 每次进入页面时重新加载数据
+    LaunchedEffect(Unit) {
+        viewModel.loadStories()
+    }
+
     Column(modifier = Modifier.padding(16.dp)) {
-        LibraryHeader()
+        HomeHeader()
         state.readerTStorys.forEach { story ->
-            StoryCard(story, viewModel, navController)
+            StoryHomeCard(story, navController)
         }
     }
 }
 
 @Composable
-fun StoryCard(story: readerTStorysForUiState, viewModel: ReaderLibraryScreenViewModel, navController: NavHostController) {
+fun StoryHomeCard(story: readerTStorysForUiState, navController: NavHostController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable {
-                val readerId = viewModel.uiState.value.readerId ?: 0
-                val storyId = story.storyId ?: 0
-                val chapterId = story.currentChapterId ?: 0
-                val currentReadingPathId = story.currentReadingPathId ?: 0
-                navController.navigate("storyContent/$readerId/$storyId/$chapterId/$currentReadingPathId")
+                navController.navigate("storyContent/${story.storyId}/0/0/0")
             },
         verticalAlignment = Alignment.Top
     ) {
@@ -73,40 +73,28 @@ fun StoryCard(story: readerTStorysForUiState, viewModel: ReaderLibraryScreenView
         )
         Spacer(Modifier.width(8.dp))
         Column(modifier = Modifier.weight(1f).padding(8.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = {
-                    viewModel.toggleFavorite(story.storyId, viewModel.uiState.value.readerId)
-                }) {
-                    Icon(Icons.Filled.Favorite, contentDescription = "Unfavorite", tint = androidx.compose.ui.graphics.Color.Red)
-                }
-                Text("${story.storyName}  ", fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                Text("Trends:${story.storyTrends}", fontWeight = FontWeight.Thin, fontSize = 13.sp)
-            }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("${story.author}", fontSize = 14.sp)
-                Text(":${story.storyDescription}", fontSize = 14.sp)
-            }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("${story.currentProgressText}:", fontSize = 14.sp)
-                Text(":${story.currentChapterName}", fontSize = 14.sp)
-            }
+            Text("${story.storyName}", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text("${story.storyDescription}", fontSize = 14.sp)
         }
     }
 }
 
 @Composable
-fun LibraryHeader() {
-    Text("Library", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+fun HomeHeader() {
+    Text("Story Home", fontSize = 24.sp, fontWeight = FontWeight.Bold)
 }
 
 
+
+
+
 @Composable
-private fun BottomBarForLib (pageIndex: MutableState<PageItemForLib>) {
+private fun BottomBarForHome (pageIndex: MutableState<PageItemForHome>) {
     NavigationBar () {
         NavigationBarItem(
-            selected = pageIndex.value == PageItemForLib.MAIN_PAGE,
+            selected = pageIndex.value == PageItemForHome.MAIN_PAGE,
             onClick = {
-                pageIndex.value = PageItemForLib.MAIN_PAGE
+                pageIndex.value = PageItemForHome.MAIN_PAGE
             },
             icon = { Image(
                 painter = painterResource(id = R.drawable.share_franky),
@@ -123,9 +111,9 @@ private fun BottomBarForLib (pageIndex: MutableState<PageItemForLib>) {
             }
         )
         NavigationBarItem(
-            selected = pageIndex.value == PageItemForLib.FAVORITE_PAGE,
+            selected = pageIndex.value == PageItemForHome.FAVORITE_PAGE,
             onClick = {
-                pageIndex.value = PageItemForLib.FAVORITE_PAGE
+                pageIndex.value = PageItemForHome.FAVORITE_PAGE
             },
             icon = { Image(
                 painter = painterResource(id = R.drawable.share_owl),
@@ -142,9 +130,9 @@ private fun BottomBarForLib (pageIndex: MutableState<PageItemForLib>) {
             }
         )
         NavigationBarItem(
-            selected = pageIndex.value == PageItemForLib.LIBRARY_PAGE,
+            selected = pageIndex.value == PageItemForHome.LIBRARY_PAGE,
             onClick = {
-                pageIndex.value = PageItemForLib.LIBRARY_PAGE
+                pageIndex.value = PageItemForHome.LIBRARY_PAGE
             },
             icon = { Image(
                 painter = painterResource(id = R.drawable.share_bone),
@@ -161,9 +149,9 @@ private fun BottomBarForLib (pageIndex: MutableState<PageItemForLib>) {
             }
         )
         NavigationBarItem(
-            selected = pageIndex.value == PageItemForLib.PROFILE_PAGE,
+            selected = pageIndex.value == PageItemForHome.PROFILE_PAGE,
             onClick = {
-                pageIndex.value = PageItemForLib.PROFILE_PAGE
+                pageIndex.value = PageItemForHome.PROFILE_PAGE
             },
             icon = { Image(
                 painter = painterResource(id = R.drawable.share_lantern),
@@ -182,7 +170,7 @@ private fun BottomBarForLib (pageIndex: MutableState<PageItemForLib>) {
     }
 }
 
-private enum class PageItemForLib {
+private enum class PageItemForHome {
     MAIN_PAGE,
     FAVORITE_PAGE,
     LIBRARY_PAGE,
@@ -192,9 +180,9 @@ private enum class PageItemForLib {
 
 
 @Composable
-fun LibScreen (nav: NavHostController) {
+fun HomeScreen (nav: NavHostController) {
     val pageIndex = remember {
-        mutableStateOf(PageItemForLib.MAIN_PAGE)
+        mutableStateOf(PageItemForHome.MAIN_PAGE)
     }
 
     androidx.compose.material3.Surface(
@@ -203,13 +191,13 @@ fun LibScreen (nav: NavHostController) {
             .fillMaxSize()
     ) {
         androidx.compose.material3.Scaffold(
-            bottomBar = { BottomBarForLib(pageIndex) },
+            bottomBar = { BottomBarForHome(pageIndex) },
         ) { _ ->
             when (pageIndex.value) {
-                PageItemForLib.MAIN_PAGE -> StoryHomeScreen(nav)
-                PageItemForLib.FAVORITE_PAGE -> ReaderFavouriteScreen(nav)
-                PageItemForLib.LIBRARY_PAGE -> ReaderLibraryScreen(nav)
-                PageItemForLib.PROFILE_PAGE -> GuestProfile(nav)
+                PageItemForHome.MAIN_PAGE -> StoryHomeScreen(nav)
+                PageItemForHome.FAVORITE_PAGE -> ReaderFavouriteScreen(nav)
+                PageItemForHome.LIBRARY_PAGE -> ReaderLibraryScreen(nav)
+                PageItemForHome.PROFILE_PAGE -> GuestProfile(nav)
             }
         }
     }

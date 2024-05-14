@@ -11,9 +11,11 @@ import com.codelab.basiclayouts.ui.screens.reader.ReaderLibraryScreen
 import com.codelab.basiclayouts.ui.screens.reader.StoryContentScreen
 import com.codelab.basiclayouts.ui.screens.author.AuthorScreen
 import com.codelab.basiclayouts.ui.screens.reader.FavouriteScreen
+import com.codelab.basiclayouts.ui.screens.reader.HomeScreen
 import com.codelab.basiclayouts.ui.screens.reader.LibScreen
 import com.codelab.basiclayouts.ui.screens.reader.ReaderFavouriteScreen
 import com.codelab.basiclayouts.ui.screens.reader.ReaderStoryHistoryScreen
+import com.codelab.basiclayouts.ui.screens.reader.StoryHomeScreen
 import com.codelab.basiclayouts.ui.screens.shared.LoginScreen
 import com.codelab.basiclayouts.ui.screens.shared.ForgotPasswordScreen
 import com.codelab.basiclayouts.ui.screens.shared.ResetPasswordScreen
@@ -81,6 +83,10 @@ fun Navigation() {
             val readerId = backStackEntry.arguments?.getString("readerId")?.toInt() ?: 0
             val storyId = backStackEntry.arguments?.getString("storyId")?.toInt() ?: 0
             ReaderStoryHistoryScreen(readerId = readerId, storyId = storyId)
+        }
+        // 添加新的导航项
+        composable("storyHome") {
+            HomeScreen(navController)
         }
     }
 }

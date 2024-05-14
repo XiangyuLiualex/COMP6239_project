@@ -248,7 +248,7 @@ fun FavouriteScreen (nav: NavHostController) {
             bottomBar = { BottomBarForFav(pageIndex) },
         ) { _ ->
             when (pageIndex.value) {
-                PageItemForFav.MAIN_PAGE -> GuestMain(nav)
+                PageItemForFav.MAIN_PAGE -> StoryHomeScreen(nav)
                 PageItemForFav.FAVORITE_PAGE -> ReaderFavouriteScreen(nav)
                 PageItemForFav.LIBRARY_PAGE -> ReaderLibraryScreen(nav)
                 PageItemForFav.PROFILE_PAGE -> GuestProfile(nav)

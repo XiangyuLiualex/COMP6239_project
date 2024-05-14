@@ -10,6 +10,11 @@ import retrofit2.http.Headers
 import retrofit2.http.Header
 
 interface TLibraryService {
+    /**
+     * 根据读者ID展示图书馆,重要
+     */
+    @POST("/TLibraryCtrl/selectReaderStoryDetail")
+    suspend fun selectReaderStoryDetail(): ResultData<List<readerTStorysForUiState>>
 
 
     /**
