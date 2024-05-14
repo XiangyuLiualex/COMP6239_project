@@ -46,12 +46,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.codelab.basiclayouts.R
 import com.codelab.basiclayouts.model.Profile
-import com.codelab.basiclayouts.ui.screens.shared.Identity
 import com.codelab.basiclayouts.ui.theme.BgSocial
 import com.codelab.basiclayouts.ui.theme.BorderColor
 import com.codelab.basiclayouts.ui.theme.BrandColor
 import com.codelab.basiclayouts.ui.theme.Primary
 import com.codelab.basiclayouts.ui.theme.Tertirary
+import com.codelab.basiclayouts.ui.viewmodel.shared.Identity
 import com.codelab.basiclayouts.ui.viewmodel.shared.SignupViewModel
 
 @Composable
@@ -100,7 +100,8 @@ fun ForgotPasswordHeadingTextComponent(action: String) {
 fun MyTextField(
     labelVal: String,
     icon: Int,
-    onTextChange: (String) -> Unit
+    onTextChange: (String) -> Unit,
+
 ) {
     var textVal by remember {
         mutableStateOf("")
@@ -313,9 +314,18 @@ fun ForgotPasswordTextComponent(navController: NavHostController) {
 }
 
 @Composable
-fun MyButton(labelVal: String, navController: NavHostController) {
+fun MyButton(labelVal: String,
+             navController: NavHostController,
+            signupViewModel: SignupViewModel,
+            onClick: () -> Unit
+) {
     Button(
-        onClick = { },
+        onClick = {
+            if (labelVal == "Submit") {
+                onClick() // 调用传入的函数
+                navController.navigate("ResetPassword")
+            }
+        },
         colors = ButtonDefaults.buttonColors(
             containerColor = BrandColor
         ),
@@ -325,11 +335,7 @@ fun MyButton(labelVal: String, navController: NavHostController) {
             text = labelVal,
             color = Color.White,
             fontSize = 18.sp,
-            modifier = Modifier.clickable {
-                if (labelVal == "Submit") {
-                    navController.navigate("ResetPassword")
-                }
-            }
+            modifier = Modifier.clickable { }
         )
     }
 }
@@ -344,7 +350,7 @@ fun ConfirmButton(
     Button(
         onClick = {
             Log.d("ConfirmButton", "Button clicked")
-            if (labelVal == "Save" || labelVal == "Submit") {
+            if (labelVal == "Continue" || labelVal == "Submit") {
                 if (signupViewModel.state.value.password == signupViewModel.state.value.confirmPassword) {
                     onClick() // 调用传入的函数
                     navController.navigate("LoginScreen")
@@ -368,7 +374,9 @@ fun ConfirmButton(
 }
 
 @Composable
-fun MainPageButton(labelVal: String,
+fun MainPageButton(
+    isProve:Boolean,
+    labelVal: String,
                    identity: Identity,
                    navController: NavHostController,
                    onclick:()->Unit
@@ -376,10 +384,14 @@ fun MainPageButton(labelVal: String,
     Button(
         onClick = {
             onclick()
-            when (identity) {
-                Identity.READER -> navController.navigate("GuestScreen")
-                Identity.AUTHOR -> navController.navigate("author_home_Screen")
+
+            if(isProve){
+                when (identity) {
+                    Identity.READER -> navController.navigate("GuestScreen")
+                    Identity.AUTHOR -> navController.navigate("author_home_Screen")
+                }
             }
+
         },
         colors = ButtonDefaults.buttonColors(
             containerColor = BrandColor

@@ -26,11 +26,13 @@ interface TUserService {
     @POST("/TUserCtrl/profileUpdate")
     suspend fun profileUpdate(@Body values: Profile): ResultData<Any>
 
+    @POST("/TUserCtrl/selectProfileByEmail")
+    suspend fun selectProfileByEmail(@Body values: Map<String, String>): ResultData<Profile>
     /**
      * 根据用户ID查询用户资料
      * @param values 包含用户ID的Map
      * @return ResultData包装的响应数据
      */
     @POST("/TUserCtrl/selectProfileByUserId")
-    suspend fun selectProfileByUserId(@Body values: Map<String, Int>): ResultData<Any>
+    suspend fun selectProfileByUserId(@Body values: Map<String, Int>): ResultData<Profile>
 }

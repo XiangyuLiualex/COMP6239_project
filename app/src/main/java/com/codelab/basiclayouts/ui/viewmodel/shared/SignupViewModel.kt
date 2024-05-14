@@ -23,17 +23,33 @@ class SignupViewModel @Inject constructor() : ViewModel() {
 
     fun onChangeEmail(newValue: String) = _state.update { it.copy(email = newValue) }
 
-    fun onSaveUserInfo() {
+
+    fun signUp() {
         viewModelScope.launch {
             try {
-                val signupResult = RetrofitInstance.tUserService.profileInsert(_state.value)
-
-                if (signupResult.code == 2000){
-                    //注册成功
-                }
+                // 创建一个 Map，包含读者ID
+//                val params = mapOf("userId" to 1)
+                // 调用挂起函数
+                val Result = RetrofitInstance.tUserService.profileInsert(_state.value)
+                // 更新状态
             } catch (e: Exception) {
                 e.printStackTrace()
+                // 在此处可以设置错误状态或采取其他行动
             }
         }
     }
+
+//    fun onSaveUserInfo() {
+//        viewModelScope.launch {
+//            try {
+//                val signupResult = RetrofitInstance.tUserService.profileInsert(_state.value)
+//
+//                if (signupResult.code == 2000){
+//                    //注册成功
+//                }
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+//        }
+//    }
 }
