@@ -1,4 +1,5 @@
 package com.codelab.basiclayouts.ui.screens.reader
+
 import android.widget.VideoView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -17,8 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import com.codelab.basiclayouts.R
 
-
-
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codelab.basiclayouts.model.reader.readerTContent
 import com.codelab.basiclayouts.model.reader.readerTOption
@@ -30,11 +29,18 @@ fun StoryContentScreen(viewModel: StoryContentScreenViewModel = androidx.lifecyc
     val state = viewModel.uiState.collectAsState().value
 
     Column(modifier = Modifier.padding(16.dp)) {
-        StoryHeader(state.readerTStorys.storyName, state.readerTChapter.chapterTitle)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            StoryHeader(state.readerTStorys.storyName, state.readerTChapter.chapterTitle)
+            StoryHeaderButtons(viewModel)
+        }
         StoryContent(state.readerTContentList.map {
             convertToContentItem(it)
         })
-        ChapterOptions(state.readerTOptionList.map { it },viewModel)
+        ChapterOptions(state.readerTOptionList.map { it }, viewModel)
     }
 }
 
@@ -43,6 +49,19 @@ fun StoryHeader(storyTitle: String, chapterTitle: String) {
     Column {
         Text(text = storyTitle, fontSize = 24.sp, fontWeight = FontWeight.Bold)
         Text(text = chapterTitle, fontSize = 18.sp, fontWeight = FontWeight.Medium)
+    }
+}
+
+@Composable
+fun StoryHeaderButtons(viewModel: StoryContentScreenViewModel) {
+    Row {
+        Button(onClick = { viewModel.addFavoriteAuthor() }) {
+            Text("Add Favorite Author")
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Button(onClick = { viewModel.addToLibrary() }) {
+            Text("Add to Library")
+        }
     }
 }
 
@@ -58,15 +77,15 @@ fun StoryContent(contentItems: List<ContentItem>) {
 }
 
 @Composable
-fun ChapterOptions(options: List<readerTOption>, viewModel:StoryContentScreenViewModel) {
+fun ChapterOptions(options: List<readerTOption>, viewModel: StoryContentScreenViewModel) {
     options.forEach { option ->
-        Button(onClick = { viewModel.loadNextChapterByOption(1,option.nextChapterId) }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
+        Button(onClick = { viewModel.loadNextChapterByOption(1, option.nextChapterId) }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
             Text(text = option.optionName)
         }
     }
 }
 
-fun convertToContentItem(readerTContent:  readerTContent): ContentItem {
+fun convertToContentItem(readerTContent: readerTContent): ContentItem {
     return when (readerTContent.contentType) {
         0 -> ContentItem.Text(readerTContent.contentData)
         1 -> ContentItem.Image(R.drawable.ab2_quick_yoga) // 根据情况替换readerStoryContent.contentData
@@ -75,7 +94,7 @@ fun convertToContentItem(readerTContent:  readerTContent): ContentItem {
     }
 }
 
-//定义内容类型 Define content types
+// 定义内容类型 Define content types
 sealed class ContentItem {
     data class Text(val text: String) : ContentItem()
     data class Image(val resourceId: Int) : ContentItem()

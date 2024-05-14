@@ -18,6 +18,8 @@ import com.codelab.basiclayouts.ui.screens.reader.ReaderFavouriteScreen
 import com.codelab.basiclayouts.ui.theme.DarkTheme
 import com.codelab.basiclayouts.data.RetrofitInstance
 import com.codelab.basiclayouts.ui.screens.reader.ReaderLibraryScreen
+import com.codelab.basiclayouts.ui.screens.reader.ReaderStoryHistoryScreen
+import com.codelab.basiclayouts.ui.screens.reader.StoryContentScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,8 +40,10 @@ class MainActivity : ComponentActivity() {
 //                    AuthorMainScreen()
 //                    StoryEditScreen()
 //                    ParentScreen()
-                      ReaderLibraryScreen()
-
+//                      ReaderLibraryScreen()
+//                    ReaderFavouriteScreen()
+//                    ReaderStoryHistoryScreen()
+                    StoryContentScreen()
                 }
 
             }

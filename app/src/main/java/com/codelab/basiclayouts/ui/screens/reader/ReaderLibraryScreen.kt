@@ -27,7 +27,8 @@ import com.codelab.basiclayouts.ui.uistate.reader.ReaderLibraryScreenUiState
 import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderLibraryScreenViewModel
 
 //还差点击图书卡片跳转到读书页面的功能，需要跳转，
-// 需要跳转时传readerTStorysForUiState的currentChapterId和readingPathList的哪个头节点
+// 需要跳转时传readerTStorysForUiState的currentChapterId
+// 和readingPathList的哪个头节点
 @Composable
 fun ReaderLibraryScreen(viewModel: ReaderLibraryScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val state = viewModel.uiState.collectAsState().value

@@ -82,4 +82,33 @@ class StoryContentScreenViewModel : ViewModel() {
                 }
             }
     }
+
+    fun addFavoriteAuthor() {
+        viewModelScope.launch {
+            try {
+                // 创建一个 Map
+                val params = mapOf("storyId" to _uiState.value.storyId, "readerId" to _uiState.value.readerId,"isUsed" to 1)
+                // 章节详细信息
+                val tStoryDetailResult =
+                    RetrofitInstance.tFavoriteAuthorService.tFavoriteAuthorInsertByStoryId(params)//根据故事ID找到读者然后userID添加喜欢作者
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun addToLibrary() {
+        viewModelScope.launch {
+            try {
+                // 创建一个 Map
+                val params = mapOf("storyId" to _uiState.value.storyId, "readerId" to _uiState.value.readerId,"isUsed" to 1)
+                // 章节详细信息
+                val tStoryDetailResult =
+                    RetrofitInstance.tLibraryService.tLibraryInsert(params)//根据故事ID喜欢故事
+            } catch (e: Exception) {
+                e.printStackTrace()
+
+            }
+        }
+    }
 }

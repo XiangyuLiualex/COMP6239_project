@@ -26,6 +26,12 @@ interface TFavoriteAuthorService {
     suspend fun tFavoriteAuthorInsert(@Body values: Map<String, Int>): ResultData<Any>
 
     /**
+     * 添加喜欢的作者
+     */
+    @POST("/TFavoriteAuthorCtrl/tFavoriteAuthorInsertByStoryId")
+    suspend fun tFavoriteAuthorInsertByStoryId(@Body values: Map<String, Int>): ResultData<Any>
+
+    /**
      * 根据读者ID和作者ID删除某项喜欢的作者
      */
     @POST("/TFavoriteAuthorCtrl/tFavoriteAuthorDel")
