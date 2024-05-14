@@ -17,6 +17,7 @@ import com.codelab.basiclayouts.ui.screens.shared.SignupScreen
 import com.codelab.basiclayouts.ui.screens.shared.GuestScreen
 import com.codelab.basiclayouts.ui.screens.shared.MainScreen
 import com.codelab.basiclayouts.ui.screens.shared.ProfileScreen
+import com.codelab.basiclayouts.ui.screens.shared.Reset
 
 @Composable
 fun Navigation() {
@@ -29,12 +30,16 @@ fun Navigation() {
         composable(route = "LoginScreen") {
             LoginScreen(navController)
         }
-        composable(route = "ForgotPassword") {
-            ForgotPasswordScreen(navController)
+        composable(route = "Reset") {
+            Reset(navController)
         }
-        composable(route = "ResetPassword") {
-            ResetPasswordScreen(navController)
-        }
+
+//        composable(route = "ForgotPassword") {
+//            ForgotPasswordScreen(navController)
+//        }
+//        composable(route = "ResetPassword") {
+//            ResetPasswordScreen(navController)
+//        }
         composable(route = "SignupScreen") {
             SignupScreen(navController)
         }

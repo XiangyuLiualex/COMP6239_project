@@ -18,36 +18,34 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.codelab.basiclayouts.R
 import com.codelab.basiclayouts.model.Profile
-import com.codelab.basiclayouts.ui.components.ConfirmButton
 import com.codelab.basiclayouts.ui.components.ForgotPasswordHeadingTextComponent
 import com.codelab.basiclayouts.ui.components.ImageComponent
 import com.codelab.basiclayouts.ui.components.PasswordConfirmComponent
+import com.codelab.basiclayouts.ui.components.SubmitConfirmButton
 import com.codelab.basiclayouts.ui.components.TextInfoComponent
-import com.codelab.basiclayouts.ui.viewmodel.shared.SignupViewModel
+import com.codelab.basiclayouts.ui.viewmodel.shared.ResetPasswordViewModel
 
 @Composable
 fun ResetPasswordScreen(
     navController: NavHostController,
-    viewModel: SignupViewModel = hiltViewModel(),
+    viewModel: ResetPasswordViewModel,
     ) {
     val state by viewModel.state.collectAsState()
     ResetPasswordContent(
         navController = navController,
-        signupViewModel = viewModel,
+        resetPasswordViewModel = viewModel,
         state = state,
         onChangePassword = viewModel::onChangePassword,
         onChangeComfirmPassword = viewModel::onChangeComfirmPassword,
-        onSaveUserInfo = { viewModel.signUp() } // 使用lambda传递当前state
     )
 }
 @Composable
 private fun ResetPasswordContent(
     navController: NavHostController,
-    signupViewModel: SignupViewModel,
+    resetPasswordViewModel: ResetPasswordViewModel,
     state: Profile,
     onChangePassword: (String) -> Unit,
     onChangeComfirmPassword: (String) -> Unit,
-    onSaveUserInfo: () -> Unit,
 ) {
     Surface(
         color = Color.White,
@@ -76,19 +74,30 @@ private fun ResetPasswordContent(
                     onPasswordChange = onChangeComfirmPassword
                 )
             }
-            ConfirmButton(
+            SubmitConfirmButton(
                 labelVal = "Submit",
                 navController = navController,
-                signupViewModel = signupViewModel,
-                onClick = onSaveUserInfo
+                resetPasswordViewModel = resetPasswordViewModel,
+                onClick = {resetPasswordViewModel.ResetPassword()}
             )
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun ResetPasswordScreenPreview() {
-    val navController = rememberNavController()
-    ResetPasswordScreen(navController = navController)
+fun Reset(navController: NavHostController,viewModel: ResetPasswordViewModel = hiltViewModel() ) {
+    val activeScreen by viewModel.activeScreen.collectAsState()
+
+    when(activeScreen){
+       "ForgotPasswordScreen"-> ForgotPasswordScreen(navController,viewModel)
+        "ResetPasswordScreen" -> ResetPasswordScreen(navController,viewModel)
+    }
+
 }
+
+//@Preview(showBackground = true)
+//@Composable
+//fun ResetPasswordScreenPreview() {
+//    val navController = rememberNavController()
+//    ResetPasswordScreen(navController = navController)
+//}
