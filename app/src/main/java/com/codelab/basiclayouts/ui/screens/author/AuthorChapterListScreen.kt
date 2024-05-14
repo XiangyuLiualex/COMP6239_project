@@ -81,6 +81,7 @@ fun StoryEditScreen(viewModel: AuthorEditViewModel) {
                     onClick = {
                         viewModel.updateStoryInList()
                         viewModel.printAuthorEditUiState()
+                        viewModel.saveThisStory(uiState.thisStory)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -117,7 +118,7 @@ fun StoryEditScreen(viewModel: AuthorEditViewModel) {
                 onDismiss = { showDialog.value = false },
                 onConfirm = { chapterTitle ->
                     val newChapter = ChapterAU(
-                        chapterId = -Random.nextInt(1, Int.MAX_VALUE),
+                        chapterId = Random.nextInt(1,100000),
                         chapterTitle = chapterTitle,
                         storyId = uiState.thisStory.storyId,
                         contentList = listOf(),

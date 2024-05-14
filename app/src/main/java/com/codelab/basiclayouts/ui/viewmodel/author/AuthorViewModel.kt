@@ -74,6 +74,25 @@ class AuthorEditViewModel : ViewModel() {
         }
     }
 
+    fun saveThisStory(story:StoryAU ){
+        viewModelScope.launch {
+            try {
+                // 创建一个 Map，包含读者ID
+//                val params = mapOf("authorId" to authorId)
+                // 调用挂起函数
+                val StoryListResult = RetrofitInstance.tAuthorChapterContentService.tAuthorUpdateStory(story)
+                // 更新状态
+//                _authorEditUiState.value = _authorEditUiState.value.copy(storyList = StoryListResult.data as List<StoryAU>)
+
+//                _uiState.value = ReaderFavouriteScreenUiState(authors = authorsResult.data as List<readerFavoriteAuthor>)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // 在此处可以设置错误状态或采取其他行动
+            }
+        }
+    }
+
+
     init{
         getStoryList(4)
     }
@@ -170,9 +189,9 @@ class AuthorEditViewModel : ViewModel() {
 
     // 生成唯一选项 ID
     private fun generateRandomOptionId(): Int {
-        var newOptionId = Random.nextInt()
+        var newOptionId = Random.nextInt(1,100000)
         while (_authorEditUiState.value.thisChapter.optionList.any { it.optionId == newOptionId }) {
-            newOptionId = Random.nextInt()
+            newOptionId = Random.nextInt(1,100000)
         }
         return newOptionId
     }
@@ -184,9 +203,9 @@ class AuthorEditViewModel : ViewModel() {
 
     // 生成唯一内容 ID
     private fun generateRandomContentId(currentContents: List<ContentAU>): Int {
-        var newContentId = Random.nextInt()
+        var newContentId = Random.nextInt(1,100000)
         while (currentContents.any { it.contentId == newContentId }) {
-            newContentId = Random.nextInt()
+            newContentId = Random.nextInt(1,100000)
         }
         return newContentId
     }
