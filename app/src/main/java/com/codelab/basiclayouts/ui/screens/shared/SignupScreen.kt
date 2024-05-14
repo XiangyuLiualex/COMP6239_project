@@ -4,19 +4,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,12 +23,11 @@ import com.codelab.basiclayouts.model.Profile
 import com.codelab.basiclayouts.ui.components.BottomSignupTextComponent
 import com.codelab.basiclayouts.ui.components.HeadingTextComponent
 import com.codelab.basiclayouts.ui.components.ImageComponent
-import com.codelab.basiclayouts.ui.components.ConfirmButton
+import com.codelab.basiclayouts.ui.components.ContinueConfirmButton
 import com.codelab.basiclayouts.ui.components.MyTextField
 import com.codelab.basiclayouts.ui.components.PasswordConfirmComponent
 import com.codelab.basiclayouts.ui.components.SignupTermsAndPrivacyText
 import com.codelab.basiclayouts.ui.viewmodel.shared.SignupViewModel
-import kotlin.reflect.KFunction1
 
 @Composable
 fun SignupScreen(
@@ -48,7 +43,6 @@ fun SignupScreen(
         onChangePassword = viewModel::onChangePassword,
         onChangeComfirmPassword = viewModel::onChangeComfirmPassword,
         onChangeEmail = viewModel::onChangeEmail
-
     )
 }
 
@@ -104,7 +98,7 @@ private fun SignupContent(
                 contentAlignment = Alignment.BottomStart
             ) {
                 Column {
-                    ConfirmButton(
+                    ContinueConfirmButton(
                         labelVal = "Continue",
                         navController = navController,
                         signupViewModel = signupViewModel,

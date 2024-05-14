@@ -15,6 +15,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import com.codelab.basiclayouts.ui.components.ImageComponent
 import com.codelab.basiclayouts.R
 import com.codelab.basiclayouts.ui.theme.Primary
+import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen (navController: NavHostController) {
@@ -65,13 +67,18 @@ fun MainScreen (navController: NavHostController) {
 
 @Composable
 fun MainButton (text: String, onclick: () -> Unit) {
+    val coroutineScope = rememberCoroutineScope()
     Row (
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
     ){
         Button(
-            onClick = onclick,
+            onClick = {
+                coroutineScope.launch {
+                    onclick()
+                }
+            },
             modifier = Modifier.fillMaxWidth(0.75f),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Primary

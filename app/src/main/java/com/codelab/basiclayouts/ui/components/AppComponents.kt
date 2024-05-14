@@ -43,15 +43,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.codelab.basiclayouts.R
-import com.codelab.basiclayouts.model.Profile
 import com.codelab.basiclayouts.ui.theme.BgSocial
 import com.codelab.basiclayouts.ui.theme.BorderColor
 import com.codelab.basiclayouts.ui.theme.BrandColor
 import com.codelab.basiclayouts.ui.theme.Primary
 import com.codelab.basiclayouts.ui.theme.Tertirary
 import com.codelab.basiclayouts.ui.viewmodel.shared.Identity
+import com.codelab.basiclayouts.ui.viewmodel.shared.ResetPasswordViewModel
 import com.codelab.basiclayouts.ui.viewmodel.shared.SignupViewModel
 
 @Composable
@@ -88,7 +89,9 @@ fun ForgotPasswordHeadingTextComponent(action: String) {
         )
         Text(
             text = "Password?",
-            modifier = Modifier.fillMaxWidth().offset(y = (-18).dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .offset(y = (-18).dp),
             fontSize = 39.sp,
             color = Primary,
             fontWeight = FontWeight.Bold
@@ -308,7 +311,7 @@ fun ForgotPasswordTextComponent(navController: NavHostController) {
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
         modifier = Modifier.clickable {
-            navController.navigate("ForgotPassword")
+            navController.navigate("Reset")
         }
     )
 }
@@ -316,14 +319,15 @@ fun ForgotPasswordTextComponent(navController: NavHostController) {
 @Composable
 fun MyButton(labelVal: String,
              navController: NavHostController,
-            signupViewModel: SignupViewModel,
-            onClick: () -> Unit
+             resetPasswordViewModel: ResetPasswordViewModel,
+             onClick: () -> Unit
 ) {
     Button(
         onClick = {
             if (labelVal == "Submit") {
-                onClick() // 调用传入的函数
-                navController.navigate("ResetPassword")
+                resetPasswordViewModel.setActiveScreen("ResetPasswordScreen")
+//                onClick()
+//                navController.navigate("ResetPassword")
             }
         },
         colors = ButtonDefaults.buttonColors(
@@ -341,21 +345,50 @@ fun MyButton(labelVal: String,
 }
 
 @Composable
-fun ConfirmButton(
-        labelVal: String,
-        navController: NavHostController,
-        signupViewModel: SignupViewModel,
-        onClick: () -> Unit,
+fun ContinueConfirmButton(
+    labelVal: String,
+    navController: NavHostController,
+    signupViewModel: SignupViewModel,
+    onClick: () -> Unit,
 ) {
     Button(
         onClick = {
             Log.d("ConfirmButton", "Button clicked")
-            if (labelVal == "Continue" || labelVal == "Submit") {
+            if (labelVal == "Continue") {
                 if (signupViewModel.state.value.password == signupViewModel.state.value.confirmPassword) {
-                    onClick() // 调用传入的函数
+                    onClick()
                     navController.navigate("LoginScreen")
-                } else {
-                    // 显示错误信息："Confirm password is wrong"
+                }
+            }
+        },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = BrandColor
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = labelVal,
+            color = Color.White,
+            fontSize = 18.sp,
+            modifier = Modifier.clickable { }
+        )
+    }
+}
+
+@Composable
+fun SubmitConfirmButton(
+    labelVal: String,
+    navController: NavHostController,
+    resetPasswordViewModel: ResetPasswordViewModel,
+    onClick: () -> Unit,
+) {
+    Button(
+        onClick = {
+            Log.d("ConfirmButton", "Button clicked")
+            if (labelVal == "Submit") {
+                if (resetPasswordViewModel.state.value.password == resetPasswordViewModel.state.value.confirmPassword) {
+                    onClick()
+                    navController.navigate("LoginScreen")
                 }
             }
         },
