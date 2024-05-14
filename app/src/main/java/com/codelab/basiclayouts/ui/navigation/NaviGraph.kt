@@ -5,6 +5,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.codelab.basiclayouts.ui.screens.author.AuthorMainScreen
+import com.codelab.basiclayouts.ui.screens.reader.ReaderLibraryScreen
+import com.codelab.basiclayouts.ui.screens.reader.StoryContentScreen
 import com.codelab.basiclayouts.ui.screens.shared.LoginScreen
 import com.codelab.basiclayouts.ui.screens.shared.ForgotPasswordScreen
 import com.codelab.basiclayouts.ui.screens.shared.ResetPasswordScreen
@@ -19,7 +21,7 @@ fun Navigation() {
 
     NavHost(
         navController = navController,
-        startDestination = "MainScreen"
+        startDestination = "library"//"MainScreen"
     ) {
         composable(route = "LoginScreen") {
             LoginScreen(navController)
@@ -44,6 +46,15 @@ fun Navigation() {
         }
         composable(route = "author_home_Screen") {
             //AuthorMainScreen(navController)
+        }
+        //下面是新加的导航
+        composable("library") {
+            ReaderLibraryScreen(navController = navController)
+        }
+        composable("storyContent/{storyId}/{chapterId}") { backStackEntry ->
+            val storyId = backStackEntry.arguments?.getString("storyId")?.toInt() ?: 0
+            val chapterId = backStackEntry.arguments?.getString("chapterId")?.toInt() ?: 0
+            StoryContentScreen(storyId = storyId, chapterId = chapterId)
         }
     }
 }

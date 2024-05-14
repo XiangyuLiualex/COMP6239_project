@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                      StoryApp()
+                      StoryApp()
 //                    ReaderFavouriteScreen()
 //                    AuthorMainScreen()
 //                    StoryEditScreen()
@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
 //                      ReaderLibraryScreen()
 //                    ReaderFavouriteScreen()
 //                    ReaderStoryHistoryScreen()
-                    StoryContentScreen()
+//                    StoryContentScreen()
                 }
 
             }
