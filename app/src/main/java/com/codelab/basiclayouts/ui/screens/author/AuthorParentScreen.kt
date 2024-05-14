@@ -39,10 +39,10 @@ import com.codelab.basiclayouts.ui.theme.Primary
 fun ParentScreen(navController: NavHostController,viewModel: AuthorEditViewModel = viewModel(),) {
     val activeScreen by viewModel.activeScreen.collectAsState()
 
-//    navController.navigate("signin")
+//    navController.navigate("MainScreen")
 
     when (activeScreen) {
-        "AuthorMainScreen" ->AuthorMainScreen(viewModel)
+        "AuthorMainScreen" ->AuthorMainScreen(viewModel,navController)
         "StoryStatisticsScreen" -> StoryStatisticsScreen(viewModel)
         "NewStoryScreen" -> NewStoryScreen(viewModel)
         "StoryEditScreen" -> StoryEditScreen(viewModel)

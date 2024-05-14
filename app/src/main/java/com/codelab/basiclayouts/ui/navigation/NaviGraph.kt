@@ -22,7 +22,7 @@ fun Navigation() {
 
     NavHost(
         navController = navController,
-        startDestination = "library"//"MainScreen"
+        startDestination = "MainScreen"//"MainScreen"
     ) {
         composable(route = "LoginScreen") {
             LoginScreen(navController)

@@ -23,8 +23,9 @@ class AuthorEditViewModel : ViewModel() {
     private val story1 = StoryAU(storyId = 201, storyName = "An Adventure", storyDescription = "A thrilling quest through uncharted territories.", storyCategory = 2, chapterList = listOf(chapter1, chapter2, chapter3), isUsed = 2)
     private val story2 = StoryAU(storyId = 202, storyName = "Empty Story", storyDescription = "This is an empty story", storyCategory = 2, chapterList = listOf(), isUsed = 2)
     private val story3 = StoryAU(storyId = 203, storyName = "Good Story", storyDescription = "This is a good story", storyCategory = 3, chapterList = listOf(), isUsed = 1)
-    private val category1 = CategoryAU(categoryId = 1, categoryName = "Happy")
-    private val category2 = CategoryAU(categoryId = 2, categoryName = "Scare")
+    private val category1 = CategoryAU(categoryId = 1, categoryName = "fantasy")
+    private val category2 = CategoryAU(categoryId = 2, categoryName = "horror")
+    private val category3 = CategoryAU(categoryId = 3, categoryName = "romance")
 
 
     private val _authorEditUiState = MutableStateFlow(
@@ -32,7 +33,7 @@ class AuthorEditViewModel : ViewModel() {
             thisChapter = ChapterAU(),
             thisStory=StoryAU(),
             storyList = listOf(),
-            categoryList = listOf(category1, category2),
+            categoryList = listOf(category1, category2,category3),
             authorId = 4
         )
     )
