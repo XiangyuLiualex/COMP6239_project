@@ -1,9 +1,11 @@
 package com.codelab.basiclayouts.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.codelab.basiclayouts.ui.screens.author.AuthorMainScreen
 import com.codelab.basiclayouts.ui.screens.reader.ReaderLibraryScreen
 import com.codelab.basiclayouts.ui.screens.reader.StoryContentScreen
@@ -51,10 +53,14 @@ fun Navigation() {
         composable("library") {
             ReaderLibraryScreen(navController = navController)
         }
-        composable("storyContent/{storyId}/{chapterId}") { backStackEntry ->
+        composable(
+            route = "storyContent/{readerId}/{storyId}/{chapterId}/{currentReadingPathId}",
+        ) { backStackEntry ->
+            val readerId = backStackEntry.arguments?.getString("readerId")?.toInt() ?: 0
             val storyId = backStackEntry.arguments?.getString("storyId")?.toInt() ?: 0
             val chapterId = backStackEntry.arguments?.getString("chapterId")?.toInt() ?: 0
-            StoryContentScreen(storyId = storyId, chapterId = chapterId)
+            val currentReadingPathId = backStackEntry.arguments?.getString("currentReadingPathId")?.toInt() ?: 0
+            StoryContentScreen(readerId = readerId,storyId = storyId, chapterId = chapterId, currentReadingPathId = currentReadingPathId)
         }
     }
 }

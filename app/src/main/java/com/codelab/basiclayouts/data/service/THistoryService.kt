@@ -22,7 +22,7 @@ interface THistoryService {
     suspend fun findHistoryByStoryId(@Body values: Map<String, Int>): ResultData<List<readerStoryHistory>>
 
     @POST("/THistoryCtrl/createReadingPath")
-    suspend fun createReadingPath(@Body values: readingPath): ResultData<readingPath>
+    suspend fun createReadingPath(@Body values: readingPath): ResultData<Int>
 
     @POST("/THistoryCtrl/updateReadingPath")
     suspend fun updateReadingPath(@Body values: readingPath): ResultData<readingPath>
@@ -34,7 +34,7 @@ interface THistoryService {
     suspend fun getPathsByStoryId(@Body values: Map<String, Int>): ResultData<List<readingPath>>
 
     @POST("/THistoryCtrl/insertPathItem")
-    suspend fun insertPathItem(@Body values: readingPathItem): ResultData<readingPathItem>
+    suspend fun insertPathItem(@Body values: readingPathItem): ResultData<Int>
 
     @POST("/THistoryCtrl/updatePathItem")
     suspend fun updatePathItem(@Body values: readingPathItem): ResultData<readingPathItem>

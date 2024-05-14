@@ -46,7 +46,11 @@ fun StoryCard(story: readerTStorysForUiState, viewModel: ReaderLibraryScreenView
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable {
-                navController.navigate("storyContent/${story.storyId}/${story.currentChapterId}")
+                val readerId = viewModel.uiState.value.readerId ?: 0
+                val storyId = story.storyId ?: 0
+                val chapterId = story.currentChapterId ?: 0
+                val currentReadingPathId = story.currentReadingPathId ?: 0
+                navController.navigate("storyContent/$readerId/$storyId/$chapterId/$currentReadingPathId")
             },
         verticalAlignment = Alignment.Top
     ) {

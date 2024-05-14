@@ -36,10 +36,13 @@ data class readerTStorysForUiState(
     @SerializedName("currentProgressText") val currentProgressText: String? = "",
 
     /** 剧本当前被阅读到哪个章节 */
-    @SerializedName("currentChapterId") val currentChapterId: Int,
+    @SerializedName("currentChapterId") val currentChapterId: Int = 0,
 
     /** 剧本当前被阅读到哪个章节 */
-    @SerializedName("currentChapterName") val currentChapterName: String,
+    @SerializedName("currentChapterName") val currentChapterName: String = "",
+
+    /** 剧本当前被阅读到哪个章节的ID,所对应的历史记录头节点的ID */
+    @SerializedName("currentReadingPathId") val currentReadingPathId: Int? = 0,
 
     /** 剧本当前最新的章节历史记录头节点列表 */
     @SerializedName("readingPathList") val readingPathList  : List<readingPath> = listOf(),//头节点

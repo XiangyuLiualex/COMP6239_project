@@ -8,7 +8,7 @@ import java.util.Date
  */
 data class readingPath(
     /** 阅读路径ID */
-    @SerializedName("readingPathId") val readingPathId: Int = -1,
+    @SerializedName("readingPathId") val readingPathId: Int? = null,
 
     /** 开始时间 */
     @SerializedName("startTime") val startTime: Date? = null,
@@ -20,7 +20,7 @@ data class readingPath(
     @SerializedName("storyId") val storyId: Int = -1,
 
     /** 起始阅读路径项ID */
-    @SerializedName("startReadingPathItemId") val startReadingPathItemId: Int = -1,
+    @SerializedName("startReadingPathItemId") val startReadingPathItemId: Int? = -1,
 
     /** 读者ID */
     @SerializedName("readerId") val readerId: Int = -1,

@@ -20,7 +20,7 @@ data class readingPathItem(
     @SerializedName("readingTimes") val readingTimes: Date? =null,
 
     /** 下一阅读路径ID */
-    @SerializedName("nextReadingPathId") val nextReadingPathId: Int = -1,
+    @SerializedName("nextReadingPathId") val nextReadingPathId: Int? = -1,
 
     /** 阅读时间 */
     @SerializedName("readingTime") val readingTime: Date?=null,

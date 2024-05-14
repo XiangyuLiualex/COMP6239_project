@@ -25,13 +25,15 @@ import com.codelab.basiclayouts.ui.viewmodel.reader.StoryContentScreenViewModel
 @Composable
 fun StoryContentScreen(
     viewModel: StoryContentScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    readerId: Int,
     storyId: Int,
-    chapterId: Int
+    chapterId: Int,
+    currentReadingPathId: Int
 ) {
     val state = viewModel.uiState.collectAsState().value
 
-    LaunchedEffect(key1 = storyId, key2 = chapterId) {
-        viewModel.loadContent(storyId, chapterId)
+    LaunchedEffect(key1 = storyId,key2 = chapterId, key3 = currentReadingPathId) {
+        viewModel.loadContent(readerId,storyId, chapterId, currentReadingPathId)
     }
 
     Column(modifier = Modifier.padding(16.dp)) {

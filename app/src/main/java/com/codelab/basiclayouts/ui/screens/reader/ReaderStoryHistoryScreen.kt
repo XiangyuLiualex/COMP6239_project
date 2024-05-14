@@ -32,7 +32,7 @@ fun PathCard(path: readingPath) {
     Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), elevation = 4.dp) {
         Column(modifier = Modifier.padding(8.dp)) {
             path.readingPathItemList.forEachIndexed { index, item ->
-                val nextChapterName = path.readingPathItemList.getOrNull(index + 1)?.chapterName ?: "结束"
+                val nextChapterName = path.readingPathItemList.getOrNull(index + 1)?.chapterName ?: "end"
                 Text(text = "${item.chapterName} -> $nextChapterName")
             }
         }
