@@ -13,10 +13,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codelab.basiclayouts.ui.theme.AppTheme
 import com.codelab.basiclayouts.ui.theme.DarkTheme
 import com.codelab.basiclayouts.ui.viewmodel.author.AuthorEditViewModel
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthorMainScreen(viewModel: AuthorEditViewModel) {
+fun AuthorMainScreen(viewModel: AuthorEditViewModel,navHostController: NavHostController) {
     AppTheme {
         val uiState by viewModel.authorEditUiState.collectAsState()
 
@@ -26,7 +32,17 @@ fun AuthorMainScreen(viewModel: AuthorEditViewModel) {
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = MaterialTheme.colorScheme.background,
+            topBar = {
+                TopAppBar(
+                    title = { Text(text = "Author Dashboard") },
+                    actions = {
+                        IconButton(onClick = { navHostController.navigate("MainScreen") }) {
+                            Icon(imageVector = Icons.Filled.ExitToApp, contentDescription = "Sign Out")
+                        }
+                    }
+                )
+            }
         ) { padding ->
             Column(modifier = Modifier.padding(padding).padding(16.dp)) {
                 Text(text = "New Story:", style = MaterialTheme.typography.headlineMedium)
@@ -42,7 +58,7 @@ fun AuthorMainScreen(viewModel: AuthorEditViewModel) {
                 Text(text = "Draft Stories:", style = MaterialTheme.typography.headlineMedium)
                 Box(
                     modifier = Modifier
-                        .weight(0.75f)
+                        .weight(0.2f)
                         .fillMaxWidth()
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .padding(vertical = 8.dp)
@@ -53,7 +69,7 @@ fun AuthorMainScreen(viewModel: AuthorEditViewModel) {
                             Button(
                                 onClick = { viewModel.selectStory(story)
                                     viewModel.setActiveScreen("StoryEditScreen")
-                                          },
+                                },
                                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
                             ) {
                                 Text(text = story.storyName)
@@ -67,7 +83,7 @@ fun AuthorMainScreen(viewModel: AuthorEditViewModel) {
                 Text(text = "Published Book:", style = MaterialTheme.typography.headlineMedium)
                 Box(
                     modifier = Modifier
-                        .weight(0.75f)
+                        .weight(0.3f)
                         .fillMaxWidth()
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .padding(vertical = 8.dp)
@@ -90,12 +106,11 @@ fun AuthorMainScreen(viewModel: AuthorEditViewModel) {
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewAuthorMainScreen() {
-    val viewModel = viewModel<AuthorEditViewModel>()
-    DarkTheme {
-        AuthorMainScreen(viewModel)
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewAuthorMainScreen() {
+//    val viewModel = viewModel<AuthorEditViewModel>()
+//    DarkTheme {
+//        AuthorMainScreen(viewModel)
+//    }
+//}

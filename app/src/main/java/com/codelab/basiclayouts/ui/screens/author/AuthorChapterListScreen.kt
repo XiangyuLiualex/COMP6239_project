@@ -18,6 +18,7 @@ import com.codelab.basiclayouts.ui.viewmodel.author.AuthorEditViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlin.random.Random
 
+// Modify the StoryEditScreen function to handle the new onConfirm parameters
 @Composable
 fun StoryEditScreen(viewModel: AuthorEditViewModel) {
     AppTheme {
@@ -61,7 +62,7 @@ fun StoryEditScreen(viewModel: AuthorEditViewModel) {
                 ChapterListBox(
                     viewModel = viewModel,
                     chapterList = uiState.thisStory.chapterList,
-                    modifier = Modifier.weight(0.7f),
+                    modifier = Modifier.height(350.dp),
                     onSelectChapter = { chapter ->
                         viewModel.setCurrentChapter(chapter)
                         viewModel.setActiveScreen("AuthorEditMainScreen")
@@ -116,14 +117,14 @@ fun StoryEditScreen(viewModel: AuthorEditViewModel) {
         if (showDialog.value) {
             AddNewChapterDialog(
                 onDismiss = { showDialog.value = false },
-                onConfirm = { chapterTitle ->
+                onConfirm = { chapterTitle, isStartChapter -> // Update parameters
                     val newChapter = ChapterAU(
-                        chapterId = Random.nextInt(1,100000),
+                        chapterId = Random.nextInt(1, 100000),
                         chapterTitle = chapterTitle,
                         storyId = uiState.thisStory.storyId,
                         contentList = listOf(),
                         optionList = listOf(),
-                        isEnd = 0
+                        isEnd = if (isStartChapter) 2 else 0 // Set isEnd based on checkbox state
                     )
                     viewModel.addChapter(newChapter)
                     showDialog.value = false
@@ -182,9 +183,10 @@ fun ChapterListBox(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddNewChapterDialog(onDismiss: () -> Unit, onConfirm: (String) -> Unit, chapterList: List<ChapterAU>) {
+fun AddNewChapterDialog(onDismiss: () -> Unit, onConfirm: (String, Boolean) -> Unit, chapterList: List<ChapterAU>) {
     val chapterTitle = remember { mutableStateOf("") }
     val isTitleInvalid = remember { mutableStateOf(false) }
+    val isStartChapter = remember { mutableStateOf(false) } // Add this line
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -211,8 +213,19 @@ fun AddNewChapterDialog(onDismiss: () -> Unit, onConfirm: (String) -> Unit, chap
                     Text("Invalid name", color = MaterialTheme.colorScheme.error)
                 }
 
+                // Add Checkbox
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = isStartChapter.value,
+                        onCheckedChange = { isStartChapter.value = it }
+                    )
+                    Text("Is start chapter")
+                }
+
                 Button(
-                    onClick = { onConfirm(chapterTitle.value) },
+                    onClick = { onConfirm(chapterTitle.value, isStartChapter.value) }, // Pass the checkbox state to onConfirm
                     enabled = chapterTitle.value.isNotEmpty() && !isTitleInvalid.value,
                     modifier = Modifier.fillMaxWidth()
                 ) {

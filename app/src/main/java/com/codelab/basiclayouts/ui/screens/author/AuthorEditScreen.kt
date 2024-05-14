@@ -28,17 +28,13 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.icons.filled.ArrowBack
 
 
-
-
-
-
 @Composable
 fun ContentSection(contentList: List<ContentAU>, viewModel: AuthorEditViewModel) {
     Surface(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
-            .fillMaxHeight(0.5f),
+            .fillMaxHeight(0.3f),
         shape = MaterialTheme.shapes.medium,
         color = MaterialTheme.colorScheme.surfaceVariant
     ) {
@@ -104,7 +100,7 @@ fun OptionItem(option: OptionAU, onRemoveOption: (Int) -> Unit) {
     ) {
         Button(
             onClick = { /* Add your logic here */ },
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(0.5f)
         ) {
             Text(option.optionName, style = MaterialTheme.typography.bodyLarge)
         }
@@ -158,7 +154,7 @@ fun OptionsSection(optionList: List<OptionAU>, viewModel: AuthorEditViewModel) {
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
-            .fillMaxHeight(0.75f),
+            .fillMaxHeight(0.5f),
         shape = MaterialTheme.shapes.medium,
         color = MaterialTheme.colorScheme.surfaceVariant
     ) {
