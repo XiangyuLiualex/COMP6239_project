@@ -12,12 +12,21 @@ import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderStoryHistoryViewModel
 
 import androidx.compose.material.Card
 import androidx.compose.material.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.dp
 //考虑到读完书后跳转到这个页面（根据进入的头节点处理结果？）
 // 或者专门做一个跳转，从书的详情跳过来
 // 还差读书页添加历史记录
 @Composable
-fun ReaderStoryHistoryScreen(viewModel: ReaderStoryHistoryViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun ReaderStoryHistoryScreen(
+    viewModel: ReaderStoryHistoryViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    readerId: Int,
+    storyId: Int
+) {
+    LaunchedEffect(key1 = readerId, key2 = storyId) {
+        viewModel.loadHistory(readerId, storyId)
+    }
+
     val historyState = viewModel.historyState.collectAsState().value
 
     Column(modifier = Modifier.padding(16.dp)) {

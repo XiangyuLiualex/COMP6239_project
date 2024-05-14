@@ -13,6 +13,7 @@ import com.codelab.basiclayouts.ui.screens.author.AuthorScreen
 import com.codelab.basiclayouts.ui.screens.reader.FavouriteScreen
 import com.codelab.basiclayouts.ui.screens.reader.LibScreen
 import com.codelab.basiclayouts.ui.screens.reader.ReaderFavouriteScreen
+import com.codelab.basiclayouts.ui.screens.reader.ReaderStoryHistoryScreen
 import com.codelab.basiclayouts.ui.screens.shared.LoginScreen
 import com.codelab.basiclayouts.ui.screens.shared.ForgotPasswordScreen
 import com.codelab.basiclayouts.ui.screens.shared.ResetPasswordScreen
@@ -72,7 +73,14 @@ fun Navigation() {
             val storyId = backStackEntry.arguments?.getString("storyId")?.toInt() ?: 0
             val chapterId = backStackEntry.arguments?.getString("chapterId")?.toInt() ?: 0
             val currentReadingPathId = backStackEntry.arguments?.getString("currentReadingPathId")?.toInt() ?: 0
-            StoryContentScreen(readerId = readerId,storyId = storyId, chapterId = chapterId, currentReadingPathId = currentReadingPathId)
+            StoryContentScreen(readerId = readerId,storyId = storyId, chapterId = chapterId, currentReadingPathId = currentReadingPathId, navController = navController)
+        }
+        composable(
+            route = "readerStoryHistory/{readerId}/{storyId}",
+        ) { backStackEntry ->
+            val readerId = backStackEntry.arguments?.getString("readerId")?.toInt() ?: 0
+            val storyId = backStackEntry.arguments?.getString("storyId")?.toInt() ?: 0
+            ReaderStoryHistoryScreen(readerId = readerId, storyId = storyId)
         }
     }
 }
