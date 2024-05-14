@@ -12,23 +12,36 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.codelab.basiclayouts.R
 import com.codelab.basiclayouts.model.reader.readerFavoriteAuthor
+import com.codelab.basiclayouts.ui.screens.shared.GuestFavorate
+import com.codelab.basiclayouts.ui.screens.shared.GuestLibrary
+import com.codelab.basiclayouts.ui.screens.shared.GuestMain
+import com.codelab.basiclayouts.ui.screens.shared.GuestProfile
+import com.codelab.basiclayouts.ui.theme.Primary
 import com.codelab.basiclayouts.ui.viewmodel.reader.ReaderFavouriteScreenViewModel
 
 
 //主页面
 @Composable
-fun ReaderFavouriteScreen(viewModel: ReaderFavouriteScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun ReaderFavouriteScreen(            navController: NavHostController,
+    viewModel: ReaderFavouriteScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+
+) {
     var searchQuery by remember { mutableStateOf("") }
     // 观察 ViewModel 中的 StateFlow 并获取当前状态
     val uiState by viewModel.uiState.collectAsState()
@@ -128,3 +141,118 @@ fun AuthorCard(author: readerFavoriteAuthor, viewModel: ReaderFavouriteScreenVie
 
 
 
+
+@Composable
+private fun BottomBarForFav (pageIndex: MutableState<PageItemForFav>) {
+    NavigationBar () {
+        NavigationBarItem(
+            selected = pageIndex.value == PageItemForFav.MAIN_PAGE,
+            onClick = {
+                pageIndex.value = PageItemForFav.MAIN_PAGE
+            },
+            icon = { Image(
+                painter = painterResource(id = R.drawable.share_franky),
+                contentDescription = null,
+                modifier = Modifier.size(40.dp)
+            ) },
+            label = {
+                androidx.compose.material3.Text(
+                    text = "main",
+                    fontSize = 15.sp,
+                    color = Primary,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        )
+        NavigationBarItem(
+            selected = pageIndex.value == PageItemForFav.FAVORITE_PAGE,
+            onClick = {
+                pageIndex.value = PageItemForFav.FAVORITE_PAGE
+            },
+            icon = { Image(
+                painter = painterResource(id = R.drawable.share_owl),
+                contentDescription = null,
+                modifier = Modifier.size(40.dp)
+            ) },
+            label = {
+                androidx.compose.material3.Text(
+                    text = "favorite",
+                    fontSize = 15.sp,
+                    color = Primary,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        )
+        NavigationBarItem(
+            selected = pageIndex.value == PageItemForFav.LIBRARY_PAGE,
+            onClick = {
+                pageIndex.value = PageItemForFav.LIBRARY_PAGE
+            },
+            icon = { Image(
+                painter = painterResource(id = R.drawable.share_bone),
+                contentDescription = null,
+                modifier = Modifier.size(40.dp)
+            ) },
+            label = {
+                androidx.compose.material3.Text(
+                    text = "library",
+                    fontSize = 15.sp,
+                    color = Primary,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        )
+        NavigationBarItem(
+            selected = pageIndex.value == PageItemForFav.PROFILE_PAGE,
+            onClick = {
+                pageIndex.value = PageItemForFav.PROFILE_PAGE
+            },
+            icon = { Image(
+                painter = painterResource(id = R.drawable.share_lantern),
+                contentDescription = null,
+                modifier = Modifier.size(40.dp)
+            ) },
+            label = {
+                androidx.compose.material3.Text(
+                    text = "profile",
+                    fontSize = 15.sp,
+                    color = Primary,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        )
+    }
+}
+
+private enum class PageItemForFav {
+    MAIN_PAGE,
+    FAVORITE_PAGE,
+    LIBRARY_PAGE,
+    PROFILE_PAGE,
+}
+
+
+
+@Composable
+fun FavouriteScreen (nav: NavHostController) {
+    val pageIndex = remember {
+        mutableStateOf(PageItemForFav.MAIN_PAGE)
+    }
+
+    androidx.compose.material3.Surface(
+        color = Color.White,
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        androidx.compose.material3.Scaffold(
+            bottomBar = { BottomBarForFav(pageIndex) },
+        ) { _ ->
+            when (pageIndex.value) {
+                PageItemForFav.MAIN_PAGE -> GuestMain(nav)
+                PageItemForFav.FAVORITE_PAGE -> ReaderFavouriteScreen(nav)
+                PageItemForFav.LIBRARY_PAGE -> ReaderLibraryScreen(nav)
+                PageItemForFav.PROFILE_PAGE -> GuestProfile(nav)
+            }
+        }
+    }
+}

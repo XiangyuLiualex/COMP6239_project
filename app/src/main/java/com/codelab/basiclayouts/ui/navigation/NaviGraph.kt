@@ -10,6 +10,9 @@ import com.codelab.basiclayouts.ui.screens.author.AuthorMainScreen
 import com.codelab.basiclayouts.ui.screens.reader.ReaderLibraryScreen
 import com.codelab.basiclayouts.ui.screens.reader.StoryContentScreen
 import com.codelab.basiclayouts.ui.screens.author.AuthorScreen
+import com.codelab.basiclayouts.ui.screens.reader.FavouriteScreen
+import com.codelab.basiclayouts.ui.screens.reader.LibScreen
+import com.codelab.basiclayouts.ui.screens.reader.ReaderFavouriteScreen
 import com.codelab.basiclayouts.ui.screens.shared.LoginScreen
 import com.codelab.basiclayouts.ui.screens.shared.ForgotPasswordScreen
 import com.codelab.basiclayouts.ui.screens.shared.ResetPasswordScreen
@@ -52,7 +55,10 @@ fun Navigation() {
         }
         //下面是新加的导航
         composable("library") {
-            ReaderLibraryScreen(navController = navController)
+            LibScreen(navController)
+        }
+        composable("Favourite") {
+            FavouriteScreen(navController)
         }
         composable(
             route = "storyContent/{readerId}/{storyId}/{chapterId}/{currentReadingPathId}",

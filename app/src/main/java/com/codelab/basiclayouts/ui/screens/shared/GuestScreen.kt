@@ -86,8 +86,8 @@ fun GuestScreen (nav: NavHostController) {
         ) { _ ->
             when (pageIndex.value) {
                 PageItem.MAIN_PAGE     -> GuestMain(nav)
-                PageItem.FAVORITE_PAGE -> GuestFavorate()
-                PageItem.LIBRARY_PAGE  -> GuestLibrary()
+                PageItem.FAVORITE_PAGE -> GuestFavorate(nav)
+                PageItem.LIBRARY_PAGE  -> GuestLibrary(nav)
                 PageItem.PROFILE_PAGE  -> GuestProfile(nav)
             }
         }
@@ -231,34 +231,38 @@ private fun queryStory(keyword: String = "", author: Boolean = true): List<Story
 }
 
 @Composable
-fun GuestFavorate () {
-    val storyList = queryFavoriteStory()
-    LazyColumn () {
-        items(storyList.size) {
-            StoryDescription(storyList[it])
-        }
-    }
+fun GuestFavorate  (navController: NavHostController) {
+    navController.navigate("Favourite")
 }
-
-private fun queryFavoriteStory (): List<Story> {
-    //TODO
-    return favoStories
-}
+//    val storyList = queryFavoriteStory()
+//    LazyColumn () {
+//        items(storyList.size) {
+//            StoryDescription(storyList[it])
+//        }
+//    }
+//}
+//
+//private fun queryFavoriteStory (): List<Story> {
+//    //TODO
+//    return favoStories
+//}
 
 @Composable
-fun GuestLibrary () {
-    val storyList = queryLibraryStory()
-    LazyColumn () {
-        items(storyList.size) {
-            StoryDescription(storyList[it], true)
-        }
-    }
+fun GuestLibrary  (navController: NavHostController) {
+    navController.navigate("library")
 }
+//    val storyList = queryLibraryStory()
+//    LazyColumn () {
+//        items(storyList.size) {
+//            StoryDescription(storyList[it], true)
+//        }
+//    }
+//}
 
-private fun queryLibraryStory (): List<Story> {
-    //TODO
-    return librStories
-}
+//private fun queryLibraryStory (): List<Story> {
+//    //TODO
+//    return librStories
+//}
 
 @Composable
 fun GuestProfile (navController: NavHostController) {
