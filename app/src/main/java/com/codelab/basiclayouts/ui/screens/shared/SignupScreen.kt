@@ -47,8 +47,8 @@ fun SignupScreen(
         onChangeUsername = viewModel::onChangeUsername,
         onChangePassword = viewModel::onChangePassword,
         onChangeComfirmPassword = viewModel::onChangeComfirmPassword,
-        onChangeEmail = viewModel::onChangeEmail,
-        onSaveUserInfo = viewModel::onSaveUserInfo // 使用lambda传递当前state
+        onChangeEmail = viewModel::onChangeEmail
+
     )
 }
 
@@ -60,8 +60,7 @@ private fun SignupContent(
     onChangeUsername: (String) -> Unit,
     onChangePassword: (String) -> Unit,
     onChangeComfirmPassword: (String) -> Unit,
-    onChangeEmail: (String) -> Unit,
-    onSaveUserInfo:  () -> Unit,
+    onChangeEmail: (String) -> Unit
 ) {
     Surface(
         modifier = Modifier
@@ -78,7 +77,7 @@ private fun SignupContent(
                 MyTextField(
                     labelVal = "Username",
                     icon = R.drawable.share_lockperson,
-                    onTextChange = onChangeUsername
+                    onTextChange = onChangeUsername,
                 )
                 Spacer(modifier = Modifier.height(15.dp))
                 PasswordConfirmComponent(
@@ -96,7 +95,7 @@ private fun SignupContent(
                 MyTextField(
                     labelVal = "email ID",
                     icon = R.drawable.share_at_symbol,
-                    onTextChange = onChangeEmail
+                    onTextChange = onChangeEmail,
                 )
             }
             SignupTermsAndPrivacyText()
@@ -105,18 +104,18 @@ private fun SignupContent(
                 contentAlignment = Alignment.BottomStart
             ) {
                 Column {
-//                    ConfirmButton(
-//                        labelVal = "Continue",
-//                        navController = navController,
-//                        signupViewModel = signupViewModel,
-//                        onClick = onSaveUserInfo
-//                    )
-                    Button(
-                        onClick = { signupViewModel.onSaveUserInfo()},
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
-                    ) {
-                        Text(text = "Create a new Story")
-                    }
+                    ConfirmButton(
+                        labelVal = "Continue",
+                        navController = navController,
+                        signupViewModel = signupViewModel,
+                        onClick = {signupViewModel.signUp()}
+                    )
+//                    Button(
+//                        onClick = { signupViewModel.signUp()},
+//                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+//                    ) {
+//                        Text(text = "Create a new Story")
+//                    }
                     Spacer(modifier = Modifier.height(10.dp))
                     BottomSignupTextComponent(navController)
                 }

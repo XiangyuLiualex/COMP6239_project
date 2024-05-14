@@ -1,10 +1,11 @@
 package com.codelab.basiclayouts.model
 
 import com.codelab.basiclayouts.ui.components.Sex
-import com.codelab.basiclayouts.ui.screens.shared.Identity
+
 import kotlin.random.Random
 
 data class Profile(
+    val userId: Int=-1,
     val username: String = "",
     val realName: String = "",
     val selfDescription: String = "",
@@ -15,9 +16,9 @@ data class Profile(
     val profilePictureLink: String = ""
 )
 
-object SelectedIdentity {
-    var selectedIdentity = Identity.READER
-}
+//object SelectedIdentity {
+//    var selectedIdentity = Identity.READER
+//}
 object SelectedSex {
     var selectedSex = Sex.MALE
 }
@@ -47,6 +48,7 @@ fun generateRandomProfileList(): List<Profile> {
     val random = Random(System.currentTimeMillis())
 
     return List(5) {
+        val userId=99
         val username = usernames[random.nextInt(usernames.size)]
         val realName = realNames[random.nextInt(realNames.size)]
         val selfDescription = selfDescriptions[random.nextInt(selfDescriptions.size)]
@@ -56,6 +58,6 @@ fun generateRandomProfileList(): List<Profile> {
         val confirmPassword = password // Assuming confirmPassword is the same as password
         val profilePictureLink = profilePictureLinks[random.nextInt(profilePictureLinks.size)]
 
-        Profile(username, realName, selfDescription, email, telephone, password, confirmPassword, profilePictureLink)
+        Profile(userId,username, realName, selfDescription, email, telephone, password, confirmPassword, profilePictureLink)
     }
 }

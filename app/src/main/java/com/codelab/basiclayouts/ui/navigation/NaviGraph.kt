@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.codelab.basiclayouts.ui.screens.author.AuthorMainScreen
 import com.codelab.basiclayouts.ui.screens.reader.ReaderLibraryScreen
 import com.codelab.basiclayouts.ui.screens.reader.StoryContentScreen
+import com.codelab.basiclayouts.ui.screens.author.AuthorScreen
 import com.codelab.basiclayouts.ui.screens.shared.LoginScreen
 import com.codelab.basiclayouts.ui.screens.shared.ForgotPasswordScreen
 import com.codelab.basiclayouts.ui.screens.shared.ResetPasswordScreen
@@ -45,7 +46,7 @@ fun Navigation() {
             ProfileScreen(navController)
         }
         composable(route = "author_home_Screen") {
-            //AuthorMainScreen(navController)
+            AuthorScreen(navController)
         }
         //下面是新加的导航
         composable("library") {

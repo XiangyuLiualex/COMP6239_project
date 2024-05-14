@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
@@ -42,6 +45,7 @@ fun ProfileScreen(
 ) {
     val state by viewModel.state.collectAsState()
     ProfileContent(
+        viewModel,
         navController = navController,
         state = state,
         onChangeUsername = viewModel::onChangeUsername,
@@ -56,6 +60,7 @@ fun ProfileScreen(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 private fun ProfileContent(
+    viewModel: ProfileViewModel,
     navController: NavHostController,
     state: Profile,
     onChangeUsername: (String) -> Unit,
@@ -131,10 +136,20 @@ private fun ProfileContent(
         )
 
         Spacer(modifier = Modifier.weight(1F))
-        DefaultButton(
-            buttonText = "Save",
-            onClick = onSaveUserInfo
-        )
+//        DefaultButton(
+//            buttonText = "Save",
+////            onClick = onSaveUserInfo
+//            onClick = viewModel.trySave()
+//        )
+        Button(
+            onClick = { viewModel.trySave()
+                viewModel.saveProfile()
+                      },
+            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+        ) {
+            Text(text = "Save")
+        }
+
     }
 }
 
