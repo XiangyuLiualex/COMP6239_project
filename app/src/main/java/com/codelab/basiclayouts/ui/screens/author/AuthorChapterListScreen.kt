@@ -40,7 +40,8 @@ fun StoryEditScreen(viewModel: AuthorEditViewModel) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     IconButton(
-                        onClick = { viewModel.setActiveScreen("AuthorMainScreen") }
+                        onClick = { viewModel.getStoryList(uiState.authorId)
+                            viewModel.setActiveScreen("AuthorMainScreen") }
                     ) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,

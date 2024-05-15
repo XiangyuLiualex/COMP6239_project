@@ -34,7 +34,7 @@ class AuthorEditViewModel : ViewModel() {
             thisStory=StoryAU(),
             storyList = listOf(),
             categoryList = listOf(category1, category2,category3),
-            authorId = 4
+            authorId = 8
         )
     )
 
@@ -95,7 +95,7 @@ class AuthorEditViewModel : ViewModel() {
 
 
     init{
-        getStoryList(4)
+        getStoryList(_authorEditUiState.value.authorId)
     }
 
     // Expose an immutable StateFlow
