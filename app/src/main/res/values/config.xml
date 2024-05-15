@@ -1,3 +1,4 @@
 <resources>
-    <string name="api_base_url">http://10.14.148.166:8443/</string>
+    <string name="api_base_url">http://10.14.150.220:8443/</string>
+    <integer name="READERID">123</integer>
 </resources>
