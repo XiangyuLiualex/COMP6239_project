@@ -226,7 +226,7 @@ fun OptionsSection(optionList: List<OptionAU>, viewModel: AuthorEditViewModel) {
                                 viewModel.addNewOption(newOptionName.value, selectedChapterId.value!!)
                                 newOptionName.value = ""
                                 selectedChapterTitle.value = null
-                                selectedChapterId.value = null
+//                                selectedChapterId.value = null
                                 showDialog.value = false
                             }
                         },
